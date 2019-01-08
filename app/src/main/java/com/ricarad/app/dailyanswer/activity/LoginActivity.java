@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -19,15 +20,13 @@ import com.ricarad.app.dailyanswer.R;
 
 import cn.bmob.v3.Bmob;
 
-/**
- * Created by dongdong on 2017/11/28.
- */
 
 public class LoginActivity extends Activity implements View.OnClickListener{
     private Button loginButton;
-    private Button registerButton;
-    private EditText usercountText;
-    private EditText passwordText;
+    private TextView registerButton;
+    private EditText accountEv;
+    private EditText passwordEv;
+    private TextView forgetPassTv;
   //  private TextView stateText;
 
     private CheckBox rememberPass;
@@ -36,29 +35,32 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     private final static int REGISTER_CODE = 1;
     private final static int ADMINISTRATOR_CODE = 1;
     private final static int NORMALUSER_CODE = 1;
+    private final static String BMOBAPPKEY = "e197fce2a9812ccbb9419f2193211af0";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.login);
 
-        Bmob.initialize(this, "8e961ca4035d0b20d23273af6988e0c6");
+        Bmob.initialize(this, BMOBAPPKEY);
 
         rememberPass = (CheckBox)findViewById(R.id.remPass);
         loginButton = (Button)findViewById(R.id.login_button);
-        registerButton = (Button)findViewById(R.id.register_button);
-        usercountText = (EditText)findViewById(R.id.usrcount_text);
-        passwordText = (EditText)findViewById(R.id.password_text);
+        registerButton = (TextView) findViewById(R.id.login_register_tv);
+        accountEv = (EditText)findViewById(R.id.usrcount_text);
+        passwordEv = (EditText)findViewById(R.id.password_text);
+        forgetPassTv = (TextView)findViewById(R.id.login_forgetPass_tv);
         loginButton.setOnClickListener(this);
         registerButton.setOnClickListener(this);
+        forgetPassTv.setOnClickListener(this);
 
         pref = PreferenceManager.getDefaultSharedPreferences(this);
         boolean isRemember = pref.getBoolean("remember_password",false);
         String account = pref.getString("account","");
-        usercountText.setText(account);
+        accountEv.setText(account);
         if(isRemember){
             String password = pref.getString("password","");
-            passwordText.setText(password);
+            passwordEv.setText(password);
             rememberPass.setChecked(true);
         }
     }
@@ -68,8 +70,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
        switch (requestCode){
            case REGISTER_CODE:{
                if(resultCode == RESULT_OK){
-                   usercountText.setText(data.getStringExtra("usercount"));
-                   passwordText.setText(data.getStringExtra("password"));
+                   accountEv.setText(data.getStringExtra("usercount"));
+                   passwordEv.setText(data.getStringExtra("password"));
                }
            }break;
 
@@ -81,8 +83,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         int id = view.getId();
         switch (id){
             case R.id.login_button:{
-                String usercount = usercountText.getText().toString();
-                String password = passwordText.getText().toString();
+                String usercount = accountEv.getText().toString();
+                String password = passwordEv.getText().toString();
                 if(usercount.equals("") || password.equals("")){
                     Toast.makeText(LoginActivity.this,"用户名或密码不能为空",Toast.LENGTH_SHORT).show();
                 }else{
@@ -93,10 +95,15 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
                 }
             }break;
-            case R.id.register_button:{
-                /*Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
+            case R.id.login_register_tv:{
+                Toast.makeText(this,"注册按钮",Toast.LENGTH_SHORT).show();
+              /*  Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
                 startActivityForResult(intent,REGISTER_CODE);*/
             }break;
+            case R.id.login_forgetPass_tv:{
+                Toast.makeText(this,"忘记密码",Toast.LENGTH_SHORT).show();
+            }break;
+
         }
     }
 
@@ -110,56 +117,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     }
 
     public void login(final String usercount, final String password){
-        /*BmobQuery<User> query = new BmobQuery<User>();
-        query.addWhereEqualTo("usercount",usercount);
-        query.addWhereEqualTo("password",password);
-        query.setLimit(1);
-      //  stateText.setText("登录中。。。");
 
-        query.findObjects(LoginActivity.this, new FindListener<User>() {
-            @Override
 
-            public void onSuccess(List<User> list) {
-                if(list != null && list.size() !=0) {
-                    User user = list.get(0);
-                    String role = user.getRole();
-                    editor = pref.edit();
-                    String account = usercountText.getText().toString();
-                    editor.putString("account",account);
-                    if(rememberPass.isChecked()){
-                        String password1 = passwordText.getText().toString();
-                        editor.putString("password",password1);
-                        editor.putBoolean("remember_password",true);
-                    }else {
-                        editor.clear();
-                    }
-                    editor.commit();
-                    if(role.equals("管理员")){
-                        Intent intent = new Intent(LoginActivity.this,AdministratorActivity.class);
-                        intent.putExtra("user",user);
-                        startActivityForResult(intent,ADMINISTRATOR_CODE);
-
-                    }else if(role.equals("用户")){
-                        Intent intent = new Intent(LoginActivity.this,NormalUserActivity.class);
-                        intent.putExtra("user",user);
-                        startActivityForResult(intent,NORMALUSER_CODE);
-                    }
-                }else{
-                    loginButton.setText("登录");
-                    loginButton.setEnabled(true);
-                    registerButton.setEnabled(true);
-                    Toast.makeText(LoginActivity.this,"用户名或密码不正确",Toast.LENGTH_SHORT).show();
-                }
-            }
-            @Override
-            public void onError(int i, String s) {
-                loginButton.setText("登录");
-                loginButton.setBackgroundResource(R.color.colorWhite);
-                loginButton.setEnabled(true);
-                registerButton.setEnabled(true);
-                Toast.makeText(LoginActivity.this,"登录失败",Toast.LENGTH_SHORT).show();
-            }
-        });*/
 
     }
 }

@@ -4,11 +4,11 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
-    <color name="cololSkyBlue">#f0ffff</color>
-    <color name="wuse">#00000000</color>
+    <color name="cololSkyBlue">#63B8FF</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlueLight">#0000FF</color>
-    <color name="colorGrey">#000000</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorGrey">#d0d0d0</color>
     <color name="colorRiseYellow">#FFEC8B</color>
     <color name="colorSmallRed">#fe4b5e</color>
 </resources>

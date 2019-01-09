@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/answerfragment_head"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/cololSkyBlue">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:textColor="@color/colorWhite"
+            android:gravity="center"
+            android:text="题库"
+            android:textSize="50dp" />
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/setting_selector"/>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_below="@id/answerfragment_head"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:background="@color/cololSkyBlue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:orientation="vertical"
+            android:layout_height="match_parent"></LinearLayout>
+        
+    </LinearLayout>
+</RelativeLayout>

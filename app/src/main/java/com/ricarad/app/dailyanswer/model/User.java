@@ -13,6 +13,9 @@ public class User extends BmobUser {
     private List<String> myQuestions; //自己出过的题目
     private List<String> questionCollected;//收藏的题目
     private BmobFile userImg;//用户头像
+    private Integer days;
+
+
 
     public String getNickName() {
         return nickName;
@@ -20,6 +23,14 @@ public class User extends BmobUser {
 
     public User setNickName(String nickName) {
         this.nickName = nickName;
+        return this;
+    }
+    public Integer getDays() {
+        return days;
+    }
+
+    public User setDays(Integer days) {
+        this.days = days;
         return this;
     }
 

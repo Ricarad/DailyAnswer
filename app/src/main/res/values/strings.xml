@@ -4,4 +4,7 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="title_answer">答题</string>
+    <string name="title_discuss">讨论</string>
+    <string name="title_setting">个人中心</string>
 </resources>

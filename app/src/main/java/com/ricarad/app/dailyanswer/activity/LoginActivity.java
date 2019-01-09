@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 
 import com.ricarad.app.dailyanswer.R;
-import com.ricarad.app.dailyanswer.common.Constant;
+
 import com.ricarad.app.dailyanswer.model.User;
 
 import cn.bmob.v3.Bmob;
@@ -26,9 +26,8 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 
-import static com.ricarad.app.dailyanswer.common.Constant.BMOBAPPKEY;
-import static com.ricarad.app.dailyanswer.common.Constant.GUIDEVIEW_CODE;
-import static com.ricarad.app.dailyanswer.common.Constant.REGISTER_CODE;
+import static com.ricarad.app.dailyanswer.common.Constant.*;
+
 
 
 public class LoginActivity extends Activity implements View.OnClickListener {

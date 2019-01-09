@@ -35,7 +35,8 @@ public class GuideActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         answerFragment = new AnswerFragment();
-
+        discussFragment = new DiscussFragment();
+        settingFragment = new SettingFragment();
     }
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {

@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@color/colorWhite" android:state_pressed="false"/>
-    <item android:drawable="@drawable/gray_bg" android:state_pressed="true"/>
+    <item  android:state_pressed="false">
+        <shape android:shape="rectangle">
+            <!--圆角-->
+            <corners android:radius="20dp"/>
+            <!--填充颜色-->
+            <solid android:color="@color/colorWhite" />
+            <!--描边-->
+            <stroke
+                android:width="5dp"
+                android:color="@color/cololSkyBlue" />
+        </shape>
+    </item>
+    <item  android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <!--圆角-->
+            <corners android:radius="20dp"/>
+            <!--填充颜色-->
+            <solid android:color="@color/colorRiseYellow" />
+            <!--描边-->
+            <stroke
+                android:width="5dp"
+                android:color="@color/cololSkyBlue" />
+        </shape>
+    </item>
 </selector>

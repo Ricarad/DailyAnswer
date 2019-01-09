@@ -22,7 +22,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MainActivity"></activity>
         <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,11 +31,12 @@
         </activity>
         <activity
             android:name=".activity.GuideActivity"
-            android:label="@string/title_activity_guide"></activity>
+            android:label="@string/title_activity_guide" />
+
         <provider
             android:name="cn.bmob.v3.util.BmobContentProvider"
-            android:authorities="com.ricarad.app.dailyanswer.BmobContentProvider">
-        </provider>
+            android:authorities="com.ricarad.app.dailyanswer.BmobContentProvider"></provider>
+
     </application>
 
 </manifest>

@@ -15,7 +15,7 @@ import com.ricarad.app.dailyanswer.fragment.SettingFragment;
 
 public class GuideActivity extends AppCompatActivity {
 
-    private TextView mTextMessage;
+
 
     private AnswerFragment answerFragment;
     private DiscussFragment discussFragment;
@@ -27,7 +27,7 @@ public class GuideActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide);
-        mTextMessage = (TextView) findViewById(R.id.message);
+
 
     }
 
@@ -45,13 +45,11 @@ public class GuideActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_answer:
-                    mTextMessage.setText(R.string.title_home);
                     return true;
                 case R.id.navigation_discuss:
-                    mTextMessage.setText(R.string.title_dashboard);
+
                     return true;
-                case R.id.navigation_setting:
-                    mTextMessage.setText(R.string.title_notifications);
+                case R.id.navigation_setting: ;
                     return true;
             }
             return false;

@@ -36,7 +36,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     private EditText accountEv;
     private EditText passwordEv;
     private TextView forgetPassTv;
-    //  private TextView stateText;
 
     private CheckBox rememberPass;
     private SharedPreferences pref;

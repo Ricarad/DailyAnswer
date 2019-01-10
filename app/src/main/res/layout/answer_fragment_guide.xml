@@ -20,6 +20,8 @@
             android:textSize="50dp" />
 
         <ImageView
+            android:clickable="true"
+            android:id="@+id/answerfragment_setting_iv"
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
@@ -27,6 +29,7 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/answerfragment_body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/answerfragment_head"
@@ -39,6 +42,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
@@ -76,11 +80,13 @@
                 android:textColor="@color/colorWhite"
                 android:textSize="30dp" />
             <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <TextView
-                    android:layout_weight="6"
-                    android:layout_width="0dp"
+                    android:id="@+id/answerfragment_rightratio_tv"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="16"
                     android:layout_gravity="center"
@@ -88,7 +94,6 @@
                     android:textColor="@color/colorWhite"
                     android:textSize="60dp"/>
                 <TextView
-                    android:layout_weight="1"
                     android:textSize="20dp"
                     android:gravity="center"
                     android:textColor="@color/colorWhite"
@@ -102,8 +107,38 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="center"
             android:orientation="vertical">
+            <TextView
+                android:id="@+id/answerfragment_days_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="1"
+                android:textColor="@color/colorWhite"
+                android:textSize="20dp" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="天数"
+                android:textColor="@color/colorWhite"
+                android:textSize="25dp" />
         </LinearLayout>
     </LinearLayout>
+
+    <GridView
+        android:id="@+id/answerfragment_toolbar_gv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/answerfragment_body"
+        android:layout_marginTop="20dp"
+        android:numColumns="3"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="10dp"
+        android:horizontalSpacing="10dp"
+        ></GridView>
 </RelativeLayout>

@@ -1,4 +1,6 @@
 package com.ricarad.app.dailyanswer.fragment;
 
-public class SettingFragment {
+import android.support.v4.app.Fragment;
+
+public class SettingFragment extends Fragment {
 }

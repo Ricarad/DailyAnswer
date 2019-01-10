@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -15,8 +16,6 @@ import com.ricarad.app.dailyanswer.fragment.SettingFragment;
 
 public class GuideActivity extends AppCompatActivity {
 
-
-
     private AnswerFragment answerFragment;
     private DiscussFragment discussFragment;
     private SettingFragment settingFragment;
@@ -27,8 +26,7 @@ public class GuideActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide);
-
-
+        initFragment();
     }
 
     public void initFragment(){
@@ -37,6 +35,20 @@ public class GuideActivity extends AppCompatActivity {
         answerFragment = new AnswerFragment();
         discussFragment = new DiscussFragment();
         settingFragment = new SettingFragment();
+        fragments = new Fragment[]{answerFragment,discussFragment,settingFragment};
+        lastfragment = 0;
+        getSupportFragmentManager().beginTransaction().replace(R.id.guide_mainview,answerFragment)
+                .show(answerFragment).commit();
+
+    }
+
+    private void switchFragment(int lastfragment,int index){
+        FragmentTransaction transaction =getSupportFragmentManager().beginTransaction();
+        transaction.hide(fragments[lastfragment]);//隐藏上个Fragment
+        if(fragments[index].isAdded() == false){
+            transaction.add(R.id.guide_mainview,fragments[index]);
+        }
+        transaction.show(fragments[index]).commitAllowingStateLoss();
     }
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -44,13 +56,32 @@ public class GuideActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_answer:
-                    return true;
-                case R.id.navigation_discuss:
+                case R.id.navigation_answer: {
+                    if(lastfragment!=0)
+                    {
+                        switchFragment(lastfragment,0);
+                        lastfragment=0;
+                    }
 
                     return true;
-                case R.id.navigation_setting: ;
+                }
+                case R.id.navigation_discuss:{
+                    if(lastfragment!=1)
+                    {
+                        switchFragment(lastfragment,1);
+                        lastfragment=1;
+                    }
                     return true;
+                }
+
+                case R.id.navigation_setting:{
+                    if(lastfragment!=2)
+                    {
+                        switchFragment(lastfragment,2);
+                        lastfragment=2;
+                    }
+                    return true;
+                }
             }
             return false;
         }

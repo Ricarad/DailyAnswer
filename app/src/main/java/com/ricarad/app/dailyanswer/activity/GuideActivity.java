@@ -1,11 +1,13 @@
 package com.ricarad.app.dailyanswer.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -13,6 +15,7 @@ import com.ricarad.app.dailyanswer.R;
 import com.ricarad.app.dailyanswer.fragment.AnswerFragment;
 import com.ricarad.app.dailyanswer.fragment.DiscussFragment;
 import com.ricarad.app.dailyanswer.fragment.SettingFragment;
+import com.ricarad.app.dailyanswer.model.User;
 
 public class GuideActivity extends AppCompatActivity {
 
@@ -21,7 +24,7 @@ public class GuideActivity extends AppCompatActivity {
     private SettingFragment settingFragment;
     private Fragment[] fragments;
     private int lastfragment;//用于记录上个选择的Fragment
-
+    private static User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,11 +33,19 @@ public class GuideActivity extends AppCompatActivity {
     }
 
     public void initFragment(){
+        Intent intent = getIntent();
+        user = (User)intent.getSerializableExtra("user");
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("user",user);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         answerFragment = new AnswerFragment();
+        answerFragment.setArguments(bundle);
         discussFragment = new DiscussFragment();
+        discussFragment.setArguments(bundle);
         settingFragment = new SettingFragment();
+        settingFragment.setArguments(bundle);
         fragments = new Fragment[]{answerFragment,discussFragment,settingFragment};
         lastfragment = 0;
         getSupportFragmentManager().beginTransaction().replace(R.id.guide_mainview,answerFragment)

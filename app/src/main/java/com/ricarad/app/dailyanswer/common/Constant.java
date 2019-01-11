@@ -6,5 +6,4 @@ public class Constant {
     public final static String BMOBAPPKEY = "e197fce2a9812ccbb9419f2193211af0";
 
 
-
 }

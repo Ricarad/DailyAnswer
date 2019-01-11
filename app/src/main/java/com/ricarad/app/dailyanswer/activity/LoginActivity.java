@@ -21,13 +21,17 @@ import com.ricarad.app.dailyanswer.R;
 
 import com.ricarad.app.dailyanswer.model.User;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobDate;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 import static com.ricarad.app.dailyanswer.common.Constant.*;
-
 
 
 public class LoginActivity extends Activity implements View.OnClickListener {
@@ -61,7 +65,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
     }
 
-    public void loadInfo(){
+    public void loadInfo() {
         pref = PreferenceManager.getDefaultSharedPreferences(this);
         boolean isRemember = pref.getBoolean("remember_password", false);
         String account = pref.getString("account", "");
@@ -72,6 +76,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             rememberPass.setChecked(true);
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -116,12 +121,32 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                                     editor.clear();
                                 }
                                 editor.commit();
-                                Intent intent = new Intent(LoginActivity.this, GuideActivity.class);
-                                intent.putExtra("user", user);
-                                startActivity(intent);
-                                Snackbar.make(view, "登录成功：" + user.getNickName(), Snackbar.LENGTH_SHORT).show();
+                                //对用户的上次登录时间 和 累计登录天数进行更新
+                                try {
+                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                                    Date lastLogin = simpleDateFormat.parse(user.getLastLoginDate().getDate());
+                                    Date now = new Date();
+                                    if (isTodayFirstLogin(lastLogin, now)) {
+                                        user.setDays(user.getDays() + 1);
+                                    }
+                                    user.setLastLoginDate(BmobDate.createBmobDate("yyyy-MM-dd HH:mm:ss", simpleDateFormat.format(now)));
+                                    final Intent intent = new Intent(LoginActivity.this, GuideActivity.class);
+                                    intent.putExtra("user", user);
+                                    user.update(user.getObjectId(), new UpdateListener() {
+                                        @Override
+                                        public void done(BmobException e) {
+                                            if (e == null) {
+                                                startActivity(intent);
+                                            } else {
+                                                Snackbar.make(view, "更新登录信息失败：" + e.getMessage(), Snackbar.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+                                } catch (Exception exp) {
+                                    Snackbar.make(view, "登录日期出现异常：" + e.getMessage(), Snackbar.LENGTH_SHORT).show();
+                                }
                             } else {
-                                Snackbar.make(view, "登录失败：" +e.getMessage(), Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(view, "登录失败：" + e.getMessage(), Snackbar.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -141,6 +166,17 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             }
             break;
 
+        }
+    }
+
+    private boolean isTodayFirstLogin(Date lastLoginDate, Date todayDate) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");// 设置日期格式
+        String todayTime = df.format(todayDate);// 获取当前的日期
+        String lastTime = df.format(lastLoginDate);
+        if (lastTime.equals(todayTime)) { //如果两个时间段相等
+            return false;
+        } else {
+            return true;
         }
     }
 

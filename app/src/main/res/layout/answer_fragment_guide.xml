@@ -6,24 +6,25 @@
     <RelativeLayout
         android:id="@+id/answerfragment_head"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:layout_alignParentTop="true"
         android:background="@color/cololSkyBlue">
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="80dp"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="题库"
             android:textColor="@color/colorWhite"
-            android:textSize="50dp" />
+            android:textSize="30dp" />
 
         <ImageView
             android:clickable="true"
             android:id="@+id/answerfragment_setting_iv"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:background="@drawable/setting_selector" />
     </RelativeLayout>
@@ -136,6 +137,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/answerfragment_body"
         android:layout_marginTop="20dp"
+
         android:numColumns="3"
         android:stretchMode="columnWidth"
         android:verticalSpacing="10dp"

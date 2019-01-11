@@ -1,25 +1,22 @@
 package com.ricarad.app.dailyanswer.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ricarad.app.dailyanswer.R;
+import com.ricarad.app.dailyanswer.activity.AnswerQuestionActivity;
 import com.ricarad.app.dailyanswer.adapter.ToolBarAdapter;
 import com.ricarad.app.dailyanswer.model.User;
-
-import org.xutils.view.annotation.ViewInject;
 
 public class AnswerFragment extends Fragment implements AdapterView.OnItemClickListener {
 
@@ -82,6 +79,16 @@ public class AnswerFragment extends Fragment implements AdapterView.OnItemClickL
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            switch (position){
+                case 0:{
+                    Intent intent = new Intent(getContext(),AnswerQuestionActivity.class);
+                    startActivity(intent);
+                }break;
+                case 1:{}break;
+                case 2:{}break;
+                case 3:{}break;
+                case 4:{}break;
 
+            }
     }
 }

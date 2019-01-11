@@ -23,7 +23,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.LoginActivity"
+        <activity
+            android:name=".activity.LoginActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,12 +35,13 @@
         <activity
             android:name=".activity.GuideActivity"
             android:label="@string/title_activity_guide"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop" />
 
         <provider
             android:name="cn.bmob.v3.util.BmobContentProvider"
-            android:authorities="com.ricarad.app.dailyanswer.BmobContentProvider"></provider>
+            android:authorities="com.ricarad.app.dailyanswer.BmobContentProvider" />
 
+        <activity android:name=".activity.AnswerQuestionActivity"></activity>
     </application>
 
 </manifest>

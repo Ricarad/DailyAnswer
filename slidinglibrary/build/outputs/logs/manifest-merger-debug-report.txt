@@ -1,0 +1,37 @@
+-- Merging decision tree log ---
+manifest
+ADDED from E:\Projects\DailyAnswer\slidinglibrary\AndroidManifest.xml:2:1-9:12
+INJECTED from E:\Projects\DailyAnswer\slidinglibrary\AndroidManifest.xml:2:1-9:12
+INJECTED from E:\Projects\DailyAnswer\slidinglibrary\AndroidManifest.xml:2:1-9:12
+INJECTED from E:\Projects\DailyAnswer\slidinglibrary\AndroidManifest.xml:2:1-9:12
+INJECTED from E:\Projects\DailyAnswer\slidinglibrary\AndroidManifest.xml:2:1-9:12
+INJECTED from E:\Projects\DailyAnswer\slidinglibrary\AndroidManifest.xml:2:1-9:12
+INJECTED from E:\Projects\DailyAnswer\slidinglibrary\AndroidManifest.xml:2:1-9:12
+	package
+		ADDED from E:\Projects\DailyAnswer\slidinglibrary\AndroidManifest.xml:3:5-50
+		INJECTED from E:\Projects\DailyAnswer\slidinglibrary\AndroidManifest.xml
+		INJECTED from E:\Projects\DailyAnswer\slidinglibrary\AndroidManifest.xml
+	android:versionName
+		ADDED from E:\Projects\DailyAnswer\slidinglibrary\AndroidManifest.xml:5:5-30
+		INJECTED from E:\Projects\DailyAnswer\slidinglibrary\AndroidManifest.xml
+		INJECTED from E:\Projects\DailyAnswer\slidinglibrary\AndroidManifest.xml
+	xmlns:android
+		ADDED from E:\Projects\DailyAnswer\slidinglibrary\AndroidManifest.xml:2:11-69
+	android:versionCode
+		ADDED from E:\Projects\DailyAnswer\slidinglibrary\AndroidManifest.xml:4:5-28
+		INJECTED from E:\Projects\DailyAnswer\slidinglibrary\AndroidManifest.xml
+		INJECTED from E:\Projects\DailyAnswer\slidinglibrary\AndroidManifest.xml
+uses-sdk
+ADDED from E:\Projects\DailyAnswer\slidinglibrary\AndroidManifest.xml:7:5-47
+INJECTED from E:\Projects\DailyAnswer\slidinglibrary\AndroidManifest.xml:7:5-47
+INJECTED from E:\Projects\DailyAnswer\slidinglibrary\AndroidManifest.xml:7:5-47
+INJECTED from E:\Projects\DailyAnswer\slidinglibrary\AndroidManifest.xml:7:5-47
+INJECTED from E:\Projects\DailyAnswer\slidinglibrary\AndroidManifest.xml:7:5-47
+	android:targetSdkVersion
+		ADDED from E:\Projects\DailyAnswer\slidinglibrary\AndroidManifest.xml:7:15-44
+		INJECTED from E:\Projects\DailyAnswer\slidinglibrary\AndroidManifest.xml
+		INJECTED from E:\Projects\DailyAnswer\slidinglibrary\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from E:\Projects\DailyAnswer\slidinglibrary\AndroidManifest.xml
+		ADDED from E:\Projects\DailyAnswer\slidinglibrary\AndroidManifest.xml:7:5-47
+		INJECTED from E:\Projects\DailyAnswer\slidinglibrary\AndroidManifest.xml

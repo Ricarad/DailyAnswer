@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/setting_head"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:background="@color/colorWhite"
+        android:layout_alignParentTop="true"
+        >
+        <ImageView
+            android:longClickable="true"
+            android:id="@+id/setting_back_iv"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/back_white_selector"
+            android:clickable="true" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="练习"
+            android:textColor="@color/colorSpecBlack"
+            android:textSize="50dp" />
+
+        <ImageView
+            android:clickable="true"
+            android:id="@+id/setting_right_iv"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/menu_selector" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:fitsSystemWindows="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/answer_questionContent_tv"
+                    style="@style/answer_text_style"
+                    android:text="题目：" />
+                <View style="@style/view_split" />
+                <RadioGroup
+                    android:id="@+id/answer_select_radiogroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton
+                        android:id="@+id/answer_Aselect_rb"
+                        style="@style/answer_radiobutton_item"
+                        android:text="A" />
+                    <RadioButton
+                        android:id="@+id/answer_Bselect_rb"
+                        style="@style/answer_radiobutton_item"
+                        android:text="B" />
+                    <RadioButton
+                        android:id="@+id/answer_Cselect_rb"
+                        style="@style/answer_radiobutton_item"
+                        android:text="C" />
+                    <RadioButton
+                        android:id="@+id/answer_Dselect_rb"
+                        style="@style/answer_radiobutton_item"
+                        android:text="D" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <View style="@style/view_split" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:id="@+id/lin2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/lin1"
+                    android:padding="10dp"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:clickable="true"
+                        android:id="@+id/answer_pervious_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:background="@drawable/previous_selector"
+                        android:text="上一题"
+                        android:textSize="20dp" />
+                    <ImageView
+                        android:clickable="true"
+                        android:id="@+id/answer_next_img"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/next_selector"
+                        android:text="下一题"
+                        android:textSize="20dp" />
+                </RelativeLayout>
+                <LinearLayout
+                    android:id="@+id/lin3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/lin2"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/answer_analysis_tv"
+                        style="@style/answer_text_style"
+                        android:text="问题解析："
+                        />
+                    <View
+                        style="@style/view_split"/>
+                    <TextView
+                        android:id="@+id/answer_result_tv"
+                        style="@style/answer_text_style"
+                        android:text="答案："
+                        />
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

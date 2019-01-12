@@ -31,6 +31,7 @@ import java.util.List;
 
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 
@@ -139,7 +140,6 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
         itemDRb.setText("D." + question.getItemD());
         resultTv.setText("正确答案为："+question.getAnswer());
         analysisTv.setText("问题解析："+question.getAnalysis());
-
     }
 
     public void initView() {
@@ -161,8 +161,6 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
         //View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.question_slide_view, null);
         View view = slidingMenu.getMenu();
         questionSlideListView = view.findViewById(R.id.left_questionlist_lv);
-     /*   resultTv.setVisibility(View.INVISIBLE);
-        analysisTv.setVisibility(View.INVISIBLE);*/
         findViewById(R.id.answer_result_analysis_layout).setVisibility(View.INVISIBLE);
         next.setOnClickListener(this);
         previous.setOnClickListener(this);
@@ -244,14 +242,10 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
             case R.id.answer_showresult_menuitem:{
                 if(!isShowResult){
                     findViewById(R.id.answer_result_analysis_layout).setVisibility(View.INVISIBLE);
-                   /* resultTv.setVisibility(View.INVISIBLE);
-                    analysisTv.setVisibility(View.INVISIBLE);*/
                     isShowResult = true;
                     Log.i("TGA","不显示答案");
                 }else {
                     findViewById(R.id.answer_result_analysis_layout).setVisibility(View.VISIBLE);
-                    /*resultTv.setVisibility(View.VISIBLE);
-                    analysisTv.setVisibility(View.VISIBLE);*/
                     isShowResult = false;
                     Log.i("TGA","显示答案");
                 }
@@ -262,11 +256,17 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
                 answerList.set(currentIndex,selectItemId);
                 intent.putExtra("questionList",questionList);
                 intent.putExtra("answerList",answerList);
+                intent.putExtra("user",user);
                 startActivity(intent);
                 finish();
             }break;
             case R.id.answer_collect_menuitem:{
                 //TODO 收藏该题目
+                Question question = questionList.get(currentIndex);
+                BmobRelation relation = new BmobRelation();
+                relation.add(user);
+
+
             }break;
         }
         return false;

@@ -6,6 +6,7 @@
     android:background="@color/colorWhite"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".activity.GradeActivity">
     <LinearLayout
 
@@ -19,7 +20,6 @@
             android:layout_alignParentTop="true"
             android:background="@color/cocorSmallBlue">
             <ImageView
-                android:contextClickable="true"
                 android:id="@+id/grade_back_iv"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
@@ -54,7 +54,7 @@
                     android:layout_height="match_parent"
                     android:text="正答率"/>
                 <TextView
-                    android:id="@+id/answerfragment_rightratio_tv"
+                    android:id="@+id/grade_rightratio_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="16"
@@ -80,6 +80,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent">
                 <TextView
+                    android:id="@+id/grade_totlanum_tv"
                     android:textColor="@color/colorWhite"
                     android:text="总题目数"
                     android:layout_gravity="left"
@@ -88,6 +89,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
+                    android:id="@+id/grade_rightnum_tv"
                     android:textColor="@color/colorWhite"
                     android:text="正确题目数"
                     android:layout_gravity="left"
@@ -111,6 +113,7 @@
          android:layout_width="match_parent"
          android:layout_height="wrap_content">
          <TextView
+             android:id="@+id/grade_analysis_mistake_tv"
              android:clickable="true"
              android:background="@color/colorSmallGrey"
              android:text="错题解析"
@@ -121,6 +124,7 @@
              android:layout_width="0dp"
              android:layout_height="wrap_content" />
          <TextView
+             android:id="@+id/grade_analysis_all_tv"
              android:clickable="true"
              android:background="@color/colorSmallGrey"
              android:text="全部解析"
@@ -131,6 +135,7 @@
              android:textSize="30dp"
              android:layout_height="wrap_content" />
          <TextView
+             android:id="@+id/grade_recomplete_tv"
              android:clickable="true"
              android:background="@color/colorSmallGrey"
              android:drawableLeft="@drawable/grade_recomplete"

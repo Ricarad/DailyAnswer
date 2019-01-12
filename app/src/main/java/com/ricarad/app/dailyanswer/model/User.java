@@ -6,6 +6,7 @@ import java.util.List;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobDate;
 import cn.bmob.v3.datatype.BmobFile;
+import cn.bmob.v3.datatype.BmobRelation;
 
 public class User extends BmobUser {
     private String nickName; //昵称
@@ -15,12 +16,50 @@ public class User extends BmobUser {
     private Integer days;//活跃天数
     private BmobDate lastLoginDate;//上次登录时间
     private Integer rightNumber; //回答正确的题目数量
+    private Question collectedQuestion;  //收藏的题目
+    private Question answerQuestion;  //回答过的题目
+    private Question mistakeQuestion; //做错的题目
+
+    public Integer getRightNumber() {
+        return rightNumber;
+    }
+
+    public void setRightNumber(Integer rightNumber) {
+        this.rightNumber = rightNumber;
+    }
+
+    public Question getCollectedQuestion() {
+        return collectedQuestion;
+    }
+
+    public void setCollectedQuestion(Question collectedQuestion) {
+        this.collectedQuestion = collectedQuestion;
+    }
+
+    public Question getAnswerQuestion() {
+        return answerQuestion;
+    }
+
+    public void setAnswerQuestion(Question answerQuestion) {
+        this.answerQuestion = answerQuestion;
+    }
+
+    public Question getMistakeQuestion() {
+        return mistakeQuestion;
+    }
+
+    public void setMistakeQuestion(Question mistakeQuestion) {
+        this.mistakeQuestion = mistakeQuestion;
+    }
+
     public Integer getNumber() {
         return number;
     }
+
     public void setNumber(Integer number) {
         this.number = number;
     }
+
     public String getNickName() {
         return nickName;
     }
@@ -61,15 +100,5 @@ public class User extends BmobUser {
         this.lastLoginDate = lastLoginDate;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "nickName='" + nickName + '\'' +
-                ", rightRatio=" + rightRatio +
-                ", userImg=" + userImg +
-                ", number=" + number +
-                ", days=" + days +
-                ", lastLoginDate=" + lastLoginDate.getDate() +
-                '}';
-    }
+
 }

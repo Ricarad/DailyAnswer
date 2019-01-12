@@ -7,9 +7,8 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
-import android.widget.TextView;
+
 
 import com.ricarad.app.dailyanswer.R;
 import com.ricarad.app.dailyanswer.fragment.AnswerFragment;

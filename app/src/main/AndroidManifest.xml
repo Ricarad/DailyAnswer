@@ -41,7 +41,8 @@
             android:name="cn.bmob.v3.util.BmobContentProvider"
             android:authorities="com.ricarad.app.dailyanswer.BmobContentProvider" />
 
-        <activity android:name=".activity.AnswerQuestionActivity"></activity>
+        <activity android:name=".activity.AnswerQuestionActivity" />
+        <activity android:name=".activity.AddTopicActivity"></activity>
     </application>
 
 </manifest>

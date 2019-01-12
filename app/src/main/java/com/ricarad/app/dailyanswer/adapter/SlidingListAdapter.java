@@ -5,34 +5,32 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ricarad.app.dailyanswer.R;
-import com.ricarad.app.dailyanswer.model.Question;
 
 import java.util.List;
 
-public class SldingListAdapter extends BaseAdapter {
+public class SlidingListAdapter extends BaseAdapter {
 
     private int resourceId;
-    private List<Question> questionList;
+    private List<String> questionTitleList;
     private Context mContext;
 
-    public SldingListAdapter(int resourceId, List<Question> questionList, Context context) {
+    public SlidingListAdapter( Context context,int resourceId, List<String> questionTitleList) {
         this.resourceId = resourceId;
-        this.questionList = questionList;
+        this.questionTitleList = questionTitleList;
         this.mContext = context;
     }
 
     @Override
     public int getCount() {
-        return questionList.size();
+        return questionTitleList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return questionList.get(position);
+        return questionTitleList.get(position);
     }
 
     @Override
@@ -45,14 +43,13 @@ public class SldingListAdapter extends BaseAdapter {
         ViewHolder holder=null;
         if(view==null){
             holder = new ViewHolder();
-            view = LayoutInflater.from(mContext).inflate(R.layout.left_slidingment_listitem,null);
+            view = LayoutInflater.from(mContext).inflate(R.layout.left_slidingment_list_item,null);
             holder .contentTv = (TextView)view.findViewById(R.id.left_itemllist_tv);
             view.setTag(holder);
         }else{
             holder = (ViewHolder) view.getTag();
         }
-       Question question = questionList.get(position);
-        holder.contentTv.setText(question.getTitle());
+        holder.contentTv.setText(questionTitleList.get(position));
         return view;
     }
 

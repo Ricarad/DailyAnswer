@@ -17,8 +17,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.gson.Gson;
 import com.ricarad.app.dailyanswer.R;
 
+import com.ricarad.app.dailyanswer.common.UsetUtil;
 import com.ricarad.app.dailyanswer.model.User;
 
 import java.text.SimpleDateFormat;
@@ -51,7 +53,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.login);
         Bmob.initialize(this, BMOBAPPKEY);
-
         rememberPass = (CheckBox) findViewById(R.id.remPass);
         loginButton = (Button) findViewById(R.id.login_button);
         registerButton = (TextView) findViewById(R.id.login_register_tv);
@@ -62,7 +63,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         registerButton.setOnClickListener(this);
         forgetPassTv.setOnClickListener(this);
         loadInfo();
-
     }
 
     public void loadInfo() {

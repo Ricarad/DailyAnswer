@@ -35,7 +35,6 @@ public class GuideActivity extends AppCompatActivity {
     public void initFragment(){
         Intent intent = getIntent();
         user = (User)intent.getSerializableExtra("user");
-
         Bundle bundle = new Bundle();
         bundle.putSerializable("user",user);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);

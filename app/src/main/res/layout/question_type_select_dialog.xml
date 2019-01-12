@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <CheckBox
+        android:id="@+id/question_type_check1"
+        style="@style/question_type_checkBox"
+        android:text="@string/question_type1" />
+
+    <CheckBox
+        android:id="@+id/question_type_check2"
+        style="@style/question_type_checkBox"
+        android:text="@string/question_type2" />
+
+    <CheckBox
+        android:id="@+id/question_type_check3"
+        style="@style/question_type_checkBox"
+        android:text="@string/question_type3" />
+
+    <CheckBox
+        android:id="@+id/question_type_check4"
+        style="@style/question_type_checkBox"
+        android:text="@string/question_type4" />
+
+    <CheckBox
+        android:id="@+id/question_type_check5"
+        style="@style/question_type_checkBox"
+        android:text="@string/question_type5" />
+
+    <CheckBox
+        android:id="@+id/question_type_check6"
+        style="@style/question_type_checkBox"
+        android:text="@string/question_type6" />
+
+
+</LinearLayout>

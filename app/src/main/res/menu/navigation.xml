@@ -4,16 +4,16 @@
     <item
         android:id="@+id/navigation_answer"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/title_answer" />
+        android:title="答题" />
 
     <item
         android:id="@+id/navigation_discuss"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/title_discuss" />
-
+        android:title="讨论" />
     <item
         android:id="@+id/navigation_setting"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/title_setting" />
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="个人中心" />
+
 
 </menu>

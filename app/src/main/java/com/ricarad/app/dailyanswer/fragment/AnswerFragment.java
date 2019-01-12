@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.ricarad.app.dailyanswer.R;
 import com.ricarad.app.dailyanswer.activity.AnswerQuestionActivity;
 import com.ricarad.app.dailyanswer.adapter.ToolBarAdapter;
+import com.ricarad.app.dailyanswer.common.UsetUtil;
 import com.ricarad.app.dailyanswer.model.User;
 
 public class AnswerFragment extends Fragment implements AdapterView.OnItemClickListener {
@@ -42,13 +43,11 @@ public class AnswerFragment extends Fragment implements AdapterView.OnItemClickL
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.answer_fragment_guide,container,false);
-
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-
         super.onActivityCreated(savedInstanceState);
         numberTv = getActivity().findViewById(R.id.answerfragment_number_tv);
         rightRatioTv = getActivity().findViewById(R.id.answerfragment_rightratio_tv);

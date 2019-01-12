@@ -1,5 +1,6 @@
 package com.ricarad.app.dailyanswer.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import cn.bmob.v3.BmobObject;
@@ -14,7 +15,7 @@ public class Question extends BmobObject {
     private String itemC;
     private String itemD;
     private String answer;//答案
-    private String analysis;//解析
+    private String analysis = "";//解析
     private String flag;//标签-分类
     private User author; //问题的上传者
     private BmobRelation collected;  //存储所有收藏该问题的人
@@ -126,5 +127,24 @@ public class Question extends BmobObject {
 
     public void setMistakeUser(BmobRelation mistakeUser) {
         this.mistakeUser = mistakeUser;
+    }
+
+    @Override
+    public String toString() {
+        return "Question{" +
+                "title='" + title + '\'' +
+                ", questionImg=" + questionImg +
+                ", itemA='" + itemA + '\'' +
+                ", itemB='" + itemB + '\'' +
+                ", itemC='" + itemC + '\'' +
+                ", itemD='" + itemD + '\'' +
+                ", answer='" + answer + '\'' +
+                ", analysis='" + analysis + '\'' +
+                ", flag='" + flag + '\'' +
+                ", author=" + author +
+                ", collected=" + collected +
+                ", answeredUser=" + answeredUser +
+                ", mistakeUser=" + mistakeUser +
+                '}';
     }
 }

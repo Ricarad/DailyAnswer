@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/answer_showresult_menuitem"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="显示答案/解析" />
+
+    <item
+        android:id="@+id/answer_finish_menuitem"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="结束答题" />
+
+    <item
+        android:id="@+id/answer_collect_menuitem"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="收藏此题" />
+</menu>

@@ -14,4 +14,11 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="question_type1">Java</string>
+    <string name="question_type2">C</string>
+    <string name="question_type3">PHP</string>
+    <string name="question_type4">Python</string>
+    <string name="question_type5">Android</string>
+    <string name="question_type6">数据结构</string>
+    <string name="question_type7">算法</string>
 </resources>

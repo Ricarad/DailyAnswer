@@ -21,15 +21,20 @@ import com.google.gson.Gson;
 import com.ricarad.app.dailyanswer.R;
 
 import com.ricarad.app.dailyanswer.common.UsetUtil;
+import com.ricarad.app.dailyanswer.model.Question;
 import com.ricarad.app.dailyanswer.model.User;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobDate;
+import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
@@ -75,6 +80,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             passwordEv.setText(password);
             rememberPass.setChecked(true);
         }
+
     }
 
     @Override
@@ -129,9 +135,10 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                                     if (isTodayFirstLogin(lastLogin, now)) {
                                         user.setDays(user.getDays() + 1);
                                     }
-                                    user.setLastLoginDate(BmobDate.createBmobDate("yyyy-MM-dd HH:mm:ss", simpleDateFormat.format(now)));
+                                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    user.setLastLoginDate(BmobDate.createBmobDate("yyyy-MM-dd HH:mm:ss", simpleDateFormat.format(new Date())));
                                     final Intent intent = new Intent(LoginActivity.this, GuideActivity.class);
-                                    intent.putExtra("user", user);
+                                    intent.putExtra(USER, user);
                                     user.update(user.getObjectId(), new UpdateListener() {
                                         @Override
                                         public void done(BmobException e) {

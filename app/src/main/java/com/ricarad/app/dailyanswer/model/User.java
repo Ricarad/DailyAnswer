@@ -16,9 +16,33 @@ public class User extends BmobUser {
     private Integer days;//活跃天数
     private BmobDate lastLoginDate;//上次登录时间
     private Integer rightNumber; //回答正确的题目数量
-    private Question collectedQuestion;  //收藏的题目
-    private Question answerQuestion;  //回答过的题目
-    private Question mistakeQuestion; //做错的题目
+    private BmobRelation collectedQuestion;  //收藏的题目
+    private BmobRelation answerQuestion;  //回答过的题目
+    private BmobRelation mistakeQuestion; //做错的题目
+
+    public BmobRelation getCollectedQuestion() {
+        return collectedQuestion;
+    }
+
+    public void setCollectedQuestion(BmobRelation collectedQuestion) {
+        this.collectedQuestion = collectedQuestion;
+    }
+
+    public BmobRelation getAnswerQuestion() {
+        return answerQuestion;
+    }
+
+    public void setAnswerQuestion(BmobRelation answerQuestion) {
+        this.answerQuestion = answerQuestion;
+    }
+
+    public BmobRelation getMistakeQuestion() {
+        return mistakeQuestion;
+    }
+
+    public void setMistakeQuestion(BmobRelation mistakeQuestion) {
+        this.mistakeQuestion = mistakeQuestion;
+    }
 
     public Integer getRightNumber() {
         return rightNumber;
@@ -26,30 +50,6 @@ public class User extends BmobUser {
 
     public void setRightNumber(Integer rightNumber) {
         this.rightNumber = rightNumber;
-    }
-
-    public Question getCollectedQuestion() {
-        return collectedQuestion;
-    }
-
-    public void setCollectedQuestion(Question collectedQuestion) {
-        this.collectedQuestion = collectedQuestion;
-    }
-
-    public Question getAnswerQuestion() {
-        return answerQuestion;
-    }
-
-    public void setAnswerQuestion(Question answerQuestion) {
-        this.answerQuestion = answerQuestion;
-    }
-
-    public Question getMistakeQuestion() {
-        return mistakeQuestion;
-    }
-
-    public void setMistakeQuestion(Question mistakeQuestion) {
-        this.mistakeQuestion = mistakeQuestion;
     }
 
     public Integer getNumber() {

@@ -3,6 +3,7 @@ package com.ricarad.app.dailyanswer.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,9 +32,11 @@ import java.util.List;
 
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 import static com.ricarad.app.dailyanswer.common.Constant.BMOBAPPKEY;
 
@@ -211,6 +214,26 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
             }break;
             case R.id.answer_back_iv:{
                 //TODO 在练习模式下，用户做的题需要保存，并且保存到记录中
+                for(int i = 0;i<questionList.size();i++){
+                    if(answerList.get(i) != -1){
+                        Question question = questionList.get(i);
+                        BmobRelation relation = new BmobRelation();
+                        relation.add(question);
+                        User tempUser = new User();
+                        tempUser.setObjectId(user.getObjectId());
+                        tempUser.setAnswerQuestion(relation);
+                        tempUser.update(new UpdateListener() {
+                            @Override
+                            public void done(BmobException e) {
+                                if(e == null){
+                                    Toast.makeText(AnswerQuestionActivity.this,"已将做过的题目保存至最近练习记录",Toast.LENGTH_SHORT).show();
+                                }else{
+                                    Toast.makeText(AnswerQuestionActivity.this,"保存做题日志失败："+e.getMessage(),Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                }
                     finish();
             }break;
             case R.id.answer_menu_iv:{
@@ -243,11 +266,9 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
                 if(!isShowResult){
                     findViewById(R.id.answer_result_analysis_layout).setVisibility(View.INVISIBLE);
                     isShowResult = true;
-                    Log.i("TGA","不显示答案");
                 }else {
                     findViewById(R.id.answer_result_analysis_layout).setVisibility(View.VISIBLE);
                     isShowResult = false;
-                    Log.i("TGA","显示答案");
                 }
             }break;
             case R.id.answer_finish_menuitem:{
@@ -261,11 +282,22 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
                 finish();
             }break;
             case R.id.answer_collect_menuitem:{
-                //TODO 收藏该题目
                 Question question = questionList.get(currentIndex);
                 BmobRelation relation = new BmobRelation();
-                relation.add(user);
-
+                relation.add(question);
+                User tempUser = new User();
+                tempUser.setObjectId(user.getObjectId());
+                tempUser.setCollectedQuestion(relation);
+                tempUser.update(new UpdateListener() {
+                    @Override
+                    public void done(BmobException e) {
+                        if(e == null){
+                            Toast.makeText(AnswerQuestionActivity.this,"收藏成功",Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(AnswerQuestionActivity.this,"收藏失败，失败原因："+e.getMessage(),Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
 
             }break;
         }

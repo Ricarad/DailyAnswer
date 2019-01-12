@@ -19,6 +19,8 @@ import com.ricarad.app.dailyanswer.adapter.ToolBarAdapter;
 import com.ricarad.app.dailyanswer.common.UsetUtil;
 import com.ricarad.app.dailyanswer.model.User;
 
+import static com.ricarad.app.dailyanswer.common.Constant.USER;
+
 public class AnswerFragment extends Fragment implements AdapterView.OnItemClickListener {
 
 
@@ -81,6 +83,7 @@ public class AnswerFragment extends Fragment implements AdapterView.OnItemClickL
             switch (position){
                 case 0:{
                     Intent intent = new Intent(getContext(),AnswerQuestionActivity.class);
+                    intent.putExtra(USER,user);
                     startActivity(intent);
                 }break;
                 case 1:{}break;

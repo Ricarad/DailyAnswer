@@ -16,6 +16,8 @@ import com.ricarad.app.dailyanswer.fragment.DiscussFragment;
 import com.ricarad.app.dailyanswer.fragment.SettingFragment;
 import com.ricarad.app.dailyanswer.model.User;
 
+import static com.ricarad.app.dailyanswer.common.Constant.USER;
+
 public class GuideActivity extends AppCompatActivity {
 
     private AnswerFragment answerFragment;
@@ -23,7 +25,7 @@ public class GuideActivity extends AppCompatActivity {
     private SettingFragment settingFragment;
     private Fragment[] fragments;
     private int lastfragment;//用于记录上个选择的Fragment
-    private static User user;
+    private User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,9 +35,9 @@ public class GuideActivity extends AppCompatActivity {
 
     public void initFragment(){
         Intent intent = getIntent();
-        user = (User)intent.getSerializableExtra("user");
+        user = (User)intent.getSerializableExtra(USER);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("user",user);
+        bundle.putSerializable(USER,user);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         answerFragment = new AnswerFragment();

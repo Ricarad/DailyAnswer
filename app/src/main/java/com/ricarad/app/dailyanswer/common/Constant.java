@@ -14,6 +14,7 @@ public class Constant {
     };
 
     public final static String USER = "user";
+    public final static String USERID = "userId";
 
    class QuestionType{
        public final static String JAVA = "java";

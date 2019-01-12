@@ -15,6 +15,7 @@ import static com.ricarad.app.dailyanswer.common.Constant.USER;
 public class UsetUtil {
     private static SharedPreferences sharedPreferences;
     private static SharedPreferences.Editor editor;
+
     public  static User getUser(Context context){
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         Gson gson = new Gson();

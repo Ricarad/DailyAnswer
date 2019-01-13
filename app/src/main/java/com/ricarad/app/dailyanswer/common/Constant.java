@@ -16,7 +16,17 @@ public class Constant {
     public final static String USER = "user";
     public final static String USERID = "userId";
 
-   class QuestionType{
+    public static class GradeType{
+        public final static String ANSWERTYPE= "answerQuestionType";
+        public final static int EXAM_CODE = 1;//表明为考试
+        public final static int PRACTICE_CODE = 0;//表明为练习
+    }
+    public static class QuestionResultType{
+        public final static int RIGHT = 0;
+        public final static int ERROR = 1;
+        public final static int EMPTY = 2;
+    }
+    public static class QuestionType{
        public final static String JAVA = "java";
        public final static String C = "c";
        public final static String PHP = "php";

@@ -46,14 +46,24 @@
     </style>
 
     <style name="answer_radiobutton_item">
+        <item name="android:padding">20dp</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">40dp</item>
-        <item name="android:textSize">20dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">30dp</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:background">@drawable/answer_ratiobutton_selector</item>
     </style>
 
+    <style name="grade_bottom_textview">
+        <item name="android:gravity">center</item>
+        <item name="android:clickable">true</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textSize">30dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@color/colorSmallGrey</item>
+    </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>

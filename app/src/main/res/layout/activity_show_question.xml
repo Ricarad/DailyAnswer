@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:background="@color/colorWhite"
+        android:layout_alignParentTop="true"
+        >
+        <ImageView
+            android:id="@+id/show_question_back_iv"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/back_white_selector"
+            android:clickable="true" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="练习"
+            android:textColor="@color/colorSpecBlack"
+            android:textSize="50dp" />
+
+        <ImageView
+            android:clickable="true"
+            android:id="@+id/show_question_collect_iv"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/collect_selector" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:fitsSystemWindows="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/show_question_questionTitle_tv"
+                    style="@style/answer_text_style"
+                    android:text="题目：" />
+                <View style="@style/view_split_horizontal" />
+                <RadioGroup
+                    android:id="@+id/show_question_select_radiogroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton
+                        android:id="@+id/show_question_Aselect_rb"
+                        style="@style/answer_radiobutton_item"
+                        android:text="A" />
+                    <RadioButton
+                        android:id="@+id/show_question_Bselect_rb"
+                        style="@style/answer_radiobutton_item"
+                        android:text="B" />
+                    <RadioButton
+                        android:id="@+id/show_question_Cselect_rb"
+                        style="@style/answer_radiobutton_item"
+                        android:text="C" />
+                    <RadioButton
+                        android:id="@+id/show_question_Dselect_rb"
+                        style="@style/answer_radiobutton_item"
+                        android:text="D" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <View style="@style/view_split_horizontal" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/lin2"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/show_question_analysis_tv"
+                        style="@style/answer_text_style"
+                        android:text="问题解析："
+                        />
+                    <View
+                        style="@style/view_split_horizontal"/>
+                    <TextView
+                        android:id="@+id/show_question_result_tv"
+                        style="@style/answer_text_style"
+                        android:text="答案："
+                        />
+                    <View
+                        style="@style/view_split_horizontal"/>
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

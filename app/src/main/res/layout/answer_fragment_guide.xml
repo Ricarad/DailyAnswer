@@ -85,15 +85,16 @@
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <TextView
                     android:id="@+id/answerfragment_rightratio_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="16"
                     android:layout_gravity="center"
                     android:gravity="center"
+                    android:text="16"
                     android:textColor="@color/colorWhite"
-                    android:textSize="60dp"/>
+                    android:textSize="60dp" />
                 <TextView
                     android:textSize="20dp"
                     android:gravity="center"

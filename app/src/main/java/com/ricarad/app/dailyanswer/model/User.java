@@ -100,5 +100,15 @@ public class User extends BmobUser {
         this.lastLoginDate = lastLoginDate;
     }
 
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "nickName='" + nickName + '\'' +
+                ", rightRatio=" + rightRatio +
+                ", number=" + number +
+                ", days=" + days +
+                ", lastLoginDate=" + lastLoginDate +
+                ", rightNumber=" + rightNumber +
+                '}';
+    }
 }

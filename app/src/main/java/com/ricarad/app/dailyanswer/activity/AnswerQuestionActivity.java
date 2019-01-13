@@ -1,6 +1,7 @@
 package com.ricarad.app.dailyanswer.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -39,9 +40,13 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 import static com.ricarad.app.dailyanswer.common.Constant.BMOBAPPKEY;
+import static com.ricarad.app.dailyanswer.common.Constant.GradeType.ANSWERTYPE;
+import static com.ricarad.app.dailyanswer.common.Constant.GradeType.EXAM_CODE;
+import static com.ricarad.app.dailyanswer.common.Constant.GradeType.PRACTICE_CODE;
+import static com.ricarad.app.dailyanswer.common.Constant.USER;
 
 public class AnswerQuestionActivity extends Activity implements View.OnClickListener,
-        RadioGroup.OnCheckedChangeListener,PopupMenu.OnMenuItemClickListener {
+        RadioGroup.OnCheckedChangeListener, PopupMenu.OnMenuItemClickListener {
 
     @ViewInject(R.id.answer_select_radiogroup)
     private RadioGroup radioSelectRg;
@@ -77,6 +82,7 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
     private int currentIndex = 0;
     private boolean isShowResult = true;//是否显示答案
     private User user;
+    private int answerType;//是练习还是考试
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +90,7 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_answer_question);
         user = (User) getIntent().getSerializableExtra("user");
+        answerType = getIntent().getIntExtra(ANSWERTYPE, 0);  //获取当前答题的模式，默认是练习
         Bmob.initialize(this, BMOBAPPKEY);
         x.view().inject(this);
         initView();
@@ -91,15 +98,15 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
         questionSlideListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int selectItemId  = radioSelectRg.getCheckedRadioButtonId();
-                answerList.set(currentIndex,selectItemId);
+                int selectItemId = radioSelectRg.getCheckedRadioButtonId();
+                answerList.set(currentIndex, selectItemId);
                 Question question = questionList.get(position);
-                setView(position,question);
+                setView(position, question);
                 currentIndex = position;
                 int nSelectItemId = answerList.get(currentIndex);
-                if(nSelectItemId == -1){
+                if (nSelectItemId == -1) {
                     radioSelectRg.clearCheck();
-                }else {
+                } else {
                     radioSelectRg.check(nSelectItemId);
                 }
             }
@@ -107,12 +114,14 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
     }
 
     public void initQuestionList() {
+        final ProgressDialog pgd = ProgressDialog.show(AnswerQuestionActivity.this, "请稍等", "正在加载题目");
         BmobQuery<Question> query = new BmobQuery<>();
         query.findObjects(new FindListener<Question>() {
             @Override
             public void done(List<Question> list, BmobException e) {
                 if (e == null) {
                     if (list.size() != 0) {
+
                         int i = 1;
                         for (Question question : list) {
                             questionList.add(question);
@@ -124,11 +133,13 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
                                 R.layout.activity_answer_question, titleList);
                         questionSlideListView.setAdapter(slidingListAdapter);
                         slidingListAdapter.notifyDataSetChanged();
-                        setView(currentIndex,questionList.get(0));
+                        setView(currentIndex, questionList.get(0));
+                        pgd.dismiss();
                     }
                 } else {
+                    pgd.dismiss();
                     Toast.makeText(AnswerQuestionActivity.this,
-                            "初始化题目列表失败，请退出重试"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            "初始化题目列表失败，请退出重试" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -141,8 +152,8 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
         itemBRb.setText("B." + question.getItemB());
         itemCRb.setText("C." + question.getItemC());
         itemDRb.setText("D." + question.getItemD());
-        resultTv.setText("正确答案为："+question.getAnswer());
-        analysisTv.setText("问题解析："+question.getAnalysis());
+        resultTv.setText("正确答案为：" + question.getAnswer());
+        analysisTv.setText("问题解析：" + question.getAnalysis());
     }
 
     public void initView() {
@@ -173,77 +184,84 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.answer_next_img:{
+        switch (v.getId()) {
+            case R.id.answer_next_img: {
                 int selectItemId = radioSelectRg.getCheckedRadioButtonId();
-                answerList.set(currentIndex,selectItemId);
+                answerList.set(currentIndex, selectItemId);
                 //保存上一题的选项之后，显示下一题
                 currentIndex++;
-                if(currentIndex < questionList.size()){
+                if (currentIndex < questionList.size()) {
                     Question question = questionList.get(currentIndex);
                     setView(currentIndex, question);
                     int nSelectItemId = answerList.get(currentIndex);
-                    if(nSelectItemId == -1){
+                    if (nSelectItemId == -1) {
                         radioSelectRg.clearCheck();
-                    }else {
+                    } else {
                         radioSelectRg.check(nSelectItemId);
                     }
-                }else {
+                } else {
                     currentIndex--;
-                    Toast.makeText(AnswerQuestionActivity.this,"当前已是最后一题,要结束练习吗？",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AnswerQuestionActivity.this, "当前已是最后一题", Toast.LENGTH_SHORT).show();
                 }
-            }break;
-            case R.id.answer_pervious_img:{
+            }
+            break;
+            case R.id.answer_pervious_img: {
                 int selectItemId = radioSelectRg.getCheckedRadioButtonId();
-                answerList.set(currentIndex,selectItemId);
+                answerList.set(currentIndex, selectItemId);
                 //保存这一题的选项之后，显示上一题
                 currentIndex--;
-                if(currentIndex >= 0){
+                if (currentIndex >= 0) {
                     Question question = questionList.get(currentIndex);
                     setView(currentIndex, question);
                     int pSelectItemId = answerList.get(currentIndex);
-                    if(pSelectItemId == -1){
+                    if (pSelectItemId == -1) {
                         radioSelectRg.clearCheck();
-                    }else {
+                    } else {
                         radioSelectRg.check(pSelectItemId);
                     }
-                }else {
+                } else {
                     currentIndex++;
-                    Toast.makeText(AnswerQuestionActivity.this,"当前已是第一题",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AnswerQuestionActivity.this, "当前已是第一题", Toast.LENGTH_SHORT).show();
                 }
-            }break;
-            case R.id.answer_back_iv:{
-                //TODO 在练习模式下，用户做的题需要保存，并且保存到记录中
-                for(int i = 0;i<questionList.size();i++){
-                    if(answerList.get(i) != -1){
-                        Question question = questionList.get(i);
-                        BmobRelation relation = new BmobRelation();
-                        relation.add(question);
-                        User tempUser = new User();
-                        tempUser.setObjectId(user.getObjectId());
-                        tempUser.setAnswerQuestion(relation);
-                        tempUser.update(new UpdateListener() {
-                            @Override
-                            public void done(BmobException e) {
-                                if(e == null){
-                                    Toast.makeText(AnswerQuestionActivity.this,"已将做过的题目保存至最近练习记录",Toast.LENGTH_SHORT).show();
-                                }else{
-                                    Toast.makeText(AnswerQuestionActivity.this,"保存做题日志失败："+e.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+            break;
+            case R.id.answer_back_iv: {
+                if (answerType == PRACTICE_CODE) {
+                    for (int i = 0; i < questionList.size(); i++) {
+                        if (answerList.get(i) != -1) {
+                            Question question = questionList.get(i);
+                            BmobRelation relation = new BmobRelation();
+                            relation.add(question);
+                            User tempUser = new User();
+                            tempUser.setObjectId(user.getObjectId());
+                            tempUser.setAnswerQuestion(relation);
+                            tempUser.update(new UpdateListener() {
+                                @Override
+                                public void done(BmobException e) {
+                                    if (e == null) {
+                                        Toast.makeText(AnswerQuestionActivity.this, "已将做过的题目保存至最近练习记录", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(AnswerQuestionActivity.this, "保存做题日志失败：" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
                     }
-                }
                     finish();
-            }break;
-            case R.id.answer_menu_iv:{
-                    showPopupMenu(v);
-            }break;
+                } else if (answerType == EXAM_CODE) {
+                    //TODO 完善考试代码
+                }
+            }
+            break;
+            case R.id.answer_menu_iv: {
+                showPopupMenu(v);
+            }
+            break;
         }
     }
 
-    private void showPopupMenu(View view){
-        PopupMenu popup = new PopupMenu(this,view);
+    private void showPopupMenu(View view) {
+        PopupMenu popup = new PopupMenu(this, view);
         //获取菜单填充器
         MenuInflater inflater = popup.getMenuInflater();
         //填充菜单
@@ -253,35 +271,43 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
         //显示弹出菜单
         popup.show();
     }
+
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         int selectItemId = radioSelectRg.getCheckedRadioButtonId();
-        answerList.set(currentIndex,selectItemId);
+        answerList.set(currentIndex, selectItemId);
     }
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.answer_showresult_menuitem:{
-                if(!isShowResult){
-                    findViewById(R.id.answer_result_analysis_layout).setVisibility(View.INVISIBLE);
-                    isShowResult = true;
-                }else {
-                    findViewById(R.id.answer_result_analysis_layout).setVisibility(View.VISIBLE);
-                    isShowResult = false;
+        switch (item.getItemId()) {
+            case R.id.answer_showresult_menuitem: {
+                if (answerType == EXAM_CODE) {
+                    Toast.makeText(AnswerQuestionActivity.this, "考试无法查看答案，请交卷后查看", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (!isShowResult) {
+                        findViewById(R.id.answer_result_analysis_layout).setVisibility(View.INVISIBLE);
+                        isShowResult = true;
+                    } else {
+                        findViewById(R.id.answer_result_analysis_layout).setVisibility(View.VISIBLE);
+                        isShowResult = false;
+                    }
                 }
-            }break;
-            case R.id.answer_finish_menuitem:{
-                Intent intent = new Intent(AnswerQuestionActivity.this,GradeActivity.class);
+            }
+            break;
+            case R.id.answer_finish_menuitem: {
+                Intent intent = new Intent(AnswerQuestionActivity.this, GradeActivity.class);
                 int selectItemId = radioSelectRg.getCheckedRadioButtonId();
-                answerList.set(currentIndex,selectItemId);
-                intent.putExtra("questionList",questionList);
-                intent.putExtra("answerList",answerList);
-                intent.putExtra("user",user);
+                answerList.set(currentIndex, selectItemId);
+                intent.putExtra("questionList", questionList);
+                intent.putExtra("answerList", answerList);
+                intent.putExtra(ANSWERTYPE, answerType);
+                intent.putExtra(USER, user);
                 startActivity(intent);
                 finish();
-            }break;
-            case R.id.answer_collect_menuitem:{
+            }
+            break;
+            case R.id.answer_collect_menuitem: {
                 Question question = questionList.get(currentIndex);
                 BmobRelation relation = new BmobRelation();
                 relation.add(question);
@@ -291,15 +317,16 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
                 tempUser.update(new UpdateListener() {
                     @Override
                     public void done(BmobException e) {
-                        if(e == null){
-                            Toast.makeText(AnswerQuestionActivity.this,"收藏成功",Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(AnswerQuestionActivity.this,"收藏失败，失败原因："+e.getMessage(),Toast.LENGTH_SHORT).show();
+                        if (e == null) {
+                            Toast.makeText(AnswerQuestionActivity.this, "收藏成功", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(AnswerQuestionActivity.this, "收藏失败，失败原因：" + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
 
-            }break;
+            }
+            break;
         }
         return false;
     }

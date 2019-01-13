@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@color/colorWhite"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     tools:context=".activity.GradeActivity">
     <LinearLayout
-
+        android:id="@+id/grade_lin1"
+        android:layout_alignParentTop="true"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -23,7 +23,7 @@
                 android:id="@+id/grade_back_iv"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
-                android:background="@drawable/back_press"
+                android:background="@drawable/back_selector_grade"
                 android:clickable="true" />
             <TextView
                 android:layout_width="match_parent"
@@ -106,45 +106,39 @@
             android:layout_height="wrap_content"
             android:src="@drawable/grade_champion"/>
     </LinearLayout>
+    <ListView
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/grade_results_lv"
+        android:layout_below="@id/grade_lin1"
+        android:layout_above="@id/grade_lin3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></ListView>
      <LinearLayout
-         android:layout_marginTop="10dp"
+         android:id="@+id/grade_lin3"
+         android:layout_alignParentBottom="true"
          android:orientation="horizontal"
+         android:visibility="gone"
          android:background="@color/colorWhite"
          android:layout_width="match_parent"
-         android:layout_height="wrap_content">
+         android:layout_height="80dp">
          <TextView
              android:id="@+id/grade_analysis_mistake_tv"
-             android:clickable="true"
-             android:background="@color/colorSmallGrey"
              android:text="错题解析"
              android:drawableLeft="@drawable/grade_mistake"
-             android:gravity="left"
-             android:textSize="30dp"
-             android:layout_weight="1"
-             android:layout_width="0dp"
-             android:layout_height="wrap_content" />
+             style="@style/grade_bottom_textview"
+            />
          <TextView
              android:id="@+id/grade_analysis_all_tv"
-             android:clickable="true"
-             android:background="@color/colorSmallGrey"
              android:text="全部解析"
              android:drawableLeft="@drawable/grade_all_analysis"
-             android:gravity="left"
-             android:layout_weight="1"
-             android:layout_width="0dp"
-             android:textSize="30dp"
-             android:layout_height="wrap_content" />
+             style="@style/grade_bottom_textview"/>
          <TextView
              android:id="@+id/grade_recomplete_tv"
-             android:clickable="true"
-             android:background="@color/colorSmallGrey"
              android:drawableLeft="@drawable/grade_recomplete"
              android:text="重新做题"
-             android:layout_weight="1"
-             android:gravity="left"
-             android:layout_width="0dp"
-             android:textSize="30dp"
-             android:layout_height="wrap_content"/>
+             style="@style/grade_bottom_textview"
+           />
 
      </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

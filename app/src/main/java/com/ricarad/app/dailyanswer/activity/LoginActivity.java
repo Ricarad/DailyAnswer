@@ -17,19 +17,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.google.gson.Gson;
+
 import com.ricarad.app.dailyanswer.R;
 
-import com.ricarad.app.dailyanswer.common.UsetUtil;
-import com.ricarad.app.dailyanswer.model.Question;
+
 import com.ricarad.app.dailyanswer.model.User;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
+
 
 import cn.bmob.v3.Bmob;
-import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobDate;
 import cn.bmob.v3.datatype.BmobPointer;
@@ -136,9 +134,10 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                                         user.setDays(user.getDays() + 1);
                                     }
                                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                                    user.setLastLoginDate(BmobDate.createBmobDate("yyyy-MM-dd HH:mm:ss", simpleDateFormat.format(new Date())));
+                                    user.setLastLoginDate(BmobDate.createBmobDate("yyyy-MM-dd HH:mm:ss", sdf.format(new Date())));
                                     final Intent intent = new Intent(LoginActivity.this, GuideActivity.class);
                                     intent.putExtra(USER, user);
+                                    intent.putExtra(USERID,user.getObjectId());
                                     user.update(user.getObjectId(), new UpdateListener() {
                                         @Override
                                         public void done(BmobException e) {

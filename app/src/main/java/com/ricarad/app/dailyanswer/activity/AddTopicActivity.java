@@ -1,10 +1,13 @@
 package com.ricarad.app.dailyanswer.activity;
 
+import android.app.Application;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -13,8 +16,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.qingmei2.rximagepicker.core.RxImagePicker;
+import com.qingmei2.rximagepicker.entity.Result;
+import com.qingmei2.rximagepicker.ui.SystemImagePicker;
 import com.ricarad.app.dailyanswer.R;
+import com.ricarad.app.dailyanswer.application.MyApplication;
+import com.ricarad.app.dailyanswer.common.PostImagePicker;
+import com.ricarad.app.dailyanswer.common.PostUtil;
 import com.ricarad.app.dailyanswer.model.User;
+
 
 import jp.wasabeef.richeditor.RichEditor;
 
@@ -23,8 +33,13 @@ public class AddTopicActivity extends AppCompatActivity implements View.OnTouchL
     EditText title_et;
     RichEditor content_re;
     ImageView bold_iv, italic_iv, underline_iv, img_iv, undo_iv, redo_iv;
+    SystemImagePicker imagePicker;
 
     boolean isBold = false, isItalic = false, isUnderline = false;
+
+    String[] imgPaths = {};
+
+    static String TAG = "Add Topic ========>";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +53,15 @@ public class AddTopicActivity extends AppCompatActivity implements View.OnTouchL
         setRichEditorStyles();
         //设置监听器
         commit_btn.setOnTouchListener(this);
+        commit_btn.setOnClickListener(this);
         bold_iv.setOnClickListener(this);
         italic_iv.setOnClickListener(this);
         underline_iv.setOnClickListener(this);
         undo_iv.setOnClickListener(this);
         redo_iv.setOnClickListener(this);
         img_iv.setOnClickListener(this);
+        //实例化图片选择器
+        imagePicker = RxImagePicker.INSTANCE.create();
     }
 
     private void fetchViews(){
@@ -86,13 +104,39 @@ public class AddTopicActivity extends AppCompatActivity implements View.OnTouchL
                 content_re.redo();
                 break;
             case R.id.topic_img_iv:
-                insertOneImg();
+                insertOneImg();//选择图片插入帖子内容
+                break;
+            case R.id.topic_commit_btn:
+                commitTopic();
                 break;
         }
     }
 
-    private void insertOneImg() {
+    private void commitTopic() {
+        //TODO
+        String content = content_re.getHtml();
+        PostUtil postUtil = new PostUtil(this, "ggg");
+        String ripeHtml = postUtil.getHtml(content);
+        if (ripeHtml == null){
+            Log.d(TAG, "failed");
+        }else{
+            Log.d(TAG, ripeHtml);
+        }
+    }
 
+    private void insertOneImg() {
+        if (!content_re.isFocused())
+            content_re.focusEditor();
+        try{
+            imagePicker.openGallery(this).subscribe(new io.reactivex.functions.Consumer<Result>() {
+                @Override
+                public void accept(Result result) throws Exception {
+                    content_re.insertImage("file://" + result.getUri().getPath(), "加载中");
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void pickBold(){

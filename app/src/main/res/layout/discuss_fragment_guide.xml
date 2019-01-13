@@ -39,8 +39,9 @@
         <View
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="20dp"
-            style="@style/view_split_vertical"/>
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            style="@style/post_view_split_vertical"/>
         <LinearLayout
             android:id="@+id/discuss_add_ll"
             android:layout_width="0dp"

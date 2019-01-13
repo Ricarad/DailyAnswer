@@ -29,7 +29,7 @@ public class DiscussFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ll_add =getActivity().findViewById(R.id.discuss_add_ll);
+        ll_add = getActivity().findViewById(R.id.discuss_add_ll);
 
         ll_add.setOnClickListener(this);
     }

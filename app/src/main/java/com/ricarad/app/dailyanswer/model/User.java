@@ -3,6 +3,7 @@ package com.ricarad.app.dailyanswer.model;
 import java.util.List;
 
 
+import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobDate;
 import cn.bmob.v3.datatype.BmobFile;
@@ -19,6 +20,8 @@ public class User extends BmobUser {
     private BmobRelation collectedQuestion;  //收藏的题目
     private BmobRelation answerQuestion;  //回答过的题目
     private BmobRelation mistakeQuestion; //做错的题目
+    private BmobRelation collectedTopics; //收藏的主贴
+    private BmobRelation publishedPosts; //发布过的帖子
 
     public BmobRelation getCollectedQuestion() {
         return collectedQuestion;

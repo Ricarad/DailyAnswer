@@ -1,6 +1,9 @@
 package com.ricarad.app.dailyanswer.activity;
 
+import android.app.AlertDialog;
 import android.app.Application;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -23,21 +26,30 @@ import com.ricarad.app.dailyanswer.R;
 import com.ricarad.app.dailyanswer.application.MyApplication;
 import com.ricarad.app.dailyanswer.common.PostImagePicker;
 import com.ricarad.app.dailyanswer.common.PostUtil;
+import com.ricarad.app.dailyanswer.model.Post;
+import com.ricarad.app.dailyanswer.model.Topic;
 import com.ricarad.app.dailyanswer.model.User;
 
 
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 import jp.wasabeef.richeditor.RichEditor;
 
 public class AddTopicActivity extends AppCompatActivity implements View.OnTouchListener, View.OnClickListener{
     Button commit_btn;
     EditText title_et;
     RichEditor content_re;
-    ImageView bold_iv, italic_iv, underline_iv, img_iv, undo_iv, redo_iv;
+    ImageView bold_iv, italic_iv, underline_iv, img_iv, undo_iv, redo_iv, exit_iv;
     SystemImagePicker imagePicker;
 
     boolean isBold = false, isItalic = false, isUnderline = false;
-
-    String[] imgPaths = {};
+    User mUser;
+    String postId = null;
+    Post post;
+    Topic topic;
+    boolean continueFlag;
+    boolean hasFailed;
 
     static String TAG = "Add Topic ========>";
 
@@ -47,7 +59,7 @@ public class AddTopicActivity extends AppCompatActivity implements View.OnTouchL
         setContentView(R.layout.activity_add_topic);
         //获得当前登录的用户
         Intent intent = getIntent();
-        User user = (User)intent.getSerializableExtra("user");
+        mUser = (User)intent.getSerializableExtra("user");
         //初始化样式
         fetchViews();
         setRichEditorStyles();
@@ -60,6 +72,7 @@ public class AddTopicActivity extends AppCompatActivity implements View.OnTouchL
         undo_iv.setOnClickListener(this);
         redo_iv.setOnClickListener(this);
         img_iv.setOnClickListener(this);
+        exit_iv.setOnClickListener(this);
         //实例化图片选择器
         imagePicker = RxImagePicker.INSTANCE.create();
     }
@@ -74,6 +87,7 @@ public class AddTopicActivity extends AppCompatActivity implements View.OnTouchL
         undo_iv = findViewById(R.id.topic_undo_iv);
         redo_iv = findViewById(R.id.topic_redo_iv);
         img_iv = findViewById(R.id.topic_img_iv);
+        exit_iv = findViewById(R.id.topic_exit_iv);
     }
 
     @Override
@@ -109,19 +123,90 @@ public class AddTopicActivity extends AppCompatActivity implements View.OnTouchL
             case R.id.topic_commit_btn:
                 commitTopic();
                 break;
+            case R.id.topic_exit_iv:
+                askExit();
+                break;
         }
     }
 
     private void commitTopic() {
-        //TODO
-        String content = content_re.getHtml();
-        PostUtil postUtil = new PostUtil(this, "ggg");
-        String ripeHtml = postUtil.getHtml(content);
-        if (ripeHtml == null){
-            Log.d(TAG, "failed");
-        }else{
-            Log.d(TAG, ripeHtml);
+        Log.i(TAG, "2");
+        final String title = title_et.getText().toString();
+        if (title.isEmpty()){
+            showErrMessage("标题不能为空");
+            return;
         }
+        //发表帖子
+        final String content = content_re.getHtml();
+        if (content == null || content.isEmpty()){
+            showErrMessage("内容不能为空");
+            return;
+        }
+        post = new Post();
+        post.setAuthor(mUser);
+        final ProgressDialog pd = new ProgressDialog(this);
+        pd.setMessage("请稍等");
+        pd.show();
+        post.save(new SaveListener<String>() {
+            @Override
+            public void done(String s, BmobException e) {
+                if (e == null){
+                    postId = s;Log.i(TAG, "1");
+
+                    topic = new Topic();
+                    topic.setTitle(title);
+                    topic.setHostPostId(postId);
+                    topic.save(new SaveListener<String>() {
+                        @Override
+                        public void done(String s, BmobException e) {
+                            if (e == null) {
+
+                                Log.i(TAG, "4");
+                                PostUtil postUtil = new PostUtil(AddTopicActivity.this, postId);
+                                String ripeHtml = postUtil.getHtml(content);
+                                if (ripeHtml == null){
+                                    //上传图片失败，直接结束
+                                    pd.dismiss();
+                                    showErrMessage("图片上传失败，请检查网络");
+                                    return;
+                                }
+                                post.setContent(ripeHtml);
+                                post.setTopic(topic);
+                                Log.i(TAG, "5");
+                                post.update(postId, new UpdateListener() {
+                                    @Override
+                                    public void done(BmobException e) {
+                                        Log.i(TAG, "6");
+                                        pd.dismiss();
+                                        if (e == null) {
+                                                Toast.makeText(AddTopicActivity.this, "发布成功", Toast.LENGTH_SHORT).show();
+                                                finish();
+                                        } else {
+                                            Log.i(TAG, "8");
+                                            showErrMessage("发布失败，请检查网络");
+                                        }
+                                    }
+                                });
+                            } else {
+                                Log.i(TAG, "3");
+                                pd.dismiss();
+                                showErrMessage("发布失败，请检查网络");
+                            }
+                        }
+                    });
+                }else {
+                    pd.dismiss();
+                    showErrMessage("发布失败，请检查网络");
+                }
+            }
+        });
+    }
+
+    private void showErrMessage(String msg){
+//        Snackbar snackbar =  Snackbar.make( findViewById(R.id.topic_root_ll), msg, Snackbar.LENGTH_LONG);
+//        snackbar.setActionTextColor(getResources().getColor(R.color.colorPostErr));
+//        snackbar.show();
+        Toast.makeText(AddTopicActivity.this, msg, Toast.LENGTH_SHORT).show();
     }
 
     private void insertOneImg() {
@@ -183,4 +268,17 @@ public class AddTopicActivity extends AppCompatActivity implements View.OnTouchL
         content_re.setPadding(3,3,3,3);
     }
 
+    private void askExit() {
+        AlertDialog.Builder dlg = new AlertDialog.Builder(this);
+        dlg.setIcon(android.R.drawable.stat_sys_warning);
+        dlg.setMessage("已编辑的内容不会被保存，确定要退出吗");
+        dlg.setPositiveButton("退出", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        dlg.setNegativeButton("取消", null);
+        dlg.show();
+    }
 }

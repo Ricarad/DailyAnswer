@@ -36,6 +36,7 @@ public class PostUtil {
     private String postId;
     private static String URL = "https://postimgs-1258506940.cos-website.ap-shanghai.myqcloud.com/";
     private int isFinished;
+    private boolean hasImg;
 
     public PostUtil(Context context, String postId) {
         this.context = context;
@@ -60,6 +61,8 @@ public class PostUtil {
 
     public String getHtml(String rawHtml){
         List<String> netPaths = convertImgPaths(rawHtml);
+        if (!hasImg)
+            return rawHtml;
         if (netPaths == null)
             return null;
         Document doc = Jsoup.parse(rawHtml);
@@ -78,7 +81,10 @@ public class PostUtil {
     public List<String> convertImgPaths(String rawHtml){
         int i = 0;
         List<String> localPaths = getPathsFromHtml(rawHtml);
-
+        if (!hasImg)
+            return null;
+        if (localPaths == null)
+            return null;
         List<String> netPaths = new ArrayList<>();
         for(String s: localPaths){
             String r = uploadImg(s, postId + i);
@@ -93,8 +99,10 @@ public class PostUtil {
         Document doc = Jsoup.parse(rawHtml);
         List<String> pathList = new ArrayList<>();
         if (doc.select("img").first() == null){
+            hasImg = false;
             return null;
         }
+        hasImg = true;
         Elements es = doc.getElementsByTag("img");
         for (Element e : es) {
             pathList.add(e.attr("src"));

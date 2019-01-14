@@ -23,6 +23,22 @@ public class User extends BmobUser {
     private BmobRelation collectedTopics; //收藏的主贴
     private BmobRelation publishedPosts; //发布过的帖子
 
+    public BmobRelation getCollectedTopics() {
+        return collectedTopics;
+    }
+
+    public void setCollectedTopics(BmobRelation collectedTopics) {
+        this.collectedTopics = collectedTopics;
+    }
+
+    public BmobRelation getPublishedPosts() {
+        return publishedPosts;
+    }
+
+    public void setPublishedPosts(BmobRelation publishedPosts) {
+        this.publishedPosts = publishedPosts;
+    }
+
     public BmobRelation getCollectedQuestion() {
         return collectedQuestion;
     }
@@ -108,10 +124,16 @@ public class User extends BmobUser {
         return "User{" +
                 "nickName='" + nickName + '\'' +
                 ", rightRatio=" + rightRatio +
+                ", userImg=" + userImg +
                 ", number=" + number +
                 ", days=" + days +
                 ", lastLoginDate=" + lastLoginDate +
                 ", rightNumber=" + rightNumber +
+                ", collectedQuestion=" + collectedQuestion +
+                ", answerQuestion=" + answerQuestion +
+                ", mistakeQuestion=" + mistakeQuestion +
+                ", collectedTopics=" + collectedTopics +
+                ", publishedPosts=" + publishedPosts +
                 '}';
     }
 }

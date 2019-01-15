@@ -40,7 +40,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
     implementation files('libs/Xutils3.0.jar')
-
+    implementation 'de.hdodenhof:circleimageview:2.0.0'
     implementation project(':slidingmenu')
 
     implementation 'jp.wasabeef:richeditor-android:1.2.2'   //富文本编辑器
@@ -49,7 +49,7 @@ dependencies {
     implementation 'com.github.qingmei2:rximagepicker:2.2.0' //从相册相机选择图片
     implementation 'org.jsoup:jsoup:1.11.3'//解析html
     //腾讯对象存储SDK简化版
-    implementation ('com.tencent.qcloud:cosxml-lite:5.4.18'){
-        exclude group:'com.tencent.qcloud', module: 'mtaUtils' //关闭mta上报功能
+    implementation('com.tencent.qcloud:cosxml-lite:5.4.18') {
+        exclude group: 'com.tencent.qcloud', module: 'mtaUtils' //关闭mta上报功能
     }
 }

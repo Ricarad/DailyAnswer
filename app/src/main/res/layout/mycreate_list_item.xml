@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:gravity="center_vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+<RelativeLayout
+    android:paddingLeft="15dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TextView
+
+        android:id="@+id/mycreate_list_item_year_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2018"
+        android:textSize="20sp"/>
+    <TextView
+        android:layout_below="@+id/mycreate_list_item_year_tv"
+        android:id="@+id/mycreate_list_item_month_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="01月"
+        android:textSize="25dp"/>
+    <TextView
+        android:id="@+id/mycreate_list_item_day_tv"
+        android:layout_below="@+id/mycreate_list_item_month_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="01日"
+        android:textSize="25dp"/>
+</RelativeLayout>
+    <TextView
+        android:id="@+id/mycreate_list_item_title_tv"
+        android:text="托儿索儿童劫鱼尾雯在王者峡谷聚众闪现撞墙，这时"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="15dp"/>
+
+    </LinearLayout>
+</LinearLayout>

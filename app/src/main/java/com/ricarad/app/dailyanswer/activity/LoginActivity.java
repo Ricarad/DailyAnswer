@@ -77,6 +77,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             String password = pref.getString("password", "");
             passwordEv.setText(password);
             rememberPass.setChecked(true);
+
         }
 
     }

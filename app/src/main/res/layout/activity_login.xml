@@ -6,34 +6,36 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:id="@+id/logo"
+        android:layout_marginTop="200dp"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+
         android:src="@drawable/logo"
-        android:layout_above="@id/lin1"/>
+        />
    <LinearLayout
        android:id="@+id/lin1"
        android:orientation="vertical"
-       android:layout_gravity="center"
+        android:layout_below="@id/logo"
        android:layout_marginTop="20dp"
        android:layout_width="match_parent"
-       android:layout_height="100dp"
-       android:layout_centerVertical="true"
+       android:layout_height="110dp"
        android:layout_marginRight="40dp"
        android:layout_marginLeft="40dp">
        <EditText
-           android:id="@+id/usrcount_text"
-           android:layout_weight="3"
-           android:drawableLeft="@drawable/login_account_img"
+           android:id="@+id/login_usrcount_text"
+           android:layout_weight="1"
+           android:drawableLeft="@drawable/account_img"
            android:layout_width="match_parent"
-           android:layout_height="50dp" />
+           android:layout_height="match_parent" />
 
        <EditText
-           android:id="@+id/password_text"
+           android:id="@+id/login_password_text"
            android:layout_width="match_parent"
-           android:layout_height="50dp"
-           android:layout_weight="3"
-           android:drawableLeft="@drawable/login_password_img"
+           android:layout_height="match_parent"
+           android:layout_weight="1"
+           android:layout_marginTop="10dp"
+           android:drawableLeft="@drawable/password_img"
            android:inputType="textPassword" />
    </LinearLayout>
 
@@ -52,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="35dp" />
         <CheckBox
-            android:id="@+id/remPass"
+            android:id="@+id/login_remPass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>

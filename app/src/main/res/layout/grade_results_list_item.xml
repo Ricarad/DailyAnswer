@@ -12,7 +12,7 @@
     android:text="这是题3"
     android:textSize="30dp"
     android:layout_margin="10dp"
-    android:background="@drawable/shape_list_item"
+    android:background="@drawable/shape_list_item_default"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" />
 </LinearLayout>

@@ -102,7 +102,6 @@ public class AnswerFragment extends Fragment implements AdapterView.OnItemClickL
                     if (e == null) {
                             user = newUser;
                             initView();
-
                     } else {
                             Toast.makeText(getContext(),"更新用户信息失败！",Toast.LENGTH_SHORT);
                     }

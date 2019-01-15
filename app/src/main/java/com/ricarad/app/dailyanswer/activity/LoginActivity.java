@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -53,13 +52,13 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.login);
+        setContentView(R.layout.activity_login);
         Bmob.initialize(this, BMOBAPPKEY);
-        rememberPass = (CheckBox) findViewById(R.id.remPass);
+        rememberPass = (CheckBox) findViewById(R.id.login_remPass);
         loginButton = (Button) findViewById(R.id.login_button);
         registerButton = (TextView) findViewById(R.id.login_register_tv);
-        accountEv = (EditText) findViewById(R.id.usrcount_text);
-        passwordEv = (EditText) findViewById(R.id.password_text);
+        accountEv = (EditText) findViewById(R.id.login_usrcount_text);
+        passwordEv = (EditText) findViewById(R.id.login_password_text);
         forgetPassTv = (TextView) findViewById(R.id.login_forgetPass_tv);
         loginButton.setOnClickListener(this);
         registerButton.setOnClickListener(this);
@@ -85,10 +84,10 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case REGISTER_CODE: {
-                if (resultCode == RESULT_OK) {
+             /*   if (resultCode == RESULT_OK) {
                     accountEv.setText(data.getStringExtra("usercount"));
                     passwordEv.setText(data.getStringExtra("password"));
-                }
+                }*/
             }
             break;
             case GUIDE_CODE: {
@@ -167,8 +166,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             break;
             case R.id.login_register_tv: {
                 Toast.makeText(this, "注册按钮", Toast.LENGTH_SHORT).show();
-              /*  Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
-                startActivityForResult(intent,REGISTER_CODE);*/
+                Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
+                startActivityForResult(intent,REGISTER_CODE);
             }
             break;
             case R.id.login_forgetPass_tv: {

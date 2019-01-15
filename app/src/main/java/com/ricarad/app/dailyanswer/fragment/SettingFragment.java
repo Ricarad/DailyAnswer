@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.ricarad.app.dailyanswer.R;
 import com.ricarad.app.dailyanswer.activity.SettingMyCollectionActivity;
@@ -17,9 +18,9 @@ import com.ricarad.app.dailyanswer.activity.SettingMySettingsActivity;
 import com.ricarad.app.dailyanswer.model.User;
 
 public class SettingFragment extends Fragment implements View.OnClickListener{
-    private LinearLayout ll_collection;//收藏布局
-    private LinearLayout ll_creation;
-    private LinearLayout ll_settings;
+    private RelativeLayout rl_collection;//收藏布局
+    private RelativeLayout rl_creation;
+    private RelativeLayout ll_settings;
     private User user;
 
 
@@ -34,10 +35,10 @@ public class SettingFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ll_collection= getActivity().findViewById(R.id.setting_fragment_guide_collection);
-        ll_collection.setOnClickListener(this);
-        ll_creation = getActivity().findViewById(R.id.setting_fragment_guide_mycreation);
-        ll_creation.setOnClickListener(this);
+        rl_collection= getActivity().findViewById(R.id.setting_fragment_guide_collection);
+        rl_collection.setOnClickListener(this);
+        rl_creation = getActivity().findViewById(R.id.setting_fragment_guide_mycreation);
+        rl_creation.setOnClickListener(this);
         ll_settings = getActivity().findViewById(R.id.setting_fragment_guide_settings);
         ll_settings.setOnClickListener(this);
         if (isAdded()) {  //判断Fragment已经依附Activity

@@ -108,6 +108,10 @@ public class MistakeActivity extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.mistake_back_iv: {
+                isEdit = true;
+                edit.setBackground(this.getResources().getDrawable(R.drawable.edit_mistake));
+                CommonAdapter.isEditMode = false;
+                commonAdapter.notifyDataSetChanged();
                 finish();
             }
             break;

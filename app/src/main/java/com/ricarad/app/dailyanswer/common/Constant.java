@@ -29,8 +29,8 @@ public class Constant {
 
     public static class GradeType{
         public final static String ANSWER_TYPE = "answerQuestionType";
-        public final static int EXAM_CODE = 1;//表明为考试
         public final static int PRACTICE_CODE = 0;//表明为练习
+        public final static int EXAM_CODE = 1;//表明为考试
     }
     public static class QuestionResultType{
         public final static int RIGHT = 0;

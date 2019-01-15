@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.ricarad.app.dailyanswer.R;
 import com.ricarad.app.dailyanswer.activity.SettingMyCollectionActivity;
+import com.ricarad.app.dailyanswer.activity.SettingMyCreateActivity;
 import com.ricarad.app.dailyanswer.model.User;
 
 public class SettingFragment extends Fragment implements View.OnClickListener{
@@ -52,7 +53,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener{
             }
                 break;
             case R.id.setting_fragment_guide_mycreation:{
-
+                goToSettingMyCreate();
             }
         }
 
@@ -60,6 +61,18 @@ public class SettingFragment extends Fragment implements View.OnClickListener{
 
     private void goToSettingMyCollect() {
         Intent intent = new Intent(getContext(), SettingMyCollectionActivity.class);
-        startActivity(intent);
+        if (isAdded()) {  //判断Fragment已经依附Activity
+            User user = (User)getArguments().getSerializable("user");
+            intent.putExtra("user", user);
+            startActivity(intent);
+        }
+    }
+    private void goToSettingMyCreate() {
+        Intent intent = new Intent(getContext(), SettingMyCreateActivity.class);
+        if (isAdded()) {  //判断Fragment已经依附Activity
+            User user = (User)getArguments().getSerializable("user");
+            intent.putExtra("user", user);
+            startActivity(intent);
+        }
     }
 }

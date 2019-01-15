@@ -47,9 +47,9 @@ public class CollectionAdapter extends BaseAdapter {
         ImageView mycollect_list_item_photo = view.findViewById(R.id.mycollect_list_item_photo);
         TextView mycollect_list_item_username = view.findViewById(R.id.mycollect_list_item_username);
         TextView mycollect_list_item_title = view.findViewById(R.id.mycollect_list_item_title);
-        mycollect_list_item_photo.setImageResource(data.get(position).getImgId());
+        mycollect_list_item_photo.setImageResource(data.get(position).getUserimg());
         mycollect_list_item_username.setText(data.get(position).getUsername());
-        mycollect_list_item_title.setText(data.get(position).getTitle());
+        mycollect_list_item_title.setText(data.get(position).getCollectedTopics());
         return view;
     }
 }

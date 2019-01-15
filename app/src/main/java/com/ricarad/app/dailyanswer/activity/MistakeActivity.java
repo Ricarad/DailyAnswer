@@ -111,7 +111,9 @@ public class MistakeActivity extends Activity implements View.OnClickListener {
                 isEdit = true;
                 edit.setBackground(this.getResources().getDrawable(R.drawable.edit_mistake));
                 CommonAdapter.isEditMode = false;
-                commonAdapter.notifyDataSetChanged();
+                if (questionList.size() !=0) {
+                    commonAdapter.notifyDataSetChanged();
+                }
                 finish();
             }
             break;
@@ -125,7 +127,6 @@ public class MistakeActivity extends Activity implements View.OnClickListener {
                     final List<Question> deleteList = commonAdapter.getDeletes();
                     if (deleteList.size() != 0) {
                         BmobRelation deleteRelation = new BmobRelation();
-                        Log.i("TGA","删除数目"+deleteList.size()+"");
                         for (Question question : deleteList) {
                             deleteRelation.remove(question);
                         }

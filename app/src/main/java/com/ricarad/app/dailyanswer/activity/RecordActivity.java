@@ -82,6 +82,10 @@ public class RecordActivity extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.record_back_iv:{
+                isEdit = true;
+                edit.setBackground(this.getResources().getDrawable(R.drawable.edit_mistake));
+                CommonAdapter.isEditMode = false;
+                commonAdapter.notifyDataSetChanged();
                 finish();
             }break;
             case R.id.record_edit_iv: {

@@ -107,11 +107,15 @@ public class CollectedActivity extends Activity implements View.OnClickListener 
     public void onClick(View v) {
             switch (v.getId()){
                 case R.id.collected_back_iv:{
+                    isEdit = true;
+                    edit.setBackground(this.getResources().getDrawable(R.drawable.edit_mistake));
+                    CommonAdapter.isEditMode = false;
+                    commonAdapter.notifyDataSetChanged();
                     finish();
                 }break;
                 case R.id.collected_edit_iv:{
                     if (!isEdit) {
-                        //删除所选择的问题
+                        //删除所选择的问题，并且将UI还原
                         isEdit = true;
                         edit.setBackground(this.getResources().getDrawable(R.drawable.edit_mistake));
                         CommonAdapter.isEditMode = false;

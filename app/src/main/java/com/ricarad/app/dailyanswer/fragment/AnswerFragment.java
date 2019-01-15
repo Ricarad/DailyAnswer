@@ -28,6 +28,7 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.QueryListener;
 
 import static com.ricarad.app.dailyanswer.common.Constant.GradeType.ANSWER_TYPE;
+import static com.ricarad.app.dailyanswer.common.Constant.GradeType.EXAM_CODE;
 import static com.ricarad.app.dailyanswer.common.Constant.GradeType.PRACTICE_CODE;
 import static com.ricarad.app.dailyanswer.common.Constant.USER;
 
@@ -121,7 +122,10 @@ public class AnswerFragment extends Fragment implements AdapterView.OnItemClickL
             }
             break;
             case 1: {
-
+                Intent intent = new Intent(getContext(), AnswerQuestionActivity.class);
+                intent.putExtra(ANSWER_TYPE, EXAM_CODE);
+                intent.putExtra(USER, user);
+                startActivity(intent);
             }
             break;
             case 2: {

@@ -18,6 +18,7 @@
             android:background="@drawable/back_white_selector"
             android:clickable="true" />
         <TextView
+            android:id="@+id/answer_title_tv"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_alignParentTop="true"
@@ -52,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <TextView
-                    android:id="@+id/answer_questionTitle_tv"
+                    android:id="@+id/answer_question_title_tv"
                     style="@style/answer_text_style"
                     android:text="题目：" />
                 <View style="@style/view_split_horizontal" />

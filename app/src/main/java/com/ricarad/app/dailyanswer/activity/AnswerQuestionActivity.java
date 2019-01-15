@@ -1,7 +1,9 @@
 package com.ricarad.app.dailyanswer.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuInflater;
@@ -27,6 +29,7 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.util.ArrayList;
+import java.util.EventListener;
 import java.util.List;
 
 import cn.bmob.v3.Bmob;
@@ -60,7 +63,7 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
     private ImageView back;
     @ViewInject(R.id.answer_menu_iv)
     private ImageView menu;
-    @ViewInject(R.id.answer_questionTitle_tv)
+    @ViewInject(R.id.answer_question_title_tv)
     private TextView questionTitleTv;
     @ViewInject(R.id.answer_pervious_img)
     private ImageView previous;
@@ -70,6 +73,8 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
     private TextView analysisTv;
     @ViewInject(R.id.answer_result_tv)
     private TextView resultTv;
+    @ViewInject(R.id.answer_title_tv)
+    private TextView titleTv;
 
     private ListView questionSlideListView; //滑动侧边栏的listview
     private ArrayList<Question> questionList = new ArrayList<>();//题目集合
@@ -87,7 +92,7 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_answer_question);
         user = (User) getIntent().getSerializableExtra("user");
-        answerType = getIntent().getIntExtra(ANSWER_TYPE, 0);  //获取当前答题的模式，默认是练习
+        answerType = getIntent().getIntExtra(ANSWER_TYPE, PRACTICE_CODE);  //获取当前答题的模式，默认是练习
         Bmob.initialize(this, BMOBAPPKEY);
         x.view().inject(this);
         initView();
@@ -177,6 +182,11 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
         previous.setOnClickListener(this);
         back.setOnClickListener(this);
         menu.setOnClickListener(this);
+        if (answerType == PRACTICE_CODE){
+            titleTv.setText("练习");
+        }else if(answerType == EXAM_CODE){
+            titleTv.setText("考试");
+        }
     }
 
     @Override
@@ -232,6 +242,7 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
                             User tempUser = new User();
                             tempUser.setObjectId(user.getObjectId());
                             tempUser.setAnswerQuestion(relation);
+                            tempUser.setNumber(user.getNumber()+answerList.size());
                             tempUser.update(new UpdateListener() {
                                 @Override
                                 public void done(BmobException e) {
@@ -244,11 +255,25 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
                                     }
                                 }
                             });
+                        }else {
+                            finish();
                         }
                     }
 
                 } else if (answerType == EXAM_CODE) {
                     //TODO 完善考试代码
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                    dialog.setIcon(android.R.drawable.stat_sys_warning);
+                    dialog.setTitle("注意");
+                    dialog.setMessage("当前正在考试，确定要退出吗？");
+                    dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    });
+                    dialog.setNegativeButton("取消",null);
+                    dialog.show();
                 }
             }
             break;

@@ -23,6 +23,10 @@ public class User extends BmobUser {
     private BmobRelation collectedTopics; //收藏的主贴
     private BmobRelation publishedPosts; //发布过的帖子
 
+    /**
+     * 头像在本地的缓存地址
+     */
+    public String LOCALPATH = "";
     public BmobRelation getCollectedTopics() {
         return collectedTopics;
     }

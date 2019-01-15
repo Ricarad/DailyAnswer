@@ -110,7 +110,9 @@ public class CollectedActivity extends Activity implements View.OnClickListener 
                     isEdit = true;
                     edit.setBackground(this.getResources().getDrawable(R.drawable.edit_mistake));
                     CommonAdapter.isEditMode = false;
-                    commonAdapter.notifyDataSetChanged();
+                    if (questionList.size() != 0) {
+                        commonAdapter.notifyDataSetChanged();
+                    }
                     finish();
                 }break;
                 case R.id.collected_edit_iv:{

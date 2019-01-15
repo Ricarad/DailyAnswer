@@ -165,7 +165,7 @@ public class GradeActivity extends Activity implements View.OnClickListener,List
         tempUser.setObjectId(user.getObjectId());
         tempUser.setNumber(user.getNumber() + totalNumber);
         tempUser.setRightNumber(user.getRightNumber() + rightNumber);//计算回答正确的题目数
-        tempUser.setRightRatio((double) (user.getRightNumber() * 100 / user.getNumber()));//计算新的正确率
+        tempUser.setRightRatio((double) (tempUser.getRightNumber() * 100 / tempUser.getNumber()));//计算新的正确率
         tempUser.setAnswerQuestion(totalRelation);
 
         //先从错题列表中移除这些回答正确的问题

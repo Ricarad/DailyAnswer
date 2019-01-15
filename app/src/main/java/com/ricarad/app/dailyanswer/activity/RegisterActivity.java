@@ -160,7 +160,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     return;
                 }
                 Log.i("TGA","手机号"+phone);
-                BmobSMS.requestSMSCode(phone, "", new QueryListener<Integer>() {
+                BmobSMS.requestSMSCode(phone, "微客社区", new QueryListener<Integer>() {
                     @Override
                     public void done(Integer smsId, BmobException e) {
                         if (e == null) {

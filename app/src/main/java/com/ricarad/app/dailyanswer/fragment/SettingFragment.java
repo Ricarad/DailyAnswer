@@ -9,11 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.ricarad.app.dailyanswer.R;
 import com.ricarad.app.dailyanswer.activity.SettingMyCollectionActivity;
-import com.ricarad.app.dailyanswer.activity.SettingMyCreateActivity;
+import com.ricarad.app.dailyanswer.activity.SettingMyPostActivity;
 import com.ricarad.app.dailyanswer.activity.SettingMySettingsActivity;
 import com.ricarad.app.dailyanswer.model.User;
 
@@ -76,7 +75,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener{
     }
     //前往我的帖子界面
     private void goToSettingMyCreate() {
-        Intent intent = new Intent(getContext(), SettingMyCreateActivity.class);
+        Intent intent = new Intent(getContext(), SettingMyPostActivity.class);
         if (isAdded()) {  //判断Fragment已经依附Activity
             User user = (User)getArguments().getSerializable("user");
             intent.putExtra("user", user);

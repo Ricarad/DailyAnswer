@@ -5,17 +5,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.ricarad.app.dailyanswer.R;
 import com.ricarad.app.dailyanswer.adapter.CreationAdapter;
-import com.ricarad.app.dailyanswer.model.Mycollection;
 import com.ricarad.app.dailyanswer.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SettingMyCreateActivity extends AppCompatActivity implements View.OnClickListener {
+public class SettingMyPostActivity extends AppCompatActivity implements View.OnClickListener {
     private ListView setting_my_create_lv;
     private ImageView setting_my_create_return;
     private User user;
@@ -28,11 +26,7 @@ public class SettingMyCreateActivity extends AppCompatActivity implements View.O
         setting_my_create_return = findViewById(R.id.setting_my_create_return);
         setting_my_create_return.setOnClickListener(this);
         setting_my_create_lv = findViewById(R.id.setting_my_create_lv);
-        Mycollection n1 = new Mycollection(R.drawable.logo,"我不会","文档根本看不懂");
-        List<Mycollection> data = new ArrayList<Mycollection>();
-        data.add(n1);
-        CreationAdapter adapter = new CreationAdapter(this,data);
-        setting_my_create_lv.setAdapter(adapter);
+
     }
 
     @Override

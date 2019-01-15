@@ -171,7 +171,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             break;
             case R.id.login_forgetPass_tv: {
                 //TODO 完成忘记密码功能
-                Toast.makeText(this, "忘记密码", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginActivity.this,ForgetPwdActivity.class);
+                startActivity(intent);
             }
             break;
 

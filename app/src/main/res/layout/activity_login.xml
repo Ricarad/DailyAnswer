@@ -13,7 +13,7 @@
         android:src="@drawable/logo"
         />
    <LinearLayout
-       android:id="@+id/lin1"
+       android:id="@+id/login_lin1"
        android:orientation="vertical"
         android:layout_below="@id/logo"
        android:layout_marginTop="20dp"
@@ -47,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_marginRight="40dp"
-        android:layout_below="@+id/lin1">
+        android:layout_below="@+id/login_lin1">
         <TextView
             android:layout_marginLeft="260dp"
             android:text="记住密码"

@@ -1,9 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/login_background"
     tools:context=".activity.ForgetPwdActivity">
+    <LinearLayout
+        android:background="@drawable/register_shape_default"
+        android:alpha="0.6"
+        android:id="@+id/forget_pwd_lin1"
+        android:layout_width="match_parent"
+        android:layout_height="390dp"
+        android:padding="10dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="40dp"
+        android:orientation="vertical">
+        <EditText
+            android:background="@drawable/register_shape_default"
+            android:singleLine="true"
+            android:id="@+id/forget_pwd_password_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/password_img"
+            android:hint="新密码"
+            android:textSize="30dp"
+            android:inputType="textPassword" />
+        <EditText
+            android:background="@drawable/register_shape_default"
+            android:singleLine="true"
+            android:id="@+id/forget_pwd_confirm_password_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/password_img"
+            android:hint="确认密码"
+            android:textSize="30dp"
+            android:inputType="textPassword" />
+        <LinearLayout
+            android:background="@drawable/register_shape_default"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
-</android.support.constraint.ConstraintLayout>
+            <EditText
+                android:singleLine="true"
+                android:id="@+id/forget_pwd_phone_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/phone_img"
+                android:hint="手机号码"
+                android:inputType="phone"
+                android:textSize="30dp" />
+            <Button
+                android:id="@+id/forget_pwd_send_vetification_btn"
+                android:textSize="20dp"
+                android:background="@drawable/register_button_selector"
+                android:textColor="@color/colorWhite"
+                android:text="验证码"
+                android:layout_margin="10dp"
+                android:layout_weight="2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <EditText
+            android:background="@drawable/register_shape_default"
+            android:singleLine="true"
+            android:id="@+id/forget_pwd_verification_code_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/verification_code_img"
+            android:hint="请输入收到的验证码"
+            android:inputType="number"
+            android:text=""
+            android:textSize="30dp" />
+    </LinearLayout>
+    <Button
+        android:alpha="0.7"
+        android:layout_below="@id/forget_pwd_lin1"
+        android:id="@+id/forget_pwd_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="40dp"
+        android:layout_weight="0.9"
+        android:textColor="@color/colorWhite"
+        android:background="@drawable/register_button_selector"
+        android:text="确认找回"
+        android:textSize="30dp"
+        />
+</RelativeLayout>

@@ -1,6 +1,5 @@
 package com.ricarad.app.dailyanswer.activity;
 
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -9,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
@@ -34,24 +32,23 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobSMS;
-import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobDate;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.SaveListener;
-import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.functions.Consumer;
+
+import static com.ricarad.app.dailyanswer.common.Constant.BMOBAPPKEY;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -100,6 +97,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_register);
         x.view().inject(this);
+        Bmob.initialize(this, BMOBAPPKEY);
         sendMsgBtn.setOnClickListener(this);
         registerBtn.setOnClickListener(this);
         headImg.setOnClickListener(this);
@@ -115,7 +113,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
-    private Boolean registerVerficate() {
+    private Boolean editVerficate() {
         String nickName = nickNameEt.getText().toString();
         String userName = userNameEt.getText().toString();
         String password = passwordEt.getText().toString();
@@ -159,14 +157,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     Toast.makeText(RegisterActivity.this, "请输入正确格式的手机号", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Log.i("TGA","手机号"+phone);
                 BmobSMS.requestSMSCode(phone, "微客社区", new QueryListener<Integer>() {
                     @Override
                     public void done(Integer smsId, BmobException e) {
                         if (e == null) {
                             timer.start();
                             Toast.makeText(RegisterActivity.this, "发送验证码成功，短信ID:" + smsId + "\n", Toast.LENGTH_LONG).show();
-                            verficationCodeEt.setHint("请输入短信ID为" + smsId + "的验证码");
                         } else {
                             Toast.makeText(RegisterActivity.this, "发送验证码失败,失败信息：" + e.getErrorCode() + ":" + e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.i("TGA", "发送验证码失败" + e.getErrorCode() + ":" + e.getMessage());
@@ -176,7 +172,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             }
             break;
             case R.id.register_button: {
-                if (!registerVerficate()) {
+                if (!editVerficate()) {
                     return;
                 }
                 final String code = verficationCodeEt.getText().toString();

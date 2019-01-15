@@ -9,10 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.ricarad.app.dailyanswer.R;
 import com.ricarad.app.dailyanswer.activity.SettingMyCollectionActivity;
+import com.ricarad.app.dailyanswer.activity.SettingMyPostActivity;
+import com.ricarad.app.dailyanswer.activity.SettingMySettingsActivity;
 import com.ricarad.app.dailyanswer.model.User;
 
 public class SettingFragment extends Fragment implements View.OnClickListener{
@@ -52,14 +53,44 @@ public class SettingFragment extends Fragment implements View.OnClickListener{
             }
                 break;
             case R.id.setting_fragment_guide_mycreation:{
-
+                goToSettingMyCreate();
+                break;
+            }
+            case R.id.setting_fragment_guide_settings:{
+                goToSettingMySettings();
+                break;
             }
         }
 
-    }
 
+    }
+//前往收藏界面
     private void goToSettingMyCollect() {
         Intent intent = new Intent(getContext(), SettingMyCollectionActivity.class);
-        startActivity(intent);
+        if (isAdded()) {  //判断Fragment已经依附Activity
+            User user = (User)getArguments().getSerializable("user");
+            intent.putExtra("user", user);
+            startActivity(intent);
+        }
     }
+    //前往我的帖子界面
+    private void goToSettingMyCreate() {
+        Intent intent = new Intent(getContext(), SettingMyPostActivity.class);
+        if (isAdded()) {  //判断Fragment已经依附Activity
+            User user = (User)getArguments().getSerializable("user");
+            intent.putExtra("user", user);
+            startActivity(intent);
+        }
+    }
+  //前往设置界面
+    private void goToSettingMySettings() {
+        Intent intent = new Intent(getContext(), SettingMySettingsActivity.class);
+        if (isAdded()) {  //判断Fragment已经依附Activity
+            User user = (User)getArguments().getSerializable("user");
+            intent.putExtra("user", user);
+            startActivity(intent);
+        }
+    }
+
+
 }

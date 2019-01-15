@@ -84,10 +84,10 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case REGISTER_CODE: {
-             /*   if (resultCode == RESULT_OK) {
-                    accountEv.setText(data.getStringExtra("usercount"));
+                if (resultCode == RESULT_OK) {
+                    accountEv.setText(data.getStringExtra("userName"));
                     passwordEv.setText(data.getStringExtra("password"));
-                }*/
+                }
             }
             break;
             case GUIDE_CODE: {
@@ -165,13 +165,14 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             }
             break;
             case R.id.login_register_tv: {
-                Toast.makeText(this, "注册按钮", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
                 startActivityForResult(intent,REGISTER_CODE);
             }
             break;
             case R.id.login_forgetPass_tv: {
-                Toast.makeText(this, "忘记密码", Toast.LENGTH_SHORT).show();
+                //TODO 完成忘记密码功能
+                Intent intent = new Intent(LoginActivity.this,ForgetPwdActivity.class);
+                startActivity(intent);
             }
             break;
 

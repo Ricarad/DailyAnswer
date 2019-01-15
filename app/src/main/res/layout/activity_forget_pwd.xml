@@ -1,75 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login_background"
-    tools:context=".activity.RegisterActivity">
-
+    tools:context=".activity.ForgetPwdActivity">
     <LinearLayout
         android:background="@drawable/register_shape_default"
         android:alpha="0.6"
-        android:id="@+id/lin1"
+        android:id="@+id/forget_pwd_lin1"
         android:layout_width="match_parent"
-        android:layout_height="520dp"
+        android:layout_height="390dp"
         android:padding="10dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="40dp"
         android:layout_marginTop="20dp"
         android:layout_marginRight="40dp"
         android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/register_shape_default"
-            android:orientation="horizontal">
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/register_head_img"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="5"
-                android:src="@drawable/head_img_default" />
-
-            <EditText
-                android:singleLine="true"
-                android:id="@+id/register_nickname_text"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:textSize="30dp"
-                android:hint="昵称,不超过7个字符" />
-        </LinearLayout>
-
         <EditText
             android:background="@drawable/register_shape_default"
             android:singleLine="true"
-            android:id="@+id/register_username_text"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_weight="1"
-            android:drawableLeft="@drawable/account_img"
-            android:textSize="30dp"
-            android:hint="用户名,由字母和数字组成" />
-
-        <EditText
-            android:background="@drawable/register_shape_default"
-            android:singleLine="true"
-            android:id="@+id/register_password_text"
+            android:id="@+id/forget_pwd_password_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:drawableLeft="@drawable/password_img"
-            android:hint="密码"
+            android:hint="新密码"
             android:textSize="30dp"
             android:inputType="textPassword" />
-
         <EditText
             android:background="@drawable/register_shape_default"
             android:singleLine="true"
-            android:id="@+id/register_confirm_password_text"
+            android:id="@+id/forget_pwd_confirm_password_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
@@ -88,7 +52,7 @@
 
             <EditText
                 android:singleLine="true"
-                android:id="@+id/register_phone_text"
+                android:id="@+id/forget_pwd_phone_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -97,7 +61,7 @@
                 android:inputType="phone"
                 android:textSize="30dp" />
             <Button
-                android:id="@+id/register_send_vetification_btn"
+                android:id="@+id/forget_pwd_send_vetification_btn"
                 android:textSize="20dp"
                 android:background="@drawable/register_button_selector"
                 android:textColor="@color/colorWhite"
@@ -107,11 +71,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>
-
         <EditText
             android:background="@drawable/register_shape_default"
             android:singleLine="true"
-            android:id="@+id/register_verification_code_text"
+            android:id="@+id/forget_pwd_verification_code_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
@@ -124,8 +87,8 @@
     </LinearLayout>
     <Button
         android:alpha="0.7"
-        android:layout_below="@id/lin1"
-        android:id="@+id/register_button"
+        android:layout_below="@id/forget_pwd_lin1"
+        android:id="@+id/forget_pwd_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"
@@ -134,7 +97,7 @@
         android:layout_weight="0.9"
         android:textColor="@color/colorWhite"
         android:background="@drawable/register_button_selector"
-        android:text="注册"
+        android:text="确认找回"
         android:textSize="30dp"
         />
 </RelativeLayout>

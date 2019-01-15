@@ -118,6 +118,7 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
     public void initQuestionList() {
         final ProgressDialog pgd = ProgressDialog.show(AnswerQuestionActivity.this, "请稍等", "正在加载题目");
         BmobQuery<Question> query = new BmobQuery<>();
+        query.setLimit(10);
         query.findObjects(new FindListener<Question>() {
             @Override
             public void done(List<Question> list, BmobException e) {
@@ -261,7 +262,6 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
                     }
 
                 } else if (answerType == EXAM_CODE) {
-                    //TODO 完善考试代码
                     AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                     dialog.setIcon(android.R.drawable.stat_sys_warning);
                     dialog.setTitle("注意");

@@ -38,11 +38,11 @@ public class Constant {
         public final static int EMPTY = 2;
     }
     public static class QuestionType{
-       public final static String JAVA = "java";
-       public final static String C = "c";
-       public final static String PHP = "php";
-       public final static String PYTHON = "python";
-       public final static String ANDROID = "android";
+       public final static String JAVA = "JAVA";
+       public final static String C = "C";
+       public final static String PHP = "PHP";
+       public final static String PYTHON = "PYTHON";
+       public final static String ANDROID = "ANDROID";
        /**
         * 数据结构
         */

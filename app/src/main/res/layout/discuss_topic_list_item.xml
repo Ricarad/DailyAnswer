@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:padding="10dp">
+
+    <RelativeLayout
+        android:id="@+id/discuss_item_header_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="212dp"
+        android:gravity="center_vertical">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/discuss_item_potrait_iv"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/logo" />
+
+        <TextView
+            android:id="@+id/discuss_item_nickname_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/discuss_item_potrait_iv"
+            android:singleLine="true"
+            android:text="三只松鼠"
+            android:textColor="@color/colorMarkPostText"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/discuss_item_time_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:text="5分钟前"
+            android:textSize="18sp" />
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/discuss_item_title_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="今天的第一个水贴"
+        android:paddingLeft="6sp"
+        android:paddingRight="6sp"
+        android:textSize="22sp"
+        android:textColor="@color/colorMarkPostText"
+        android:layout_below="@+id/discuss_item_header_rl"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/discuss_item_title_tv"
+        android:gravity="bottom">
+        <ImageView
+            android:id="@+id/discuss_item_icon_iv"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="8dp"
+            android:src="@drawable/discuss_fragment_comment" />
+        <TextView
+            android:id="@+id/discuss_item_count_tv"
+            android:textSize="18sp"
+            android:textColor="@color/colorMarkPostText"
+            android:layout_marginLeft="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:gravity="center_vertical"
+            android:text="5"
+            android:layout_toRightOf="@+id/discuss_item_icon_iv"/>
+    </LinearLayout>
+</RelativeLayout>

@@ -61,12 +61,23 @@
                 android:textSize="18sp"/>
         </LinearLayout>
     </LinearLayout>
+    <TextView
+        android:id="@+id/discuss_msg_tv"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:visibility="gone"
+        android:gravity="center"
+        android:textSize="23sp"
+        android:textColor="@color/colorMarkPostText"
+        android:layout_below="@+id/discuss_header_ll"
+        android:layout_above="@id/discuss_footer_ll"/>
     <LinearLayout
+        android:id="@+id/discuss_footer_ll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/discuss_header_ll">
         <ListView
-            android:id="@+id/discuss_"
+            android:id="@+id/discuss_topics_lv"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         </ListView>

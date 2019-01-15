@@ -9,14 +9,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ricarad.app.dailyanswer.R;
 import com.ricarad.app.dailyanswer.activity.AddTopicActivity;
+import com.ricarad.app.dailyanswer.adapter.TopicAdapter;
+import com.ricarad.app.dailyanswer.model.Topic;
 import com.ricarad.app.dailyanswer.model.User;
 
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
+
 public class DiscussFragment extends Fragment implements View.OnClickListener{
-    private LinearLayout ll_add; //发帖"按钮"
+    private ListView topics_lv;
+    private TextView msg_tv;
+    private List<Topic> topicList;
+    private TopicAdapter topicAdapter;
 
     @Nullable
     @Override
@@ -29,9 +45,36 @@ public class DiscussFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ll_add = getActivity().findViewById(R.id.discuss_add_ll);
+        LinearLayout add_ll = getActivity().findViewById(R.id.discuss_add_ll);
+        topics_lv = getActivity().findViewById(R.id.discuss_topics_lv);
+        msg_tv = getActivity().findViewById(R.id.discuss_msg_tv);
 
-        ll_add.setOnClickListener(this);
+        add_ll.setOnClickListener(this);
+
+        topicList = new ArrayList<>();
+        topicAdapter = new TopicAdapter(getContext(), topicList);
+        fetchAllTopics();
+    }
+
+    private void fetchAllTopics() {
+        BmobQuery<Topic> query = new BmobQuery<Topic>();
+        query.setLimit(50);
+        query.include("author");
+        query.findObjects(new FindListener<Topic>() {
+            @Override
+            public void done(List<Topic> list, BmobException e) {
+                   if (e == null){
+                       if (list.isEmpty()){
+                           msg_tv.setText("抱歉，暂时没有帖子，快去发帖吧！");
+                       }else{
+                           topicList.addAll(list);
+                           topics_lv.setAdapter(topicAdapter);
+                       }
+                   }else{
+                       Toast.makeText(getContext(), "获取帖子失败,"+e.getMessage(), Toast.LENGTH_LONG).show();
+                   }
+            }
+        });
     }
 
     @Override

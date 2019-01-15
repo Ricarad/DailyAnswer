@@ -10,6 +10,8 @@ import cn.bmob.v3.datatype.BmobRelation;
 public class Topic extends BmobObject {
     private String title;
     private String hostPostId;
+    private User author;
+    private Integer replyCount;
 
     public String getTitle() {
         return title;
@@ -27,11 +29,29 @@ public class Topic extends BmobObject {
         this.hostPostId = hostPostId;
     }
 
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    public Integer getReplyCount() {
+        return replyCount;
+    }
+
+    public void setReplyCount(Integer replyCount) {
+        this.replyCount = replyCount;
+    }
+
     @Override
     public String toString() {
         return "Topic{" +
                 "title='" + title + '\'' +
                 ", hostPostId='" + hostPostId + '\'' +
+                ", author=" + author +
+                ", replyCount=" + replyCount +
                 '}';
     }
 }

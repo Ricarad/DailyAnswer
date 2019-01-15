@@ -1,13 +1,10 @@
 package com.ricarad.app.dailyanswer.activity;
 
 import android.app.AlertDialog;
-import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,15 +13,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.qingmei2.rximagepicker.core.RxImagePicker;
 import com.qingmei2.rximagepicker.entity.Result;
 import com.qingmei2.rximagepicker.ui.SystemImagePicker;
 import com.ricarad.app.dailyanswer.R;
-import com.ricarad.app.dailyanswer.application.MyApplication;
-import com.ricarad.app.dailyanswer.common.PostImagePicker;
 import com.ricarad.app.dailyanswer.common.PostUtil;
 import com.ricarad.app.dailyanswer.model.Post;
 import com.ricarad.app.dailyanswer.model.Topic;
@@ -51,7 +45,7 @@ public class AddTopicActivity extends AppCompatActivity implements View.OnTouchL
     boolean continueFlag;
     boolean hasFailed;
 
-    static String TAG = "Add Topic ========>";
+    public static String POST_TAG = "Add Topic ========>";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +124,7 @@ public class AddTopicActivity extends AppCompatActivity implements View.OnTouchL
     }
 
     private void commitTopic() {
-        Log.i(TAG, "2");
+        Log.i(POST_TAG, "2");
         final String title = title_et.getText().toString();
         if (title.isEmpty()){
             showErrMessage("标题不能为空");
@@ -151,17 +145,19 @@ public class AddTopicActivity extends AppCompatActivity implements View.OnTouchL
             @Override
             public void done(String s, BmobException e) {
                 if (e == null){
-                    postId = s;Log.i(TAG, "1");
+                    postId = s;Log.i(POST_TAG, "1");
 
                     topic = new Topic();
                     topic.setTitle(title);
                     topic.setHostPostId(postId);
+                    topic.setAuthor(mUser);
+                    topic.setReplyCount(0);
                     topic.save(new SaveListener<String>() {
                         @Override
                         public void done(String s, BmobException e) {
                             if (e == null) {
 
-                                Log.i(TAG, "4");
+                                Log.i(POST_TAG, "4");
                                 PostUtil postUtil = new PostUtil(AddTopicActivity.this, postId);
                                 String ripeHtml = postUtil.getHtml(content);
                                 if (ripeHtml == null){
@@ -172,23 +168,23 @@ public class AddTopicActivity extends AppCompatActivity implements View.OnTouchL
                                 }
                                 post.setContent(ripeHtml);
                                 post.setTopic(topic);
-                                Log.i(TAG, "5");
+                                Log.i(POST_TAG, "5");
                                 post.update(postId, new UpdateListener() {
                                     @Override
                                     public void done(BmobException e) {
-                                        Log.i(TAG, "6");
+                                        Log.i(POST_TAG, "6");
                                         pd.dismiss();
                                         if (e == null) {
                                                 Toast.makeText(AddTopicActivity.this, "发布成功", Toast.LENGTH_SHORT).show();
                                                 finish();
                                         } else {
-                                            Log.i(TAG, "8");
+                                            Log.i(POST_TAG, "8");
                                             showErrMessage("发布失败，请检查网络");
                                         }
                                     }
                                 });
                             } else {
-                                Log.i(TAG, "3");
+                                Log.i(POST_TAG, "3");
                                 pd.dismiss();
                                 showErrMessage("发布失败，请检查网络");
                             }

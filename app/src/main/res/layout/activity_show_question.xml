@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:orientation="vertical">
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="90dp"
@@ -18,6 +17,7 @@
             android:background="@drawable/back_white_selector"
             android:clickable="true" />
         <TextView
+            android:id="@+id/show_question_title_tv"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_alignParentTop="true"
@@ -29,7 +29,7 @@
 
         <ImageView
             android:clickable="true"
-            android:id="@+id/show_question_collect_iv"
+            android:id="@+id/show_question_right_iv"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentRight="true"

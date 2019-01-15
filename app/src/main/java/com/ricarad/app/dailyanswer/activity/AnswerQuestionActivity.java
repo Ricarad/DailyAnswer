@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,14 +31,13 @@ import java.util.List;
 
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 import static com.ricarad.app.dailyanswer.common.Constant.BMOBAPPKEY;
-import static com.ricarad.app.dailyanswer.common.Constant.GradeType.ANSWERTYPE;
+import static com.ricarad.app.dailyanswer.common.Constant.GradeType.ANSWER_TYPE;
 import static com.ricarad.app.dailyanswer.common.Constant.GradeType.EXAM_CODE;
 import static com.ricarad.app.dailyanswer.common.Constant.GradeType.PRACTICE_CODE;
 import static com.ricarad.app.dailyanswer.common.Constant.USER;
@@ -90,7 +87,7 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_answer_question);
         user = (User) getIntent().getSerializableExtra("user");
-        answerType = getIntent().getIntExtra(ANSWERTYPE, 0);  //获取当前答题的模式，默认是练习
+        answerType = getIntent().getIntExtra(ANSWER_TYPE, 0);  //获取当前答题的模式，默认是练习
         Bmob.initialize(this, BMOBAPPKEY);
         x.view().inject(this);
         initView();
@@ -239,15 +236,17 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
                                 @Override
                                 public void done(BmobException e) {
                                     if (e == null) {
+                                        finish();
                                         Toast.makeText(AnswerQuestionActivity.this, "已将做过的题目保存至最近练习记录", Toast.LENGTH_SHORT).show();
                                     } else {
+                                        finish();
                                         Toast.makeText(AnswerQuestionActivity.this, "保存做题日志失败：" + e.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
                         }
                     }
-                    finish();
+
                 } else if (answerType == EXAM_CODE) {
                     //TODO 完善考试代码
                 }
@@ -301,7 +300,7 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
                 answerList.set(currentIndex, selectItemId);
                 intent.putExtra("questionList", questionList);
                 intent.putExtra("answerList", answerList);
-                intent.putExtra(ANSWERTYPE, answerType);
+                intent.putExtra(ANSWER_TYPE, answerType);
                 intent.putExtra(USER, user);
                 startActivity(intent);
                 finish();

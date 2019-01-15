@@ -53,28 +53,41 @@ public class DiscussFragment extends Fragment implements View.OnClickListener{
 
         topicList = new ArrayList<>();
         topicAdapter = new TopicAdapter(getContext(), topicList);
+        topics_lv.setAdapter(topicAdapter);
         fetchAllTopics();
     }
 
     private void fetchAllTopics() {
         BmobQuery<Topic> query = new BmobQuery<Topic>();
         query.setLimit(50);
+        query.order("-updatedAt");
         query.include("author");
         query.findObjects(new FindListener<Topic>() {
             @Override
             public void done(List<Topic> list, BmobException e) {
                    if (e == null){
                        if (list.isEmpty()){
+                           msg_tv.setVisibility(View.VISIBLE);
                            msg_tv.setText("抱歉，暂时没有帖子，快去发帖吧！");
                        }else{
+                           msg_tv.setVisibility(View.GONE);
+                           topicList.clear();
                            topicList.addAll(list);
-                           topics_lv.setAdapter(topicAdapter);
+                           topicAdapter.notifyDataSetChanged();
                        }
                    }else{
                        Toast.makeText(getContext(), "获取帖子失败,"+e.getMessage(), Toast.LENGTH_LONG).show();
                    }
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (isAdded()){
+            fetchAllTopics();
+        }
     }
 
     @Override

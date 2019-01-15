@@ -27,6 +27,8 @@ public class ViewUtil {
         double diff_d = diff;
         if (diff < 1000*60*60){
             int mins = diff/(1000*60);
+            if (mins == 0)
+                return "刚刚";
             return mins + "分钟前";
         }else if (diff_d < 1000.0*60*60*24){
             double hours = diff/(1000*60*60);

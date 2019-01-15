@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-
 import com.ricarad.app.dailyanswer.R;
 
 
@@ -30,13 +29,13 @@ import java.util.Date;
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobDate;
-import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 import static com.ricarad.app.dailyanswer.common.Constant.*;
+import static com.ricarad.app.dailyanswer.common.Constant.ResultCode.GUIDE_CODE;
+import static com.ricarad.app.dailyanswer.common.Constant.ResultCode.REGISTER_CODE;
 
 
 public class LoginActivity extends Activity implements View.OnClickListener {
@@ -92,8 +91,11 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 }
             }
             break;
-            case GUIDEVIEW_CODE: {
-
+            case GUIDE_CODE: {
+                if (resultCode == RESULT_OK) {
+                    User tempUser = (User) data.getSerializableExtra(USER);
+                    tempUser.logOut();
+                }
             }
             break;
         }
@@ -112,6 +114,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                     User user = new User();
                     user.setUsername(account);
                     user.setPassword(password);
+                    //  Log.i("TGA","登陆用户的详细信息"+user.toString());
                     user.login(new SaveListener<User>() {
                         @Override
                         public void done(User user, BmobException e) {
@@ -138,12 +141,12 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                                     user.setLastLoginDate(BmobDate.createBmobDate("yyyy-MM-dd HH:mm:ss", sdf.format(new Date())));
                                     final Intent intent = new Intent(LoginActivity.this, GuideActivity.class);
                                     intent.putExtra(USER, user);
-                                    intent.putExtra(USERID,user.getObjectId());
+                                    intent.putExtra(USERID, user.getObjectId());
                                     user.update(user.getObjectId(), new UpdateListener() {
                                         @Override
                                         public void done(BmobException e) {
                                             if (e == null) {
-                                                startActivity(intent);
+                                                startActivityForResult(intent, GUIDE_CODE);
                                             } else {
                                                 Snackbar.make(view, "更新登录信息失败：" + e.getMessage(), Snackbar.LENGTH_SHORT).show();
                                             }
@@ -187,17 +190,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    @Override
-    protected void onResume() {
-        //  stateText.setText("请登录");
-        loginButton.setText("登录");
-        loginButton.setEnabled(true);
-        registerButton.setEnabled(true);
-        super.onResume();
-    }
 
-    public void login(final String account, final String password) {
-        //TODO 做查询验证，然后跳转
 
-    }
+
 }

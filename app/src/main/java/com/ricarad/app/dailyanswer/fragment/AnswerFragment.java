@@ -17,16 +17,17 @@ import android.widget.Toast;
 
 import com.ricarad.app.dailyanswer.R;
 import com.ricarad.app.dailyanswer.activity.AnswerQuestionActivity;
+import com.ricarad.app.dailyanswer.activity.CollectedActivity;
+import com.ricarad.app.dailyanswer.activity.MistakeActivity;
+import com.ricarad.app.dailyanswer.activity.RecordActivity;
 import com.ricarad.app.dailyanswer.adapter.ToolBarAdapter;
-import com.ricarad.app.dailyanswer.common.UsetUtil;
 import com.ricarad.app.dailyanswer.model.User;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.QueryListener;
-import cn.bmob.v3.listener.UpdateListener;
 
-import static com.ricarad.app.dailyanswer.common.Constant.GradeType.ANSWERTYPE;
+import static com.ricarad.app.dailyanswer.common.Constant.GradeType.ANSWER_TYPE;
 import static com.ricarad.app.dailyanswer.common.Constant.GradeType.PRACTICE_CODE;
 import static com.ricarad.app.dailyanswer.common.Constant.USER;
 
@@ -41,7 +42,7 @@ public class AnswerFragment extends Fragment implements AdapterView.OnItemClickL
 
     private User user;
     private String[] titleArr = new String[]{
-            "随机练习", "认真考试", "练习记录", "错题本", "收藏夹"
+            "随机练习", "认真考试", "练习记录", "错题回顾", "收藏夹"
     };
     private int[] imgArr = new int[]{R.drawable.answer_fragment_practice, R.drawable.answer_fragment_exam,
             R.drawable.answer_fragment_record, R.drawable.answer_fragment_mistakes, R.drawable.answer_fragment_collect};
@@ -100,15 +101,13 @@ public class AnswerFragment extends Fragment implements AdapterView.OnItemClickL
                     if (e == null) {
                             user = newUser;
                             initView();
-                            Log.i("TGA",user.toString());
+
                     } else {
                             Toast.makeText(getContext(),"更新用户信息失败！",Toast.LENGTH_SHORT);
                     }
                 }
             });
         }
-
-        Log.i("TGA", "处于AnswerFragment中的onResume方法");
     }
 
     @Override
@@ -116,21 +115,31 @@ public class AnswerFragment extends Fragment implements AdapterView.OnItemClickL
         switch (position) {
             case 0: {
                 Intent intent = new Intent(getContext(), AnswerQuestionActivity.class);
-                intent.putExtra(ANSWERTYPE, PRACTICE_CODE);
+                intent.putExtra(ANSWER_TYPE, PRACTICE_CODE);
                 intent.putExtra(USER, user);
                 startActivity(intent);
             }
             break;
             case 1: {
+
             }
             break;
             case 2: {
+                Intent intent = new Intent(getContext(), RecordActivity.class);
+                intent.putExtra(USER,user);
+                startActivity(intent);
             }
             break;
             case 3: {
+                Intent intent = new Intent(getContext(), MistakeActivity.class);
+                intent.putExtra(USER,user);
+                startActivity(intent);
             }
             break;
             case 4: {
+                Intent intent = new Intent(getContext(), CollectedActivity.class);
+                intent.putExtra(USER,user);
+                startActivity(intent);
             }
             break;
 

@@ -123,6 +123,7 @@ public class User extends BmobUser {
     public String toString() {
         return "User{" +
                 "nickName='" + nickName + '\'' +
+                ", username=" + super.getUsername() +
                 ", rightRatio=" + rightRatio +
                 ", userImg=" + userImg +
                 ", number=" + number +

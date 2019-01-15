@@ -26,18 +26,22 @@ public class GuideActivity extends AppCompatActivity {
     private Fragment[] fragments;
     private int lastfragment;//用于记录上个选择的Fragment
     private User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide);
         initFragment();
+        Intent intent = new Intent();
+        intent.putExtra(USER,user);
+        setResult(RESULT_OK,intent);
     }
 
-    public void initFragment(){
+    public void initFragment() {
         Intent intent = getIntent();
-        user = (User)intent.getSerializableExtra(USER);
+        user = (User) intent.getSerializableExtra(USER);
         Bundle bundle = new Bundle();
-        bundle.putSerializable(USER,user);
+        bundle.putSerializable(USER, user);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         answerFragment = new AnswerFragment();
@@ -46,21 +50,22 @@ public class GuideActivity extends AppCompatActivity {
         discussFragment.setArguments(bundle);
         settingFragment = new SettingFragment();
         settingFragment.setArguments(bundle);
-        fragments = new Fragment[]{answerFragment,discussFragment,settingFragment};
+        fragments = new Fragment[]{answerFragment, discussFragment, settingFragment};
         lastfragment = 0;
-        getSupportFragmentManager().beginTransaction().replace(R.id.guide_mainview,answerFragment)
+        getSupportFragmentManager().beginTransaction().replace(R.id.guide_mainview, answerFragment)
                 .show(answerFragment).commit();
 
     }
 
-    private void switchFragment(int lastfragment,int index){
-        FragmentTransaction transaction =getSupportFragmentManager().beginTransaction();
+    private void switchFragment(int lastfragment, int index) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.hide(fragments[lastfragment]);//隐藏上个Fragment
-        if(fragments[index].isAdded() == false){
-            transaction.add(R.id.guide_mainview,fragments[index]);
+        if (fragments[index].isAdded() == false) {
+            transaction.add(R.id.guide_mainview, fragments[index]);
         }
         transaction.show(fragments[index]).commitAllowingStateLoss();
     }
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -68,28 +73,25 @@ public class GuideActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_answer: {
-                    if(lastfragment!=0)
-                    {
-                        switchFragment(lastfragment,0);
-                        lastfragment=0;
+                    if (lastfragment != 0) {
+                        switchFragment(lastfragment, 0);
+                        lastfragment = 0;
                     }
 
                     return true;
                 }
-                case R.id.navigation_discuss:{
-                    if(lastfragment!=1)
-                    {
-                        switchFragment(lastfragment,1);
-                        lastfragment=1;
+                case R.id.navigation_discuss: {
+                    if (lastfragment != 1) {
+                        switchFragment(lastfragment, 1);
+                        lastfragment = 1;
                     }
                     return true;
                 }
 
-                case R.id.navigation_setting:{
-                    if(lastfragment!=2)
-                    {
-                        switchFragment(lastfragment,2);
-                        lastfragment=2;
+                case R.id.navigation_setting: {
+                    if (lastfragment != 2) {
+                        switchFragment(lastfragment, 2);
+                        lastfragment = 2;
                     }
                     return true;
                 }

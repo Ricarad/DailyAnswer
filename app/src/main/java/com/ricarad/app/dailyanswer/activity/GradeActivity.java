@@ -1,6 +1,7 @@
 package com.ricarad.app.dailyanswer.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,13 +27,14 @@ import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.UpdateListener;
 
-import static com.ricarad.app.dailyanswer.common.Constant.GradeType.ANSWERTYPE;
-import static com.ricarad.app.dailyanswer.common.Constant.GradeType.EXAM_CODE;
-import static com.ricarad.app.dailyanswer.common.Constant.GradeType.PRACTICE_CODE;
+import static com.ricarad.app.dailyanswer.common.Constant.ActivityFlag.ACTIVITY_FLAG;
+import static com.ricarad.app.dailyanswer.common.Constant.ActivityFlag.GRADE_ACTIVITY_CODE;
+import static com.ricarad.app.dailyanswer.common.Constant.GradeType.ANSWER_TYPE;
 import static com.ricarad.app.dailyanswer.common.Constant.QuestionResultType.EMPTY;
 import static com.ricarad.app.dailyanswer.common.Constant.QuestionResultType.ERROR;
 import static com.ricarad.app.dailyanswer.common.Constant.QuestionResultType.RIGHT;
 import static com.ricarad.app.dailyanswer.common.Constant.USER;
+import static com.ricarad.app.dailyanswer.common.Constant.*;
 
 public class GradeActivity extends Activity implements View.OnClickListener,ListView.OnItemClickListener {
 
@@ -60,7 +62,6 @@ public class GradeActivity extends Activity implements View.OnClickListener,List
     private ArrayList<Question> emptyQuestionList = new ArrayList<>();
     private User user;
     private int answerType = 0;//表明是考试还是练习 0为练习结果 1为考试结果
-
     private HashMap<Question,Integer> questionResultType = new HashMap<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,7 @@ public class GradeActivity extends Activity implements View.OnClickListener,List
         questionList = (ArrayList<Question>) getIntent().getSerializableExtra("questionList");
         answerList = getIntent().getIntegerArrayListExtra("answerList");
         user = (User) getIntent().getSerializableExtra(USER);
-        answerType = getIntent().getIntExtra(ANSWERTYPE,0); //获取当前答题结果的模式，默认是练习
+        answerType = getIntent().getIntExtra(ANSWER_TYPE,0); //获取当前答题结果的模式，默认是练习
         if (questionList == null || answerList == null || user == null || answerList.size() != questionList.size()) {
             Toast.makeText(this, "数据加载发生错误！", Toast.LENGTH_SHORT).show();
             finish();
@@ -86,6 +87,12 @@ public class GradeActivity extends Activity implements View.OnClickListener,List
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Question question = questionList.get(position);
+            Intent intent = new Intent(GradeActivity.this,ShowQuestionActivity.class);
+            intent.putExtra("answerId",answerList.get(position));
+            intent.putExtra(USER,user);
+            intent.putExtra("question",question);
+            intent.putExtra(ACTIVITY_FLAG,GRADE_ACTIVITY_CODE);
+            startActivity(intent);
     }
     private void initView() {
         errorQuestionList = new ArrayList<>();
@@ -156,14 +163,11 @@ public class GradeActivity extends Activity implements View.OnClickListener,List
         rightRatioTv.setText(rightRatio.toString());
         User tempUser = new User();
         tempUser.setObjectId(user.getObjectId());
-        Log.i("TGA","更新前的总题目数量"+user.getNumber()+"");
         tempUser.setNumber(user.getNumber() + totalNumber);
-        Log.i("TGA","更新后的总题目数量"+tempUser.getNumber()+"");
         tempUser.setRightNumber(user.getRightNumber() + rightNumber);//计算回答正确的题目数
         tempUser.setRightRatio((double) (user.getRightNumber() * 100 / user.getNumber()));//计算新的正确率
         tempUser.setAnswerQuestion(totalRelation);
-        Log.i("TGA","答对题目的总次数"+tempUser.getRightNumber()+"");
-        Log.i("TGA","答题目的正确率"+tempUser.getRightRatio()+"");
+
         //先从错题列表中移除这些回答正确的问题
         BmobRelation errorRelation = new BmobRelation();
         if (rightQuestionList.size() != 0) {

@@ -14,8 +14,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- 允许读取手机状态 用于创建BmobInstallation -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!-- 图片选择器所需权限 -->
+    <!--图片选择器所需权限-->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
 
     <application
         android:name=".application.MyApplication"
@@ -46,7 +47,10 @@
         <activity android:name=".activity.AnswerQuestionActivity" />
         <activity android:name=".activity.AddTopicActivity" />
         <activity android:name=".activity.GradeActivity" />
-        <activity android:name=".activity.ShowQuestionActivity" />
+        <activity android:name=".activity.ShowQuestionActivity"></activity>
+        <activity android:name=".activity.MistakeActivity" />
+        <activity android:name=".activity.CollectedActivity" />
+        <activity android:name=".activity.RecordActivity"></activity>
         <activity android:name=".activity.SettingMyCollectionActivity" />
         <activity android:name=".activity.SettingMyCreateActivity"></activity>
     </application>

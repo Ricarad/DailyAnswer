@@ -1,6 +1,7 @@
 package com.ricarad.app.dailyanswer.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -13,8 +14,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ricarad.app.dailyanswer.R;
+import com.ricarad.app.dailyanswer.activity.PostsActivity;
 import com.ricarad.app.dailyanswer.common.ViewUtil;
 import com.ricarad.app.dailyanswer.model.Topic;
+import com.ricarad.app.dailyanswer.model.User;
 
 import java.util.List;
 
@@ -30,10 +33,12 @@ import static com.ricarad.app.dailyanswer.activity.AddTopicActivity.POST_TAG;
 public class TopicAdapter extends BaseAdapter {
     private Context mContext;
     private List<Topic> topicList;
+    private User mUser;
 
-    public TopicAdapter(Context mContext, List<Topic> topicList) {
+    public TopicAdapter(Context mContext, List<Topic> topicList, User mUser) {
         this.mContext = mContext;
         this.topicList = topicList;
+        this.mUser = mUser;
     }
 
     @Override
@@ -52,8 +57,8 @@ public class TopicAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View view = LayoutInflater.from(mContext).from(mContext).inflate(R.layout.discuss_topic_list_item, null);
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        final View view = LayoutInflater.from(mContext).from(mContext).inflate(R.layout.discuss_topic_list_item, null);
         final ImageView potrait_iv = view.findViewById(R.id.discuss_item_potrait_iv);
         TextView nickname_tv = view.findViewById(R.id.discuss_item_nickname_tv);
         TextView time_tv = view.findViewById(R.id.discuss_item_time_tv);
@@ -91,6 +96,16 @@ public class TopicAdapter extends BaseAdapter {
         title_tv.setText(topicList.get(position).getTitle());
         //设置回复数
         count_tv.setText(topicList.get(position).getReplyCount().toString());
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, PostsActivity.class);
+                intent.putExtra("topic", topicList.get(position));
+                intent.putExtra("user", mUser);
+                mContext.startActivity(intent);
+            }
+        });
         return view;
     }
 }

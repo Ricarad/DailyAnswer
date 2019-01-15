@@ -25,6 +25,7 @@ import com.ricarad.app.dailyanswer.model.Topic;
 import com.ricarad.app.dailyanswer.model.User;
 
 
+import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
@@ -138,6 +139,7 @@ public class AddTopicActivity extends AppCompatActivity implements View.OnTouchL
         }
         post = new Post();
         post.setAuthor(mUser);
+        post.setReplyCount(0);
         final ProgressDialog pd = new ProgressDialog(this);
         pd.setMessage("请稍等");
         pd.show();
@@ -158,7 +160,7 @@ public class AddTopicActivity extends AppCompatActivity implements View.OnTouchL
                             if (e == null) {
 
                                 Log.i(POST_TAG, "4");
-                                PostUtil postUtil = new PostUtil(AddTopicActivity.this, postId);
+                                final PostUtil postUtil = new PostUtil(AddTopicActivity.this, postId);
                                 String ripeHtml = postUtil.getHtml(content);
                                 if (ripeHtml == null){
                                     //上传图片失败，直接结束
@@ -175,10 +177,21 @@ public class AddTopicActivity extends AppCompatActivity implements View.OnTouchL
                                         Log.i(POST_TAG, "6");
                                         pd.dismiss();
                                         if (e == null) {
-                                                Toast.makeText(AddTopicActivity.this, "发布成功", Toast.LENGTH_SHORT).show();
-                                                finish();
+                                            BmobRelation relation = new BmobRelation();
+                                            relation.add(post);
+                                            mUser.setPublishedPosts(relation);
+                                            mUser.update(new UpdateListener() {
+                                                @Override
+                                                public void done(BmobException e) {
+                                                    if (e == null){
+                                                        Toast.makeText(AddTopicActivity.this, "发布成功", Toast.LENGTH_SHORT).show();
+                                                        finish();
+                                                    }else{
+                                                        showErrMessage("发布失败，请检查网络");
+                                                    }
+                                                }
+                                            });
                                         } else {
-                                            Log.i(POST_TAG, "8");
                                             showErrMessage("发布失败，请检查网络");
                                         }
                                     }

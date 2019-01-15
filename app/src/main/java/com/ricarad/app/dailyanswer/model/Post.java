@@ -11,6 +11,15 @@ public class Post extends BmobObject {
     private String content;
     private User author;
     private Topic topic;
+    private Integer replyCount;
+
+    public Integer getReplyCount() {
+        return replyCount;
+    }
+
+    public void setReplyCount(Integer replyCount) {
+        this.replyCount = replyCount;
+    }
 
     public String getContent() {
         return content;
@@ -42,6 +51,7 @@ public class Post extends BmobObject {
                 "content='" + content + '\'' +
                 ", author=" + author +
                 ", topic=" + topic +
+                ", replyCount=" + replyCount +
                 '}';
     }
 }

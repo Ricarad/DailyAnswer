@@ -40,7 +40,7 @@ public class PostUtil {
 
     public PostUtil(Context context, String postId) {
         this.context = context;
-        this.postId = "gg";
+        this.postId = postId;
         String appid = "1258506940";
         String region = "ap-shanghai";
         //创建 CosXmlServiceConfig 对象，根据需要修改默认的配置参数

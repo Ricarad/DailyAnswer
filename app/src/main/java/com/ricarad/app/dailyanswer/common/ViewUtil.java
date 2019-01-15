@@ -32,10 +32,12 @@ public class ViewUtil {
             return mins + "分钟前";
         }else if (diff_d < 1000.0*60*60*24){
             double hours = diff/(1000*60*60);
-            return hours + "小时前";
+            int tmp = (int)hours;
+            return tmp + "小时前";
         }else if (diff_d < 1000.0*60*60*24*30){
             double days = diff/(1000.0*60*60*24);
-            return days + "天前";
+            int tmp = (int)days;
+            return tmp + "天前";
         }else {
             return updated;
         }

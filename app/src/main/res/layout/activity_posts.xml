@@ -68,7 +68,7 @@
                 android:id="@+id/posts_collect_iv"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/collect"/>
+                android:src="@drawable/post_uncollected"/>
             <TextView
                 android:id="@+id/posts_collect_tv"
                 android:layout_marginLeft="10dp"

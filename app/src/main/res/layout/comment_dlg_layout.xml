@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp">
+    <TextView
+        android:id="@+id/comment_dlg_hint_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="还没有回复，快来抢沙发吧"
+        android:visibility="gone"/>
+    <ListView
+        android:id="@+id/comment_dlg_lv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10">
+    </ListView>
+    <EditText
+        android:id="@+id/comment_dlg_content_et"
+        android:hint="请理性发言"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLength="140"
+        android:textSize="20sp"
+        android:background="@null"/>
+    <Button
+        android:id="@+id/comment_dlg_commit_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:text="提交评论"
+        android:padding="5dp"
+        android:background="@drawable/post_dlg_smooth_shape"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="6dp"/>
+</LinearLayout>

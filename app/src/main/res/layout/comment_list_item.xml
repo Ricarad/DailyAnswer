@@ -3,7 +3,7 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:gravity="center_vertical">
     <LinearLayout
-        android:id="@+id/post_item_header_ll"
+        android:id="@+id/comment_item_header_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -11,12 +11,12 @@
         android:paddingRight="8dp"
         android:gravity="center_vertical">
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/post_item_potrait_iv"
+            android:id="@+id/comment_item_potrait_iv"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/logo"/>
         <TextView
-            android:id="@+id/post_item_nickname_tv"
+            android:id="@+id/comment_item_nickname_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
@@ -24,34 +24,19 @@
             android:textSize="20sp"
             android:textColor="@color/colorMarkPostText"/>
     </LinearLayout>
-    <WebView
-        android:id="@+id/post_item_content_wv"
+    <TextView
+        android:id="@+id/comment_item_content_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/post_item_header_ll"/>
-    <LinearLayout
-        android:paddingTop="8dp"
-        android:id="@+id/post_item_footer_ll"
-        android:layout_below="@id/post_item_content_wv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="right">
+        android:layout_below="@id/comment_item_header_ll"/>
         <TextView
-            android:id="@+id/post_item_time_tv"
+            android:id="@+id/comment_item_time_tv"
+            android:layout_below="@+id/comment_item_content_tv"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="获取中"
             android:textSize="15sp"
             android:textColor="@color/colorFaintPostText" />
-        <TextView
-            android:id="@+id/post_item_review_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:text="回复(2)"
-            android:textSize="16sp"
-            android:textColor="@color/colorMarkPostText"/>
-    </LinearLayout>
 </RelativeLayout>

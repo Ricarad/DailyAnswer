@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.ricarad.app.dailyanswer.R;
 
-public class settingMyCreateActivity extends AppCompatActivity {
+public class SettingMyCreateActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

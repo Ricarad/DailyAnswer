@@ -48,7 +48,7 @@
         <activity android:name=".activity.GradeActivity" />
         <activity android:name=".activity.ShowQuestionActivity" />
         <activity android:name=".activity.SettingMyCollectionActivity" />
-        <activity android:name=".activity.settingMyCreateActivity"></activity>
+        <activity android:name=".activity.SettingMyCreateActivity"></activity>
     </application>
 
 </manifest>

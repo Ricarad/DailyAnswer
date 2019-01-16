@@ -1,10 +1,15 @@
 package com.ricarad.app.dailyanswer.activity;
 
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.support.annotation.DrawableRes;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.text.Spanned;
@@ -39,7 +44,9 @@ import cn.bmob.v3.datatype.BmobDate;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.QueryListener;
+import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
+import cn.bmob.v3.listener.UploadFileListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.functions.Consumer;
 
@@ -66,7 +73,22 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private static final int MIN_LENGTH = 6;
     private static final int MAX_LENGTH = 8;
+    private String imgUrl; //头像图片的url地址
 
+    //设置计时器，验证码点击
+    private CountDownTimer timer = new CountDownTimer(60 * 1000, 1000) {
+        @Override
+        public void onTick(long millisUntilFinished) {
+            sendMsgBtn.setEnabled(false);
+            sendMsgBtn.setText("已发送(" + millisUntilFinished / 1000 + ")" + "s");
+        }
+
+        @Override
+        public void onFinish() {
+            sendMsgBtn.setEnabled(true);
+            sendMsgBtn.setText("验证码");
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +106,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         setEditTextInputSpeChat(passwordEt);
         setEditTextInputSpace(phoneEt);
         setEditTextInputSpeChat(phoneEt);
+        imgUrl = getResourcesUrl(R.drawable.head_img_default);
     }
 
 
@@ -129,6 +152,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 String phone = phoneEt.getText().toString();
                 if (isRightPhone(phone)) {
                     Toast.makeText(RegisterActivity.this, "请输入正确格式的手机号", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
                 BmobSMS.requestSMSCode(phone, "微客社区", new QueryListener<Integer>() {
@@ -148,12 +172,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 if (!registerVerficate()) {
                     return;
                 }
-                String code = verficationCodeEt.getText().toString();
+                final String code = verficationCodeEt.getText().toString();
+                if (code.equals("") || code == null) {
+                    Toast.makeText(RegisterActivity.this, "验证码不能为空", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 String phone = phoneEt.getText().toString();
                 String username = userNameEt.getText().toString();
-                String password = passwordEt.getText().toString();
-                User user = new User();
+                String nickName = nickNameEt.getText().toString();
+                final String password = passwordEt.getText().toString();
+                final User user = new User();
                 user.setMobilePhoneNumber(phone);
+                user.setNickName(nickName);
                 user.setUsername(username);
                 user.setPassword(password);
                 user.setNumber(0);
@@ -162,11 +192,33 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 user.setRightNumber(0);
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 user.setLastLoginDate(BmobDate.createBmobDate("yyyy-MM-dd HH:mm:ss", sdf.format(new Date())));
-                headImg.setDrawingCacheEnabled(true);
-                Bitmap bmp = Bitmap.createBitmap(headImg.getDrawingCache());
-                headImg.setDrawingCacheEnabled(false);
-                //  BmobFile bmobFile = new BmobFile(new File(bmp));
-                //  user.setUserImg();
+                BmobFile bmobFile = new BmobFile(new File(imgUrl));
+                user.setUserImg(bmobFile);
+                user.getUserImg().uploadblock(new UploadFileListener() {
+                    @Override
+                    public void done(BmobException e) {
+                        if (e == null) {
+                            user.signOrLogin(code, new SaveListener<User>() {
+                                @Override
+                                public void done(User user, BmobException e) {
+                                    if (e == null) {
+                                        Intent intent = new Intent();
+                                        intent.putExtra("userName", userNameEt.getText().toString());
+                                        intent.putExtra("password", passwordEt.getText().toString());
+                                        setResult(RESULT_OK, intent);
+                                        Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    } else {
+                                        Toast.makeText(RegisterActivity.this, "注册失败，失败原因：" + e.getErrorCode() + ":" + e.getMessage(), Toast.LENGTH_LONG).show();
+
+                                    }
+                                }
+                            });
+                        }else {
+                            Toast.makeText(RegisterActivity.this, "注册失败，失败原因：" + e.getErrorCode() + ":" + e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
             }
             break;
             case R.id.register_head_img: {
@@ -174,15 +226,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 systemImagePicker.openGallery(this).subscribe(new Consumer<Result>() {
                     @Override
                     public void accept(Result result) throws Exception {
-                        String imgUrl = result.getUri().getPath();
+                        imgUrl = result.getUri().getPath();
                         File file = new File(imgUrl);
                         final Bitmap cackeBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                headImg.setImageBitmap(cackeBitmap);
-                            }
-                        });
+                        headImg.setImageBitmap(cackeBitmap);
                     }
                 });
 
@@ -192,6 +239,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    private String getResourcesUrl(@DrawableRes int id) {
+        Resources resources = getResources();
+        String urlPath = ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
+                resources.getResourcePackageName(id) + "/" +
+                resources.getResourceTypeName(id) + "/" +
+                resources.getResourceEntryName(id);
+        return urlPath;
+    }
     /**
      * 禁止EditText输入空格和换行符
      *

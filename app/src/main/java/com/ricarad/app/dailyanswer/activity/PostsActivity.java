@@ -169,6 +169,8 @@ public class PostsActivity extends AppCompatActivity implements View.OnClickList
         img_iv = view.findViewById(R.id.post_dlg_img_iv);
         leave_btn = view.findViewById(R.id.post_dlg_leave_btn);
         setRichEditorStyles();
+        content_re.requestFocus();
+
         commit_btn.setOnClickListener(this);
         bold_iv.setOnClickListener(this);
         italic_iv.setOnClickListener(this);
@@ -342,17 +344,22 @@ public class PostsActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void askExit() {
-        AlertDialog.Builder dlg = new AlertDialog.Builder(this);
-        dlg.setIcon(android.R.drawable.stat_sys_warning);
-        dlg.setMessage("已编辑的内容不会被保存，确定要退出吗");
-        dlg.setPositiveButton("退出", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                contentDlg.dismiss();
-            }
-        });
-        dlg.setNegativeButton("取消", null);
-        dlg.show();
+        String content = content_re.getHtml();
+        if (content != null && !content.isEmpty()){
+            AlertDialog.Builder dlg = new AlertDialog.Builder(this);
+            dlg.setIcon(android.R.drawable.stat_sys_warning);
+            dlg.setMessage("已编辑的内容不会被保存，确定要退出吗");
+            dlg.setPositiveButton("退出", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    contentDlg.dismiss();
+                }
+            });
+            dlg.setNegativeButton("取消", null);
+            dlg.show();
+        }else{
+            contentDlg.dismiss();
+        }
     }
 
     private void insertOneImg() {

@@ -7,9 +7,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.BaseAdapter;
@@ -129,6 +131,7 @@ public class PostAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 final Dialog cdlg = new Dialog(mContext);
+                cdlg.setTitle("文明上网，理性发言");
                 final View cv = LayoutInflater.from(mContext).inflate(R.layout.comment_dlg_layout, null);
                 cdlg.setContentView(cv);
                 final Button ccommit_btn = cv.findViewById(R.id.comment_dlg_commit_btn);
@@ -150,7 +153,7 @@ public class PostAdapter extends BaseAdapter {
                                 CommentAdapter commentAdapter = new CommentAdapter(mContext, commentList);
                                 ListView comment_lv = cv.findViewById(R.id.comment_dlg_lv);
                                 comment_lv.setAdapter(commentAdapter);
-                                ccontent_et.setHint("请理性发言");
+                                ccontent_et.setHint("输入评论内容");
                             }else{ //还没有评论
                                 ccontent_et.setHint("快来抢沙发吧~");
                             }//给提交设置监听

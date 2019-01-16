@@ -3,6 +3,7 @@ package com.ricarad.app.dailyanswer.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import cn.bmob.v3.listener.DownloadFileListener;
 public class CommentAdapter extends BaseAdapter {
     private Context mContext;
     private List<PComment> commentList;
+    String[] rainbow =  {"#ffd4d4", "#fff1d4", "#b5ffe3", "#ddb5ff", "#ffb5b5"};
 
     public CommentAdapter(Context mContext, List<PComment> commentList) {
         this.mContext = mContext;
@@ -50,6 +52,7 @@ public class CommentAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final View view = LayoutInflater.from(mContext).from(mContext).inflate(R.layout.comment_list_item, null);
+        view.setBackgroundColor(Color.parseColor(rainbow[position % rainbow.length]));
         final ImageView potrait_iv = view.findViewById(R.id.comment_item_potrait_iv);
         TextView nickname_tv = view.findViewById(R.id.comment_item_nickname_tv);
         TextView time_tv = view.findViewById(R.id.comment_item_time_tv);

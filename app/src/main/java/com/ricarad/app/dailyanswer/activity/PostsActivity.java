@@ -173,8 +173,7 @@ public class PostsActivity extends AppCompatActivity implements  View.OnTouchLis
         redo_iv = view.findViewById(R.id.post_dlg_redo_iv);
         img_iv = view.findViewById(R.id.post_dlg_img_iv);
         leave_btn = view.findViewById(R.id.post_dlg_leave_btn);
-        setRichEditorStyles();
-        content_re.requestFocus();
+        setRichEditorStyles();;
 
         commit_btn.setOnClickListener(this);
         bold_iv.setOnClickListener(this);
@@ -424,6 +423,7 @@ public class PostsActivity extends AppCompatActivity implements  View.OnTouchLis
         content_re.setEditorFontColor(Color.parseColor("#121212"));
         content_re.setPlaceholder("尽情发挥吧...");
         content_re.setPadding(3, 3, 3, 3);
+        content_re.focusEditor();
     }
 
     private GestureDetector.OnGestureListener myGestureListener = new GestureDetector.OnGestureListener() {

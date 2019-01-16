@@ -25,6 +25,7 @@ import com.qingmei2.rximagepicker.core.RxImagePicker;
 import com.qingmei2.rximagepicker.entity.Result;
 import com.qingmei2.rximagepicker.ui.SystemImagePicker;
 import com.ricarad.app.dailyanswer.R;
+import com.ricarad.app.dailyanswer.activity.AddTopicActivity;
 import com.ricarad.app.dailyanswer.activity.RegisterActivity;
 import com.ricarad.app.dailyanswer.activity.SettingMyCollectionActivity;
 import com.ricarad.app.dailyanswer.activity.SettingMyPostActivity;
@@ -36,12 +37,15 @@ import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import cn.bmob.v3.Bmob;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.DownloadFileListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
 import io.reactivex.functions.Consumer;
+
+import static com.ricarad.app.dailyanswer.common.Constant.BMOBAPPKEY;
 
 public class SettingFragment extends Fragment implements View.OnClickListener {
     private RelativeLayout collection;//收藏的梯子
@@ -83,7 +87,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         if (isAdded()) {  //判断Fragment已经依附Activity
             user = (User) getArguments().getSerializable("user");
         }
-
         initView();
     }
 

@@ -1,10 +1,12 @@
 package com.ricarad.app.dailyanswer.activity;
 
+import android.content.Intent;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -46,6 +48,17 @@ public class SettingMyCollectionActivity extends AppCompatActivity implements Vi
         user = (User) getIntent().getSerializableExtra("user");
         setting_my_collection_back_iv = findViewById(R.id.setting_my_collection_back);
         setting_my_collection_lv = findViewById(R.id.setting_my_collection_lv);
+        //ListView 匿名内部类
+        setting_my_collection_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Intent intent = new Intent(SettingMyCollectionActivity.this, PostsActivity.class);
+                intent.putExtra("topic", collectedTopicList.get(i));
+                intent.putExtra("user", user);
+                startActivity(intent);
+            }
+        });
         setting_my_collection_back_iv.setOnClickListener(this);
         initCollectionList();
     }

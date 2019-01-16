@@ -162,14 +162,14 @@
             android:layout_height="25dp"
 
             android:layout_marginLeft="18dp"
-            android:src="@drawable/setting_fragment_guide_sets" />
+            android:src="@drawable/setting_about_icon" />
 
         <TextView
             android:layout_toRightOf="@+id/setting_settings_icon"
             android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:text="设置"
+            android:text="关于我们"
             android:textColor="#050505"
             android:textSize="25sp" />
 

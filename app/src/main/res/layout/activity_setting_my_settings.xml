@@ -19,7 +19,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="zheng"
+            android:text="关于"
             android:layout_marginTop="15dp"
             android:textSize="30sp"
             android:layout_centerInParent="true"/>
@@ -38,7 +38,7 @@
             android:id="@+id/setting_my_settings_myself"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="正在开发中·······"
+            android:text="       三个代表团队是一个致力于知识共享的团队，我们代表最新式的技术，代表最新式的交互环境，代表最新的知识。"
             android:textSize="30sp"
             android:layout_margin="10dp"/>
         <View

@@ -6,42 +6,76 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.ricarad.app.dailyanswer.activity.SettingMyCollectionActivity">
- <RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <ImageView
-        android:id="@+id/setting_my_collection_back"
-        android:layout_marginLeft="10dp"
-        android:layout_centerVertical="true"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/setting_fragment_guide_return"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="我的收藏"
-        android:layout_marginTop="15dp"
-        android:textSize="30sp"
-        android:layout_centerInParent="true"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="编辑"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="15dp"
-        android:textSize="25dp"/>
-</RelativeLayout>
-    <View
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorBlack"
-        />
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:background="@color/cololSkyBlue">
+        <ImageView
+            android:id="@+id/setting_my_collection_exit_iv"
+            android:layout_margin="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/back_selector"
+            android:clickable="true"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="10"
+            android:layout_height="match_parent"
+            android:text="我的收藏"
+            android:textColor="@color/colorWhite"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textSize="22sp"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/setting_my_collection_hint_tv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:text="您还没有收藏的帖子呢~"
+        android:textSize="26sp"
+        android:gravity="center"
+        android:textColor="@color/colorFaintPostText"/>
+ <!--<RelativeLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+     <!--android:background="@color/cololSkyBlue">-->
+    <!--<ImageView-->
+        <!--android:id="@+id/setting_my_collection_back"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:layout_width="40dp"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:src="@drawable/back_selector"/>-->
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="我的收藏"-->
+        <!--android:layout_marginTop="15dp"-->
+        <!--android:textSize="30sp"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:textColor="@color/colorWhite"/>-->
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="编辑"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_marginRight="15dp"-->
+        <!--android:textSize="25dp"/>-->
+<!--</RelativeLayout>-->
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:background="@color/colorBlack"-->
+        <!--/>-->
     <ListView
         android:id="@+id/setting_my_collection_lv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="0dp"
+        android:layout_weight="10">
     </ListView>
 
 

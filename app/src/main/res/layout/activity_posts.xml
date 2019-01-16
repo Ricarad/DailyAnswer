@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ricarad.app.dailyanswer.activity.PostsActivity"
-    android:padding="5dp">
+    tools:context="com.ricarad.app.dailyanswer.activity.PostsActivity">
     <LinearLayout
         android:id="@+id/posts_header_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:background="@color/cololSkyBlue">
         <ImageView
             android:id="@+id/posts_back_iv"
             android:clickable="true"
@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:textSize="22sp"
         android:textColor="#515151"
+        android:textStyle="bold"
         android:layout_below="@+id/posts_header_ll"
         android:paddingTop="5dp"
         android:paddingLeft="10dp"

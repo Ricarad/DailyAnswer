@@ -98,13 +98,17 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.setting_fragment_guide_collection: {
-                //TODO 进入收藏的帖子页面
-                Intent intent = new Intent(getContext(), SettingMyCollectionActivity.class);
+                //进入收藏的帖子页面
+                Intent intent = new Intent(getContext() ,SettingMyCollectionActivity.class);
+                intent.putExtra("user", user);
                 startActivity(intent);
             }
             break;
             case R.id.setting_fragment_guide_mypost: {
-                //TODO 进入我发表的帖子页面
+                //进入我发表的帖子页面
+                Intent intent = new Intent(getContext() ,SettingMyPostActivity.class);
+                intent.putExtra("user", user);
+                startActivity(intent);
             }
             break;
             case R.id.setting_fragment_guide_about: {
@@ -136,20 +140,15 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     }
 
 
-
-
-    //前往我的帖子界面
-    private void goToSettingMyCreate() {
-        Intent intent = new Intent(getContext(), SettingMyPostActivity.class);
+    //前往设置界面
+    private void goToSettingMySettings() {
+        Intent intent = new Intent(getContext(), SettingAboutUsActivity.class);
         if (isAdded()) {  //判断Fragment已经依附Activity
             User user = (User) getArguments().getSerializable("user");
             intent.putExtra("user", user);
             startActivity(intent);
         }
     }
-
-
-
 
 
 }

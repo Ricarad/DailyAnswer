@@ -16,10 +16,10 @@ import java.util.List;
  * Created by shy on 2019/1/15.
  */
 
-public class CreationAdapter extends BaseAdapter {
+public class MyPostAdapter extends BaseAdapter {
     private Context mContext;
     private List<Post> postList;
-    public CreationAdapter(Context mContext,List<Post> postList) {
+    public MyPostAdapter(Context mContext, List<Post> postList) {
         this.mContext = mContext;
         this.postList = postList;
     }

@@ -277,7 +277,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                     .withTitle("选择头像").withMutilyMode(false)
                                     .withFileFilter(new String[]{".png", ".jpg", ".jpeg", ".ico", ".PNG", ".JPG", ".JPEG", ".ICO"})
                                     .withIconStyle(Constant.ICON_STYLE_BLUE).start();
-                            pickDialog.dismiss();
                         } else if (selectItemId == pickGalleryRb.getId()) {
                             SystemImagePicker systemImagePicker = RxImagePicker.INSTANCE.create();
                             systemImagePicker.openGallery(RegisterActivity.this).subscribe(new Consumer<Result>() {
@@ -313,12 +312,17 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case LFILEPICKER_REQUEST_CODE: {
-                List<String> list = data.getStringArrayListExtra(LFILEPICKER_PATH);
-                if (list.size() > 0) {
-                    imgUrl = list.get(0);
-                    File file = new File(imgUrl);
-                    final Bitmap cackeBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                    headImg.setImageBitmap(cackeBitmap);
+                try {
+                    List<String> list = data.getStringArrayListExtra(LFILEPICKER_PATH);
+                    pickDialog.dismiss();
+                    if (list != null || list.size() > 0) {
+                        imgUrl = list.get(0);
+                        File file = new File(imgUrl);
+                        final Bitmap cackeBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                        headImg.setImageBitmap(cackeBitmap);
+                    }
+                }catch (Exception e){
+
                 }
 
             }

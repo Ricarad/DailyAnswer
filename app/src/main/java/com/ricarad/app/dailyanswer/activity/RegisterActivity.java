@@ -1,6 +1,7 @@
 package com.ricarad.app.dailyanswer.activity;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -10,18 +11,25 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.leon.lfilepickerlibrary.LFilePicker;
+import com.leon.lfilepickerlibrary.utils.Constant;
 import com.qingmei2.rximagepicker.core.RxImagePicker;
 import com.qingmei2.rximagepicker.entity.Result;
 import com.qingmei2.rximagepicker.ui.SystemImagePicker;
@@ -35,6 +43,7 @@ import org.xutils.x;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,6 +58,9 @@ import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.functions.Consumer;
+
+import static com.ricarad.app.dailyanswer.common.Constant.LFILEPICKER_PATH;
+import static com.ricarad.app.dailyanswer.common.Constant.LFILEPICKER_REQUEST_CODE;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -74,7 +86,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private static final int MIN_LENGTH = 6;
     private static final int MAX_LENGTH = 8;
     private String imgUrl = ""; //头像图片的url地址
-
+    private Dialog pickDialog ;
     //设置计时器，验证码点击
     private CountDownTimer timer = new CountDownTimer(60 * 1000, 1000) {
         @Override
@@ -89,6 +101,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             sendMsgBtn.setText("验证码");
         }
     };
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,7 +143,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             Toast.makeText(RegisterActivity.this, "用户名不能为空", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (!isHaveAlpha(userName)){
+        if (!isHaveAlpha(userName)) {
             Toast.makeText(RegisterActivity.this, "用户名必须含有字母", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -243,30 +257,72 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             }
             break;
             case R.id.register_head_img: {
-                SystemImagePicker systemImagePicker = RxImagePicker.INSTANCE.create();
-                systemImagePicker.openGallery(this).subscribe(new Consumer<Result>() {
+                pickDialog = new Dialog(this);
+                pickDialog.setTitle("请选择获取头像的方式");
+                View pv = LayoutInflater.from(this).inflate(R.layout.pick_img_ways_dialog, null);
+                pickDialog.setContentView(pv);
+                final RadioGroup pickRg = pv.findViewById(R.id.pick_img_ways_rg);
+                final RadioButton pickLocalPathRb = pv.findViewById(R.id.pick_img_from_localpath_rb);
+                final RadioButton pickGalleryRb = pv.findViewById(R.id.pick_img_from_gallery_rb);
+                pickRg.check(pickLocalPathRb.getId());
+                TextView okTv = pv.findViewById(R.id.pick_img_ok_tv);
+                TextView cancelTv = pv.findViewById(R.id.pick_img_cancel_tv);
+                pickDialog.show();
+                okTv.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void accept(Result result) throws Exception {
-                        imgUrl = result.getUri().getPath();
-                        File file = new File(imgUrl);
-                        final Bitmap cackeBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                        headImg.setImageBitmap(cackeBitmap);
+                    public void onClick(View v) {
+                        int selectItemId = pickRg.getCheckedRadioButtonId();
+                        if (selectItemId == pickLocalPathRb.getId()) {
+                            new LFilePicker().withActivity(RegisterActivity.this).withRequestCode(LFILEPICKER_REQUEST_CODE)
+                                    .withTitle("选择头像").withMutilyMode(false)
+                                    .withFileFilter(new String[]{".png", ".jpg", ".jpeg", ".ico", ".PNG", ".JPG", ".JPEG", ".ICO"})
+                                    .withIconStyle(Constant.ICON_STYLE_BLUE).start();
+                            pickDialog.dismiss();
+                        } else if (selectItemId == pickGalleryRb.getId()) {
+                            SystemImagePicker systemImagePicker = RxImagePicker.INSTANCE.create();
+                            systemImagePicker.openGallery(RegisterActivity.this).subscribe(new Consumer<Result>() {
+                                @Override
+                                public void accept(Result result) throws Exception {
+                                    imgUrl = result.getUri().getPath();
+                                    File file = new File(imgUrl);
+                                    final Bitmap cackeBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                                    headImg.setImageBitmap(cackeBitmap);
+                                    pickDialog.dismiss();
+                                }
+                            });
+                        } else {
+                            pickDialog.dismiss();
+                        }
                     }
                 });
-
+                cancelTv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        pickDialog.dismiss();
+                    }
+                });
 
             }
             break;
         }
     }
 
-    private String getResourcesUrl(@DrawableRes int id) {
-        Resources resources = getResources();
-        String urlPath = ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
-                resources.getResourcePackageName(id) + "/" +
-                resources.getResourceTypeName(id) + "/" +
-                resources.getResourceEntryName(id);
-        return urlPath;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case LFILEPICKER_REQUEST_CODE: {
+                List<String> list = data.getStringArrayListExtra(LFILEPICKER_PATH);
+                if (list.size() > 0) {
+                    imgUrl = list.get(0);
+                    File file = new File(imgUrl);
+                    final Bitmap cackeBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                    headImg.setImageBitmap(cackeBitmap);
+                }
+
+            }
+        }
     }
 
     /**
@@ -310,11 +366,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         editText.setFilters(new InputFilter[]{filter});
     }
 
-    public static boolean isHaveAlpha(String s){
-        String regex=".*[a-zA-Z]+.*";
-        Matcher m=Pattern.compile(regex).matcher(s);
+    public static boolean isHaveAlpha(String s) {
+        String regex = ".*[a-zA-Z]+.*";
+        Matcher m = Pattern.compile(regex).matcher(s);
         return m.matches();
     }
+
     //验证手机号是否正确ֻ
     public static boolean isRightPhone(String phone) {
         if (TextUtils.isEmpty(phone)) {

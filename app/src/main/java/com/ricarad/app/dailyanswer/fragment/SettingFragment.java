@@ -94,7 +94,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     }
 
     public void initView() {
-        //TODO
         nickNameTv.setText(user.getNickName());
         if (user.getUserImg() != null) {
             Uri imageUrl = Uri.parse(user.getUserImg().getFileUrl());

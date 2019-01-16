@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:alpha="0.5"
+    android:layout_height="match_parent">
+
+    <RadioGroup
+        android:id="@+id/pick_img_ways_rg"
+        android:padding="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RadioButton
+            android:id="@+id/pick_img_from_localpath_rb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:background="@drawable/register_shape_default"
+            android:text="从本地文件中选择头像"/>
+        <RadioButton
+            android:layout_marginTop="10dp"
+            android:id="@+id/pick_img_from_gallery_rb"
+            android:background="@drawable/register_shape_default"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:text="从相册中选择头像"/>
+    </RadioGroup>
+    <LinearLayout
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_height="wrap_content">
+        <TextView
+            android:background="@drawable/setting_change_dialog_selector"
+            android:id="@+id/pick_img_ok_tv"
+            android:clickable="true"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:text="OK"
+            android:textColor="@color/cololSkyBlue"
+            android:textSize="30sp"
+            android:gravity="center"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:background="@drawable/setting_change_dialog_selector"
+            android:id="@+id/pick_img_cancel_tv"
+            android:clickable="true"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:text="Cancel"
+            android:textColor="@color/cololSkyBlue"
+            android:textSize="30sp"
+            android:gravity="center"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</LinearLayout>

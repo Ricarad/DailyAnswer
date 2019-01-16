@@ -109,7 +109,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             case R.id.login_button: {
                 final ProgressDialog pd = new ProgressDialog(this);
                 pd.setTitle("请稍等");
-                pd.setMessage("正在登陆·····");
+                pd.setMessage("正在登录·····");
                 pd.show();
                 final String account = accountEv.getText().toString();
                 final String password = passwordEv.getText().toString();

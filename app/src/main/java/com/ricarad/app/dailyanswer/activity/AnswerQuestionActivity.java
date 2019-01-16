@@ -30,7 +30,9 @@ import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.EventListener;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
@@ -118,16 +120,31 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
     public void initQuestionList() {
         final ProgressDialog pgd = ProgressDialog.show(AnswerQuestionActivity.this, "请稍等", "正在加载题目");
         BmobQuery<Question> query = new BmobQuery<>();
-        query.setLimit(10);
         query.findObjects(new FindListener<Question>() {
             @Override
             public void done(List<Question> list, BmobException e) {
                 if (e == null) {
                     if (list.size() != 0) {
+                        Random index = new Random();
+                        HashMap<Integer,Integer> indexMap = new HashMap<>();
+                        for(int i=0,j;i<list.size();i++){
+                            //获取在 list.size 返回内的随机数
+                            j = index.nextInt(list.size());
+                            //判断是否重复
+                            if(!indexMap.containsKey(j)){
+                                //获取元素
+                                indexMap.put(j,1);
+                               questionList.add(list.get(j));
+                               if (indexMap.size() == 10){
+                                   break;
+                               }
+                            }else{
+                                i--;//如果重复再来一次
+                            }
+                        }
 
                         int i = 1;
-                        for (Question question : list) {
-                            questionList.add(question);
+                        for (Question question : questionList) {
                             answerList.add(-1);
                             titleList.add(i + "." + question.getTitle());
                             i++;

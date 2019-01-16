@@ -1,6 +1,8 @@
 package com.ricarad.app.dailyanswer.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -8,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 
 import com.ricarad.app.dailyanswer.R;
@@ -15,6 +18,9 @@ import com.ricarad.app.dailyanswer.fragment.AnswerFragment;
 import com.ricarad.app.dailyanswer.fragment.DiscussFragment;
 import com.ricarad.app.dailyanswer.fragment.SettingFragment;
 import com.ricarad.app.dailyanswer.model.User;
+
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.DownloadFileListener;
 
 import static com.ricarad.app.dailyanswer.common.Constant.USER;
 
@@ -38,10 +44,13 @@ public class GuideActivity extends AppCompatActivity {
     }
 
     public void initFragment() {
+
         Intent intent = getIntent();
         user = (User) intent.getSerializableExtra(USER);
         Bundle bundle = new Bundle();
         bundle.putSerializable(USER, user);
+
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         answerFragment = new AnswerFragment();
@@ -77,7 +86,6 @@ public class GuideActivity extends AppCompatActivity {
                         switchFragment(lastfragment, 0);
                         lastfragment = 0;
                     }
-
                     return true;
                 }
                 case R.id.navigation_discuss: {

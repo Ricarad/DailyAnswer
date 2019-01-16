@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -113,12 +114,11 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                     User user = new User();
                     user.setUsername(account);
                     user.setPassword(password);
-                    //  Log.i("TGA","登陆用户的详细信息"+user.toString());
                     user.login(new SaveListener<User>() {
                         @Override
-                        public void done(User user, BmobException e) {
+                        public void done(User tempuser, BmobException e) {
                             if (e == null) {
-                                user = BmobUser.getCurrentUser(User.class);
+                                User user = BmobUser.getCurrentUser(User.class);
                                 editor = pref.edit();
                                 editor.putString("account", account);
                                 if (rememberPass.isChecked()) {
@@ -155,7 +155,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                                     Snackbar.make(view, "登录日期出现异常：" + e.getMessage(), Snackbar.LENGTH_SHORT).show();
                                 }
                             } else {
-                                Snackbar.make(view, "登录失败：" + e.getMessage(), Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(view, "登录失败：" +e.getErrorCode()+ e.getMessage(), Snackbar.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -170,7 +170,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             }
             break;
             case R.id.login_forgetPass_tv: {
-                //TODO 完成忘记密码功能
                 Intent intent = new Intent(LoginActivity.this,ForgetPwdActivity.class);
                 startActivity(intent);
             }

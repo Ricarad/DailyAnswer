@@ -51,10 +51,9 @@
         <activity android:name=".activity.CollectedActivity" />
         <activity android:name=".activity.RecordActivity"></activity>
         <activity android:name=".activity.SettingMyCollectionActivity" />
-        <activity android:name=".activity.SettingMyCreateActivity"></activity>
         <activity android:name=".activity.SettingMyPostActivity" />
         <activity android:name=".activity.RegisterActivity" />
-        <activity android:name=".activity.SettingMySettingsActivity" />
+        <activity android:name=".activity.SettingAboutUsActivity" />
         <activity android:name=".activity.ForgetPwdActivity"></activity>
         <activity android:name=".activity.PostsActivity"/>
     </application>

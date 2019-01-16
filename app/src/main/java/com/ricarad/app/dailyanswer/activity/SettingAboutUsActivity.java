@@ -7,12 +7,12 @@ import android.widget.ImageView;
 
 import com.ricarad.app.dailyanswer.R;
 
-public class SettingMySettingsActivity extends AppCompatActivity implements View.OnClickListener{
+public class SettingAboutUsActivity extends AppCompatActivity implements View.OnClickListener{
     private ImageView setting_my_settings_return;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setting_my_settings);
+        setContentView(R.layout.activity_setting_about_us);
         setting_my_settings_return = findViewById(R.id.setting_my_settings_return);
         setting_my_settings_return.setOnClickListener(this);
     }

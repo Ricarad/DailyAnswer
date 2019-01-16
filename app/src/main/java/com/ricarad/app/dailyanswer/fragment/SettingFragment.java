@@ -19,6 +19,7 @@ import com.ricarad.app.dailyanswer.R;
 import com.ricarad.app.dailyanswer.activity.SettingMyCollectionActivity;
 import com.ricarad.app.dailyanswer.activity.SettingMyPostActivity;
 import com.ricarad.app.dailyanswer.activity.SettingAboutUsActivity;
+import com.ricarad.app.dailyanswer.activity.SettingShowVersionActivity;
 import com.ricarad.app.dailyanswer.model.User;
 
 import cn.bmob.v3.datatype.BmobFile;
@@ -98,6 +99,8 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.setting_fragment_guide_collection: {
                 //TODO 进入收藏的帖子页面
+                Intent intent = new Intent(getContext(), SettingMyCollectionActivity.class);
+                startActivity(intent);
             }
             break;
             case R.id.setting_fragment_guide_mypost: {
@@ -106,10 +109,14 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             break;
             case R.id.setting_fragment_guide_about: {
                 //TODO 进入关于我们界面
+                Intent intent = new Intent(getContext(), SettingAboutUsActivity.class);
+                startActivity(intent);
             }
             break;
             case R.id.setting_fragment_guide_version: {
                 //TODO 软件版本界面
+                Intent intent = new Intent(getContext(), SettingShowVersionActivity.class);
+                startActivity(intent);
             }
             break;
             case R.id.setting_fragment_guide_headimg: {
@@ -129,15 +136,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    //前往收藏界面
-    private void goToSettingMyCollect() {
-        Intent intent = new Intent(getContext(), SettingMyCollectionActivity.class);
-        if (isAdded()) {  //判断Fragment已经依附Activity
-            User user = (User) getArguments().getSerializable("user");
-            intent.putExtra("user", user);
-            startActivity(intent);
-        }
-    }
+
 
     //前往我的帖子界面
     private void goToSettingMyCreate() {
@@ -149,15 +148,8 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    //前往设置界面
-    private void goToSettingMySettings() {
-        Intent intent = new Intent(getContext(), SettingAboutUsActivity.class);
-        if (isAdded()) {  //判断Fragment已经依附Activity
-            User user = (User) getArguments().getSerializable("user");
-            intent.putExtra("user", user);
-            startActivity(intent);
-        }
-    }
+
+
 
 
 }

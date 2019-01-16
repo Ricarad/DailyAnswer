@@ -106,7 +106,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         setEditTextInputSpeChat(passwordEt);
         setEditTextInputSpace(phoneEt);
         setEditTextInputSpeChat(phoneEt);
-        imgUrl = getResourcesUrl(R.drawable.head_img_default);
+        imgUrl = getResourcesUrl(R.drawable.head_img_default)+".png";
+        Log.i("TGA","图片地址为"+imgUrl);
     }
 
 
@@ -137,7 +138,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             Toast.makeText(RegisterActivity.this, "两次输入的密码不相同", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (isRightPhone(phone)) {
+        if (!isRightPhone(phone)) {
             Toast.makeText(RegisterActivity.this, "请输入正确格式的手机号", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -150,15 +151,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         switch (v.getId()) {
             case R.id.register_send_vetification_btn: {
                 String phone = phoneEt.getText().toString();
-                if (isRightPhone(phone)) {
+                if (!isRightPhone(phone)) {
                     Toast.makeText(RegisterActivity.this, "请输入正确格式的手机号", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
                 BmobSMS.requestSMSCode(phone, "微客社区", new QueryListener<Integer>() {
                     @Override
                     public void done(Integer smsId, BmobException e) {
                         if (e == null) {
+                            timer.start();
                             Toast.makeText(RegisterActivity.this, "发送验证码成功，短信ID:" + smsId + "\n", Toast.LENGTH_LONG).show();
                             verficationCodeEt.setHint("请输入短信ID为" + smsId + "的验证码");
                         } else {
@@ -193,6 +194,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 user.setLastLoginDate(BmobDate.createBmobDate("yyyy-MM-dd HH:mm:ss", sdf.format(new Date())));
                 BmobFile bmobFile = new BmobFile(new File(imgUrl));
+                if (bmobFile == null){
+                    Toast.makeText(RegisterActivity.this, "请选择一个头像", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 user.setUserImg(bmobFile);
                 user.getUserImg().uploadblock(new UploadFileListener() {
                     @Override

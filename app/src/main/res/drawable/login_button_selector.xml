@@ -4,11 +4,9 @@
         <shape android:shape="rectangle">
             <!--圆角-->
             <corners android:radius="20dp"/>
-            <!--填充颜色-->
-            <solid android:color="@color/colorWhite" />
             <!--描边-->
             <stroke
-                android:width="5dp"
+                android:width="2dp"
                 android:color="@color/cololSkyBlue" />
         </shape>
     </item>
@@ -17,10 +15,10 @@
             <!--圆角-->
             <corners android:radius="20dp"/>
             <!--填充颜色-->
-            <solid android:color="@color/colorRiseYellow" />
+            <solid android:color="@color/colorWhite" />
             <!--描边-->
             <stroke
-                android:width="5dp"
+                android:width="2dp"
                 android:color="@color/cololSkyBlue" />
         </shape>
     </item>

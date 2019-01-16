@@ -8,7 +8,7 @@
     tools:context=".activity.ForgetPwdActivity">
     <LinearLayout
         android:background="@drawable/register_shape_default"
-        android:alpha="0.6"
+        android:alpha="0.8"
         android:id="@+id/forget_pwd_lin1"
         android:layout_width="match_parent"
         android:layout_height="390dp"
@@ -86,7 +86,7 @@
             android:textSize="30dp" />
     </LinearLayout>
     <Button
-        android:alpha="0.7"
+        android:alpha="0.8"
         android:layout_below="@id/forget_pwd_lin1"
         android:id="@+id/forget_pwd_button"
         android:layout_width="match_parent"

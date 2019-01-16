@@ -56,30 +56,30 @@ public class CommentAdapter extends BaseAdapter {
         TextView content_tv = view.findViewById(R.id.comment_item_content_tv);
 
         //设置头像
-        if (commentList.get(position).getAuthor().LOCALPATH.equals("")){
-            if (commentList.get(position).getAuthor().getUserImg() != null){
-                commentList  .get(position).getAuthor().getUserImg().download(new DownloadFileListener() {
-                    @Override
-                    public void done(String s, BmobException e) {
-                        if (e != null){
-                            Toast.makeText(mContext, "加载头像失败"+e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }else{
-                            Bitmap bmp = BitmapFactory.decodeFile(s);
-                            potrait_iv.setImageBitmap(bmp);
-                            commentList.get(position).getAuthor().LOCALPATH = s;
-                        }
-                    }
-
-                    @Override
-                    public void onProgress(Integer integer, long l) {
-
-                    }
-                });
-            }
-        }else{
-            Bitmap bmp = BitmapFactory.decodeFile(commentList.get(position).getAuthor().LOCALPATH);
-            potrait_iv.setImageBitmap(bmp);
-        }
+//        if (commentList.get(position).getAuthor().LOCALPATH.equals("")){
+//            if (commentList.get(position).getAuthor().getUserImg() != null){
+//                commentList  .get(position).getAuthor().getUserImg().download(new DownloadFileListener() {
+//                    @Override
+//                    public void done(String s, BmobException e) {
+//                        if (e != null){
+//                            Toast.makeText(mContext, "加载头像失败"+e.getMessage(), Toast.LENGTH_SHORT).show();
+//                        }else{
+//                            Bitmap bmp = BitmapFactory.decodeFile(s);
+//                            potrait_iv.setImageBitmap(bmp);
+//                            commentList.get(position).getAuthor().LOCALPATH = s;
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onProgress(Integer integer, long l) {
+//
+//                    }
+//                });
+//            }
+//        }else{
+//            Bitmap bmp = BitmapFactory.decodeFile(commentList.get(position).getAuthor().LOCALPATH);
+//            potrait_iv.setImageBitmap(bmp);
+//        }
         //加载昵称
         if (commentList.get(position).getAuthor().getNickName() != null){
             nickname_tv.setText(commentList.get(position).getAuthor().getNickName());

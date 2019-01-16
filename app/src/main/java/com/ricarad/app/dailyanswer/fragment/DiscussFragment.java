@@ -94,6 +94,7 @@ public class DiscussFragment extends Fragment implements View.OnClickListener{
                            topics_lv.setVisibility(View.GONE);
                            msg_tv.setVisibility(View.VISIBLE);
                            msg_tv.setText("抱歉，暂时没有帖子，快去发帖吧！");
+                           Toast.makeText(getContext(), "抱歉，暂时没有帖子，快去发帖吧！", Toast.LENGTH_SHORT).show();
                        }else{
                            topics_lv.setVisibility(View.VISIBLE);
                            msg_tv.setVisibility(View.GONE);

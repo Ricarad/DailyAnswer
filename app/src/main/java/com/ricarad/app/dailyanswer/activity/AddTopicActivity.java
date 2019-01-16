@@ -278,16 +278,26 @@ public class AddTopicActivity extends AppCompatActivity implements View.OnTouchL
     }
 
     private void askExit() {
-        AlertDialog.Builder dlg = new AlertDialog.Builder(this);
-        dlg.setIcon(android.R.drawable.stat_sys_warning);
-        dlg.setMessage("已编辑的内容不会被保存，确定要退出吗");
-        dlg.setPositiveButton("退出", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-            }
-        });
-        dlg.setNegativeButton("取消", null);
-        dlg.show();
+        if (content_re.getHtml() == null ){
+            finish();
+        }
+        if (title_et.getText() == null){
+            finish();
+        }
+        if (!title_et.getText().toString().equals("")){
+            AlertDialog.Builder dlg = new AlertDialog.Builder(this);
+            dlg.setIcon(android.R.drawable.stat_sys_warning);
+            dlg.setMessage("已编辑的内容不会被保存，确定要退出吗");
+            dlg.setPositiveButton("退出", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            });
+            dlg.setNegativeButton("取消", null);
+            dlg.show();
+        }else{
+            finish();
+        }
     }
 }

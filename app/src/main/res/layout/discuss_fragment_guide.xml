@@ -3,8 +3,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fefefe">
+    <TextView
+        android:id="@+id/discuss_ceil_tv"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:text="论坛"
+        android:textColor="@color/colorWhite"
+        android:background="@color/cololSkyBlue"
+        android:textSize="30dp" />
     <LinearLayout
         android:id="@+id/discuss_header_ll"
+        android:layout_below="@id/discuss_ceil_tv"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="8dp"
         android:layout_width="match_parent"

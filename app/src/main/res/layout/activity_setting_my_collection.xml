@@ -15,8 +15,8 @@
             android:id="@+id/setting_my_collection_exit_iv"
             android:layout_margin="10dp"
             android:layout_marginLeft="20dp"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@drawable/back_selector"
             android:clickable="true"/>
         <TextView

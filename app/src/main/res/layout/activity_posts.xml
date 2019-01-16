@@ -15,7 +15,7 @@
         <ImageView
             android:id="@+id/posts_back_iv"
             android:clickable="true"
-            android:src="@drawable/back_selector"
+            android:background="@drawable/back_selector"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:paddingLeft="6dp"

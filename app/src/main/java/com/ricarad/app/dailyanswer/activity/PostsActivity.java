@@ -8,7 +8,9 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -42,7 +44,7 @@ import jp.wasabeef.richeditor.RichEditor;
 
 import static com.ricarad.app.dailyanswer.activity.AddTopicActivity.POST_TAG;
 
-public class PostsActivity extends AppCompatActivity implements View.OnClickListener {
+public class PostsActivity extends AppCompatActivity implements  View.OnTouchListener,View.OnClickListener {
     private TextView title_tv, collect_tv;
     private ListView posts_lv;
     private ImageView collect_iv, back_iv;
@@ -63,6 +65,8 @@ public class PostsActivity extends AppCompatActivity implements View.OnClickList
     private List<Post> postList;
     private PostAdapter postAdapter;
 
+    private static final int SCROLL_MIN_DISTANCE = 80;// 移动最小距离
+    private GestureDetector mygesture;//手势探测器
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +82,7 @@ public class PostsActivity extends AppCompatActivity implements View.OnClickList
         posts_lv.setAdapter(postAdapter);
         fetchPosts();
         checkCollect();
+        mygesture = new GestureDetector(this,myGestureListener);
     }
 
     //提交回帖
@@ -421,4 +426,50 @@ public class PostsActivity extends AppCompatActivity implements View.OnClickList
         content_re.setPadding(3, 3, 3, 3);
     }
 
+    private GestureDetector.OnGestureListener myGestureListener = new GestureDetector.OnGestureListener() {
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return false;
+        }
+
+        @Override
+        public void onShowPress(MotionEvent e) {
+
+        }
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+            return false;
+        }
+
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            return false;
+        }
+
+        @Override
+        public void onLongPress(MotionEvent e) {
+
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            if (e2.getX() - e1.getX() > SCROLL_MIN_DISTANCE) {
+                finish();
+            }
+            return false;
+        }
+    };
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        return mygesture.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if(mygesture.onTouchEvent(ev)){
+            return mygesture.onTouchEvent(ev);
+        }
+        return super.dispatchTouchEvent(ev);
+    }
 }

@@ -5,12 +5,14 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/discuss_ceil_tv"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="center"
         android:text="个人中心"
-        android:textColor="#101010"
-        android:textSize="30sp" />
+        android:textColor="@color/colorWhite"
+        android:background="@color/cololSkyBlue"
+        android:textSize="30dp" />
 
     <RelativeLayout
         android:background="@color/colorSmallWhite"

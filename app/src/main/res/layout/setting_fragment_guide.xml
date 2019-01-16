@@ -24,9 +24,6 @@
             android:layout_height="75dp"
             android:layout_marginLeft="10dp"
             android:src="@drawable/setting_fragment_guide_photo" />
-
-
-
         <TextView
             android:id="@+id/setting_fragment_guide_username"
             android:layout_width="match_parent"
@@ -36,9 +33,6 @@
             android:text="shy"
             android:textColor="#050505"
             android:textSize="30dp" />
-
-
-
         <ImageView
             android:layout_width="20dp"
             android:layout_height="30dp"
@@ -164,40 +158,7 @@
             android:src="@drawable/setting_fragment_guide_goto" />
 
     </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/setting_fragment_guide_update_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/setting_update_password_icon"
-            android:layout_centerVertical="true"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginLeft="18dp"
-            android:src="@drawable/setting_update_password_icon"
-            />
-
-        <TextView
-            android:layout_toRightOf="@+id/setting_update_password_icon"
-            android:layout_width="280dp"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="修改密码"
-            android:textColor="#050505"
-            android:textSize="25sp" />
-
-        <ImageView
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:id="@+id/setting_fragment_guide_goto_update_password"
-            android:layout_marginRight="15dp"
-            android:layout_width="20dp"
-            android:layout_height="30dp"
-
-            android:src="@drawable/setting_fragment_guide_goto" />
-
-    </RelativeLayout>
     <View
         android:background="#F7F7F7"
         android:layout_width="match_parent"

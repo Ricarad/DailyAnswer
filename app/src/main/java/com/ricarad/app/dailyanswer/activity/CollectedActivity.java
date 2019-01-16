@@ -156,7 +156,9 @@ public class CollectedActivity extends Activity implements View.OnClickListener 
                         isEdit = false;
                         edit.setBackground(this.getResources().getDrawable(R.drawable.edit_press_mistake));
                         CommonAdapter.isEditMode = true;
-                        commonAdapter.notifyDataSetChanged();
+                        if (questionList.size() !=0) {
+                            commonAdapter.notifyDataSetChanged();
+                        }
                     }
                 }break;
             }

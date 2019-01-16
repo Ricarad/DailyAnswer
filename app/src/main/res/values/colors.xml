@@ -11,7 +11,7 @@
     <color name="colorGrey">#d3d3d3</color>
     <color name="colorRiseYellow">#FFEC8B</color>
     <color name="colorSmallRed">#fe4b5e</color>
-     <color name="colorSpecBlack">#4e4e4e</color>
+    <color name="colorSpecBlack">#4e4e4e</color>
     <color name="colorFlesh">#FFEFD5</color>
     <color name="colorLightPostBackground">#fdfdfd</color>
     <color name="colorMarkPostText">#666666</color>
@@ -19,4 +19,5 @@
     <color name="cocorSmallBlue">#3493E8</color>
     <color name="colorSmallGrey">#F8F6F8</color>
     <color name="colorPostErr">#e40b00</color>
+    <color name="colorSmallWhite">#fefefe</color>
 </resources>

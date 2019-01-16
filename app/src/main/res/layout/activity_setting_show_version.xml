@@ -29,7 +29,8 @@
     android:textColor="@color/colorBlack"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="天天答题DailyAnswer"/>
+    android:text="微客问答社区
+     WeCode"/>
     <TextView
         android:layout_below="@+id/setting_show_version_number"
         android:textSize="25sp"

@@ -73,7 +73,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private static final int MIN_LENGTH = 6;
     private static final int MAX_LENGTH = 8;
-    private String imgUrl; //头像图片的url地址
+    private String imgUrl = ""; //头像图片的url地址
 
     //设置计时器，验证码点击
     private CountDownTimer timer = new CountDownTimer(60 * 1000, 1000) {
@@ -89,6 +89,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             sendMsgBtn.setText("验证码");
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,8 +107,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         setEditTextInputSpeChat(passwordEt);
         setEditTextInputSpace(phoneEt);
         setEditTextInputSpeChat(phoneEt);
-        imgUrl = getResourcesUrl(R.drawable.head_img_default)+".png";
-        Log.i("TGA","图片地址为"+imgUrl);
     }
 
 
@@ -128,6 +127,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
         if (userName.equals("") || userName == null) {
             Toast.makeText(RegisterActivity.this, "用户名不能为空", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (!isHaveAlpha(userName)){
+            Toast.makeText(RegisterActivity.this, "用户名必须含有字母", Toast.LENGTH_SHORT).show();
             return false;
         }
         if (password.equals("") || password == null) {
@@ -161,7 +164,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         if (e == null) {
                             timer.start();
                             Toast.makeText(RegisterActivity.this, "发送验证码成功，短信ID:" + smsId + "\n", Toast.LENGTH_LONG).show();
-                            verficationCodeEt.setHint("请输入短信ID为" + smsId + "的验证码");
+                            verficationCodeEt.setHint("请输入收到的验证码");
                         } else {
                             Toast.makeText(RegisterActivity.this, "发送验证码失败", Toast.LENGTH_SHORT).show();
                         }
@@ -193,37 +196,50 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 user.setRightNumber(0);
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 user.setLastLoginDate(BmobDate.createBmobDate("yyyy-MM-dd HH:mm:ss", sdf.format(new Date())));
-                BmobFile bmobFile = new BmobFile(new File(imgUrl));
-                if (bmobFile == null){
-                    Toast.makeText(RegisterActivity.this, "请选择一个头像", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                user.setUserImg(bmobFile);
-                user.getUserImg().uploadblock(new UploadFileListener() {
-                    @Override
-                    public void done(BmobException e) {
-                        if (e == null) {
-                            user.signOrLogin(code, new SaveListener<User>() {
-                                @Override
-                                public void done(User user, BmobException e) {
-                                    if (e == null) {
-                                        Intent intent = new Intent();
-                                        intent.putExtra("userName", userNameEt.getText().toString());
-                                        intent.putExtra("password", passwordEt.getText().toString());
-                                        setResult(RESULT_OK, intent);
-                                        Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
-                                        finish();
-                                    } else {
-                                        Toast.makeText(RegisterActivity.this, "注册失败，失败原因：" + e.getErrorCode() + ":" + e.getMessage(), Toast.LENGTH_LONG).show();
-
-                                    }
-                                }
-                            });
-                        }else {
-                            Toast.makeText(RegisterActivity.this, "注册失败，失败原因：" + e.getErrorCode() + ":" + e.getMessage(), Toast.LENGTH_LONG).show();
+                if (imgUrl.equals("")) {
+                    user.signOrLogin(code, new SaveListener<User>() {
+                        @Override
+                        public void done(User user, BmobException e) {
+                            if (e == null) {
+                                Intent intent = new Intent();
+                                intent.putExtra("userName", userNameEt.getText().toString());
+                                intent.putExtra("password", passwordEt.getText().toString());
+                                setResult(RESULT_OK, intent);
+                                Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                                finish();
+                            } else {
+                                Toast.makeText(RegisterActivity.this, "注册失败，失败原因：" + e.getErrorCode() + ":" + e.getMessage(), Toast.LENGTH_LONG).show();
+                            }
                         }
-                    }
-                });
+                    });
+                } else {
+                    BmobFile bmobFile = new BmobFile(new File(imgUrl));
+                    user.setUserImg(bmobFile);
+                    user.getUserImg().uploadblock(new UploadFileListener() {
+                        @Override
+                        public void done(BmobException e) {
+                            if (e == null) {
+                                user.signOrLogin(code, new SaveListener<User>() {
+                                    @Override
+                                    public void done(User user, BmobException e) {
+                                        if (e == null) {
+                                            Intent intent = new Intent();
+                                            intent.putExtra("userName", userNameEt.getText().toString());
+                                            intent.putExtra("password", passwordEt.getText().toString());
+                                            setResult(RESULT_OK, intent);
+                                            Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                                            finish();
+                                        } else {
+                                            Toast.makeText(RegisterActivity.this, "注册失败，失败原因：" + e.getErrorCode() + ":" + e.getMessage(), Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                });
+                            } else {
+                                Toast.makeText(RegisterActivity.this, "注册失败，失败原因：" + e.getErrorCode() + ":" + e.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                }
             }
             break;
             case R.id.register_head_img: {
@@ -252,6 +268,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 resources.getResourceEntryName(id);
         return urlPath;
     }
+
     /**
      * 禁止EditText输入空格和换行符
      *
@@ -293,6 +310,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         editText.setFilters(new InputFilter[]{filter});
     }
 
+    public static boolean isHaveAlpha(String s){
+        String regex=".*[a-zA-Z]+.*";
+        Matcher m=Pattern.compile(regex).matcher(s);
+        return m.matches();
+    }
     //验证手机号是否正确ֻ
     public static boolean isRightPhone(String phone) {
         if (TextUtils.isEmpty(phone)) {

@@ -154,7 +154,7 @@ public class DiscussFragment extends Fragment implements View.OnClickListener{
         if (results.isEmpty())
             Toast.makeText(getContext(), "抱歉，没有找到相关的内容", Toast.LENGTH_SHORT).show();
         else{
-            Toast.makeText(getContext(), "找到" + results.size() + 1 + "条结果", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "找到" + results.size() + "条结果", Toast.LENGTH_SHORT).show();
             topicList.clear();
             topicList.addAll(results);
             search_btn.requestFocus();

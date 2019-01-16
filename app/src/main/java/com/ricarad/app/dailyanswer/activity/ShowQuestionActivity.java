@@ -64,7 +64,7 @@ public class ShowQuestionActivity extends Activity implements View.OnTouchListen
     private Question gradeQuestion; //当从GradeActivity跳转过来时 启用question
     private int currentIndex = 0;
     private User user;
-    private static final int SCROLL_MIN_DISTANCE = 20;// 移动最小距离
+    private static final int SCROLL_MIN_DISTANCE = 50;// 移动最小距离
     private static int activityFlag = 1; //默认是从GradeActivity转过来
     private GestureDetector mygesture;//手势探测器
 

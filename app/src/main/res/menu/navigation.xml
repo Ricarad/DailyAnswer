@@ -3,16 +3,16 @@
 
     <item
         android:id="@+id/navigation_answer"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/guide_answer_press"
         android:title="答题" />
 
     <item
         android:id="@+id/navigation_discuss"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@drawable/guide_discuss_press"
         android:title="讨论" />
     <item
         android:id="@+id/navigation_setting"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@drawable/guide_setting_press"
         android:title="个人中心" />
 
 

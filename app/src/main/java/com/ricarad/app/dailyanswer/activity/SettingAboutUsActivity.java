@@ -21,7 +21,7 @@ public class SettingAboutUsActivity extends AppCompatActivity implements View.On
         setting_my_settings_return = findViewById(R.id.setting_my_settings_return);
         setting_my_settings_return.setOnClickListener(this);
         setting_about_us_background = findViewById(R.id.setting_show_about_us_background);
-        init();
+      //  init();
     }
 
     @Override

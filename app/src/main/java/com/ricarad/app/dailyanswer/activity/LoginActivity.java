@@ -1,6 +1,7 @@
 package com.ricarad.app.dailyanswer.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -106,6 +107,10 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         int id = view.getId();
         switch (id) {
             case R.id.login_button: {
+                final ProgressDialog pd = new ProgressDialog(this);
+                pd.setTitle("请稍等");
+                pd.setMessage("正在登陆·····");
+                pd.show();
                 final String account = accountEv.getText().toString();
                 final String password = passwordEv.getText().toString();
                 if (account == null || password == null || account.equals("") || password.equals("")) {
@@ -145,16 +150,20 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                                         @Override
                                         public void done(BmobException e) {
                                             if (e == null) {
+                                                pd.dismiss();
                                                 startActivityForResult(intent, GUIDE_CODE);
                                             } else {
+                                                pd.dismiss();
                                                 Snackbar.make(view, "更新登录信息失败：" + e.getMessage(), Snackbar.LENGTH_SHORT).show();
                                             }
                                         }
                                     });
                                 } catch (Exception exp) {
+                                    pd.dismiss();
                                     Snackbar.make(view, "登录日期出现异常：" + e.getMessage(), Snackbar.LENGTH_SHORT).show();
                                 }
                             } else {
+                                pd.dismiss();
                                 Snackbar.make(view, "登录失败：" +e.getErrorCode()+ e.getMessage(), Snackbar.LENGTH_SHORT).show();
                             }
                         }

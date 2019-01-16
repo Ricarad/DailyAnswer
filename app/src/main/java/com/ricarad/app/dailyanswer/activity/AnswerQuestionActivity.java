@@ -6,8 +6,10 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.jeremyfeinstein.slidingmenu.lib.app.SlidingActivity;
 import com.ricarad.app.dailyanswer.R;
 import com.ricarad.app.dailyanswer.adapter.SlidingListAdapter;
 import com.ricarad.app.dailyanswer.model.Question;
@@ -41,6 +44,7 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
 
+import static com.ricarad.app.dailyanswer.common.Constant.ActivityFlag.GRADE_ACTIVITY_CODE;
 import static com.ricarad.app.dailyanswer.common.Constant.BMOBAPPKEY;
 import static com.ricarad.app.dailyanswer.common.Constant.GradeType.ANSWER_TYPE;
 import static com.ricarad.app.dailyanswer.common.Constant.GradeType.EXAM_CODE;
@@ -48,7 +52,7 @@ import static com.ricarad.app.dailyanswer.common.Constant.GradeType.PRACTICE_COD
 import static com.ricarad.app.dailyanswer.common.Constant.USER;
 
 public class AnswerQuestionActivity extends Activity implements View.OnClickListener,
-        RadioGroup.OnCheckedChangeListener, PopupMenu.OnMenuItemClickListener {
+        RadioGroup.OnCheckedChangeListener, PopupMenu.OnMenuItemClickListener, View.OnTouchListener {
 
     @ViewInject(R.id.answer_select_radiogroup)
     private RadioGroup radioSelectRg;
@@ -87,6 +91,8 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
     private boolean isShowResult = true;//是否显示答案
     private User user;
     private int answerType;//是练习还是考试
+    private GestureDetector mygesture;//手势探测器
+    private static final int SCROLL_MIN_DISTANCE = 220;// 移动最小距离
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +105,8 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
         x.view().inject(this);
         initView();
         initQuestionList();
+        //构建手势探测器
+        mygesture = new GestureDetector(this, myGestureListener);
         questionSlideListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -126,19 +134,19 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
                 if (e == null) {
                     if (list.size() != 0) {
                         Random index = new Random();
-                        HashMap<Integer,Integer> indexMap = new HashMap<>();
-                        for(int i=0,j;i<list.size();i++){
+                        HashMap<Integer, Integer> indexMap = new HashMap<>();
+                        for (int i = 0, j; i < list.size(); i++) {
                             //获取在 list.size 返回内的随机数
                             j = index.nextInt(list.size());
                             //判断是否重复
-                            if(!indexMap.containsKey(j)){
+                            if (!indexMap.containsKey(j)) {
                                 //获取元素
-                                indexMap.put(j,1);
-                               questionList.add(list.get(j));
-                               if (indexMap.size() == 10){
-                                   break;
-                               }
-                            }else{
+                                indexMap.put(j, 1);
+                                questionList.add(list.get(j));
+                                if (indexMap.size() == 10) {
+                                    break;
+                                }
+                            } else {
                                 i--;//如果重复再来一次
                             }
                         }
@@ -174,19 +182,20 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
         itemDRb.setText("D." + question.getItemD());
         resultTv.setText("正确答案为：" + question.getAnswer());
         analysisTv.setText("问题解析：" + question.getAnalysis());
+        questionSlideListView.setSelection(i);
     }
 
     public void initView() {
         //设置SlideMenu功能
         SlidingMenu slidingMenu = new SlidingMenu(this);
         slidingMenu.setMode(SlidingMenu.LEFT);
-        // slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-        slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+        //slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
         slidingMenu.setShadowWidthRes(R.dimen.shadow_width);
         //SlidingMenu划出时主页面显示的剩余宽度
         //slidingMenu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
         //设置SlidingMenu菜单的宽度
-        slidingMenu.setBehindWidthRes(R.dimen.slidingmenu_offset_toolarge);
+        slidingMenu.setBehindWidthRes(R.dimen.slidingmenu_offset_large);
         // 设置渐入渐出效果的值
         slidingMenu.setFadeDegree(0.35f);
         slidingMenu.attachToActivity(AnswerQuestionActivity.this, SlidingMenu.SLIDING_CONTENT);
@@ -200,9 +209,9 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
         previous.setOnClickListener(this);
         back.setOnClickListener(this);
         menu.setOnClickListener(this);
-        if (answerType == PRACTICE_CODE){
+        if (answerType == PRACTICE_CODE) {
             titleTv.setText("练习");
-        }else if(answerType == EXAM_CODE){
+        } else if (answerType == EXAM_CODE) {
             titleTv.setText("考试");
         }
     }
@@ -260,7 +269,7 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
                             User tempUser = new User();
                             tempUser.setObjectId(user.getObjectId());
                             tempUser.setAnswerQuestion(relation);
-                            tempUser.setNumber(user.getNumber()+answerList.size());
+                            tempUser.setNumber(user.getNumber() + answerList.size());
                             tempUser.update(new UpdateListener() {
                                 @Override
                                 public void done(BmobException e) {
@@ -273,7 +282,7 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
                                     }
                                 }
                             });
-                        }else {
+                        } else {
                             finish();
                         }
                     }
@@ -289,7 +298,7 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
                             finish();
                         }
                     });
-                    dialog.setNegativeButton("取消",null);
+                    dialog.setNegativeButton("取消", null);
                     dialog.show();
                 }
             }
@@ -371,4 +380,100 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
         }
         return false;
     }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        return mygesture.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (mygesture.onTouchEvent(ev)) {
+            return mygesture.onTouchEvent(ev);
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    private GestureDetector.OnGestureListener myGestureListener = new GestureDetector.OnGestureListener() {
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return false;
+        }
+
+        @Override
+        public void onShowPress(MotionEvent e) {
+
+        }
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+            return false;
+        }
+
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            return false;
+        }
+
+        @Override
+        public void onLongPress(MotionEvent e) {
+
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+
+            //左滑
+            if (e1.getX() - e2.getX() > SCROLL_MIN_DISTANCE) {
+                int selectItemId = radioSelectRg.getCheckedRadioButtonId();
+                answerList.set(currentIndex, selectItemId);
+                //保存上一题的选项之后，显示下一题
+                currentIndex++;
+                if (currentIndex < questionList.size()) {
+                    Question question = questionList.get(currentIndex);
+                    setView(currentIndex, question);
+                    int nSelectItemId = answerList.get(currentIndex);
+                    if (nSelectItemId == -1) {
+                        radioSelectRg.clearCheck();
+                    } else {
+                        radioSelectRg.check(nSelectItemId);
+                    }
+                } else {
+                    currentIndex = 0;
+                    setView(currentIndex, questionList.get(currentIndex));
+                    int nSelectItemId = answerList.get(currentIndex);
+                    if (nSelectItemId == -1) {
+                        radioSelectRg.clearCheck();
+                    } else {
+                        radioSelectRg.check(nSelectItemId);
+                    }
+                }
+            } else if (e2.getX() - e1.getX() > SCROLL_MIN_DISTANCE) {
+                int selectItemId = radioSelectRg.getCheckedRadioButtonId();
+                answerList.set(currentIndex, selectItemId);
+                //保存这一题的选项之后，显示上一题
+                currentIndex--;
+                if (currentIndex >= 0) {
+                    Question question = questionList.get(currentIndex);
+                    setView(currentIndex, question);
+                    int pSelectItemId = answerList.get(currentIndex);
+                    if (pSelectItemId == -1) {
+                        radioSelectRg.clearCheck();
+                    } else {
+                        radioSelectRg.check(pSelectItemId);
+                    }
+                } else {
+                    currentIndex = questionList.size() - 1;
+                    setView(currentIndex, questionList.get(currentIndex));
+                    int nSelectItemId = answerList.get(currentIndex);
+                    if (nSelectItemId == -1) {
+                        radioSelectRg.clearCheck();
+                    } else {
+                        radioSelectRg.check(nSelectItemId);
+                    }
+                }
+            }
+            return false;
+        }
+    };
 }

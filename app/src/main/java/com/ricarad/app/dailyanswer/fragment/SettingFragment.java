@@ -1,5 +1,6 @@
 package com.ricarad.app.dailyanswer.fragment;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,24 +8,40 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.InputFilter;
+import android.text.Spanned;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.qingmei2.rximagepicker.core.RxImagePicker;
+import com.qingmei2.rximagepicker.entity.Result;
+import com.qingmei2.rximagepicker.ui.SystemImagePicker;
 import com.ricarad.app.dailyanswer.R;
+import com.ricarad.app.dailyanswer.activity.RegisterActivity;
 import com.ricarad.app.dailyanswer.activity.SettingMyCollectionActivity;
 import com.ricarad.app.dailyanswer.activity.SettingMyPostActivity;
 import com.ricarad.app.dailyanswer.activity.SettingAboutUsActivity;
 import com.ricarad.app.dailyanswer.activity.SettingShowVersionActivity;
 import com.ricarad.app.dailyanswer.model.User;
 
+import java.io.File;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.DownloadFileListener;
+import cn.bmob.v3.listener.UpdateListener;
+import cn.bmob.v3.listener.UploadFileListener;
+import io.reactivex.functions.Consumer;
 
 public class SettingFragment extends Fragment implements View.OnClickListener {
     private RelativeLayout collection;//收藏的梯子
@@ -99,40 +116,119 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.setting_fragment_guide_collection: {
                 //进入收藏的帖子页面
-                Intent intent = new Intent(getContext() ,SettingMyCollectionActivity.class);
+                Intent intent = new Intent(getContext(), SettingMyCollectionActivity.class);
                 intent.putExtra("user", user);
                 startActivity(intent);
             }
             break;
             case R.id.setting_fragment_guide_mypost: {
                 //进入我发表的帖子页面
-                Intent intent = new Intent(getContext() ,SettingMyPostActivity.class);
+                Intent intent = new Intent(getContext(), SettingMyPostActivity.class);
                 intent.putExtra("user", user);
                 startActivity(intent);
             }
             break;
             case R.id.setting_fragment_guide_about: {
-                //TODO 进入关于我们界面
+                // 进入关于我们界面
                 Intent intent = new Intent(getContext(), SettingAboutUsActivity.class);
                 startActivity(intent);
             }
             break;
             case R.id.setting_fragment_guide_version: {
-                //TODO 软件版本界面
+                // 软件版本界面
                 Intent intent = new Intent(getContext(), SettingShowVersionActivity.class);
                 startActivity(intent);
             }
             break;
             case R.id.setting_fragment_guide_headimg: {
-                //TODO 点击头像可以从本地获取头像并更换
+                //点击头像可以从本地获取头像并更换
+                SystemImagePicker systemImagePicker = RxImagePicker.INSTANCE.create();
+                systemImagePicker.openGallery(getActivity()).subscribe(new Consumer<Result>() {
+                    @Override
+                    public void accept(Result result) {
+                        final String imgUrl = result.getUri().getPath();
+                        BmobFile bmobFile = new BmobFile(new File(imgUrl));
+                        final User tempUser = new User();
+                        tempUser.setObjectId(user.getObjectId());
+                        tempUser.setUserImg(bmobFile);
+                        tempUser.getUserImg().uploadblock(new UploadFileListener() {
+                            @Override
+                            public void done(BmobException e) {
+                                if (e == null) {
+                                    tempUser.update(new UpdateListener() {
+                                        @Override
+                                        public void done(BmobException e) {
+                                            if (e == null) {
+                                                Log.i("TGA", "修改头像成功");
+                                                File file = new File(imgUrl);
+                                                final Bitmap cackeBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                                                headImg.setImageBitmap(cackeBitmap);
+                                                Toast.makeText(getActivity(), "头像修改成功", Toast.LENGTH_LONG).show();
+                                            } else {
+                                                Toast.makeText(getActivity(), "修改头像失败：" + e.getErrorCode() +
+                                                        ":" + e.getMessage(), Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    Toast.makeText(getActivity(), "修改头像失败：" + e.getErrorCode() +
+                                            ":" + e.getMessage(), Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+                    }
+                });
             }
             break;
             case R.id.setting_fragment_guide_quit: {
                 //TODO 点击退出回到登录界面
+                getActivity().finish();
             }
             break;
             case R.id.setting_fragment_guide_change_nickname: {
                 //TODO 点击修改昵称
+                final Dialog changeDialog = new Dialog(getActivity());
+                changeDialog.setTitle("修改昵称");
+                View cv = LayoutInflater.from(getActivity()).inflate(R.layout.setting_change_nickname_dialog, null);
+                changeDialog.setContentView(cv);
+                TextView okTv = cv.findViewById(R.id.setting_ok_change_nick_btn);
+                TextView cancelTv = cv.findViewById(R.id.setting_cancel_change_nick_btn);
+                final EditText newNickNameEt = cv.findViewById(R.id.setting_new_nickname_et);
+                setEditTextInputSpace(newNickNameEt);
+                setEditTextInputSpeChat(newNickNameEt);
+                okTv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final String newNickName = newNickNameEt.getText().toString();
+                        if (newNickName == null || newNickName.equals("")) {
+                            Toast.makeText(getActivity(), "请输入正确的昵称格式！", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        User tempUser = new User();
+                        tempUser.setObjectId(user.getObjectId());
+                        tempUser.setNickName(newNickName);
+                        tempUser.update(new UpdateListener() {
+                            @Override
+                            public void done(BmobException e) {
+                                if (e == null) {
+                                    nickNameTv.setText(newNickName);
+                                    changeDialog.dismiss();
+                                    Toast.makeText(getActivity(), "修改成功", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getActivity(), "修改昵称失败！请重试" + e.getErrorCode() +
+                                            e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                });
+                cancelTv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        changeDialog.dismiss();
+                    }
+                });
+                changeDialog.show();
             }
             break;
         }
@@ -140,14 +236,45 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    //前往设置界面
-    private void goToSettingMySettings() {
-        Intent intent = new Intent(getContext(), SettingAboutUsActivity.class);
-        if (isAdded()) {  //判断Fragment已经依附Activity
-            User user = (User) getArguments().getSerializable("user");
-            intent.putExtra("user", user);
-            startActivity(intent);
-        }
+    /**
+     * 禁止EditText输入空格和换行符
+     *
+     * @param editText EditText输入框
+     */
+    public static void setEditTextInputSpace(EditText editText) {
+        InputFilter filter = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                if (source.equals(" ") || source.toString().contentEquals("\n")) {
+                    return "";
+                } else {
+                    return null;
+                }
+            }
+        };
+        editText.setFilters(new InputFilter[]{filter});
+    }
+
+    /**
+     * 禁止EditText输入特殊字符
+     *
+     * @param editText EditText输入框
+     */
+    public static void setEditTextInputSpeChat(EditText editText) {
+        InputFilter filter = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                String speChat = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+                Pattern pattern = Pattern.compile(speChat);
+                Matcher matcher = pattern.matcher(source.toString());
+                if (matcher.find()) {
+                    return "";
+                } else {
+                    return null;
+                }
+            }
+        };
+        editText.setFilters(new InputFilter[]{filter});
     }
 
 

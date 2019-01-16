@@ -13,6 +13,7 @@
         android:textSize="30sp" />
 
     <RelativeLayout
+        android:background="@color/colorSmallWhite"
         android:id="@+id/setting_fragment_guide_self"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -55,6 +56,7 @@
         android:background="#F5F5F5" />
 
     <RelativeLayout
+        android:background="@drawable/setting_fragment_default_selector"
         android:clickable="true"
         android:id="@+id/setting_fragment_guide_change_nickname"
         android:layout_width="match_parent"
@@ -90,6 +92,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:background="@drawable/setting_fragment_default_selector"
         android:clickable="true"
         android:id="@+id/setting_fragment_guide_collection"
         android:layout_width="match_parent"
@@ -130,6 +133,7 @@
         android:background=" #F7F7F7" />
 
     <RelativeLayout
+        android:background="@drawable/setting_fragment_default_selector"
         android:clickable="true"
         android:id="@+id/setting_fragment_guide_mypost"
         android:layout_width="match_parent"
@@ -165,39 +169,7 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:clickable="true"
-        android:id="@+id/setting_fragment_guide_update_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/setting_update_password_icon"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="18dp"
-            android:src="@drawable/setting_update_password_icon" />
-
-        <TextView
-            android:layout_width="280dp"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/setting_update_password_icon"
-            android:padding="10dp"
-            android:text="修改密码"
-            android:textColor="#050505"
-            android:textSize="25sp" />
-
-        <ImageView
-
-            android:layout_width="20dp"
-            android:layout_height="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:src="@drawable/setting_fragment_guide_goto" />
-
-    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
@@ -205,6 +177,7 @@
         android:background="#F7F7F7" />
 
     <RelativeLayout
+        android:background="@drawable/setting_fragment_default_selector"
         android:clickable="true"
         android:id="@+id/setting_fragment_guide_about"
         android:layout_width="match_parent"
@@ -245,6 +218,7 @@
         android:background="#F7F7F7" />
 
     <RelativeLayout
+        android:background="@drawable/setting_fragment_default_selector"
         android:clickable="true"
         android:id="@+id/setting_fragment_guide_version"
         android:layout_width="match_parent"
@@ -279,6 +253,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:background="@drawable/setting_fragment_default_selector"
         android:clickable="true"
         android:id="@+id/setting_fragment_guide_quit"
         android:layout_width="match_parent"

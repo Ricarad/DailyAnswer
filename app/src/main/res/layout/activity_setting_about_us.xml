@@ -33,17 +33,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="       三个代表团队是一个致力于知识共享的团队，我们代表最新的技术，代表最新的交互环境，代表最新的知识。
-      当然最主要的还是代表了我们团队只有三个人。
-
- 联系人：陈经理
- 联系方式:
-              微客问答社区_WeCode
-              WeCode@whut.com "
+      当然最主要的还是代表了我们团队只有三个人。 "
             android:textSize="25sp"
             android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
            android:layout_marginTop="50dp"/>
-
+        <TextView
+            android:textColor="@color/colorBlack"
+            android:textSize="25sp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="联系人：陈经理"/>
+         <TextView
+             android:textColor="@color/colorBlack"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:textSize="25sp"
+             android:layout_marginRight="20dp"
+             android:layout_marginLeft="20dp"
+             android:layout_marginTop="20dp"
+             android:text="联系方式:微客问答社区_WeCode
+              WeCode@whut.com"/>
 
 
 

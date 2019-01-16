@@ -100,7 +100,6 @@ public class RecordActivity extends Activity implements View.OnClickListener {
                     final List<Question> deleteList = commonAdapter.getDeletes();
                     if (deleteList.size() != 0) {
                         BmobRelation deleteRelation = new BmobRelation();
-                        Log.i("TGA","删除数目"+deleteList.size()+"");
                         for (Question question : deleteList) {
                             deleteRelation.remove(question);
                         }

@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.qingmei2.rximagepicker.core.RxImagePicker;
 import com.qingmei2.rximagepicker.entity.Result;
 import com.qingmei2.rximagepicker.ui.SystemImagePicker;
@@ -34,6 +36,7 @@ import com.ricarad.app.dailyanswer.activity.SettingShowVersionActivity;
 import com.ricarad.app.dailyanswer.model.User;
 
 import java.io.File;
+import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -94,24 +97,9 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         //TODO
         nickNameTv.setText(user.getNickName());
         if (user.getUserImg() != null) {
-            user.getUserImg().download(new DownloadFileListener() {
-                @Override
-                public void done(String s, BmobException e) {
-                    if (e != null) {
-                        Toast.makeText(getActivity(), "加载头像失败" + e.getErrorCode() + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    } else {
-                        Bitmap bmp = BitmapFactory.decodeFile(s);
-                        headImg.setImageBitmap(bmp);
-                    }
-                }
-
-                @Override
-                public void onProgress(Integer integer, long l) {
-
-                }
-            });
+            Uri imageUrl = Uri.parse(user.getUserImg().getFileUrl());
+            Glide.with(this).load(imageUrl).into(headImg);
         }
-
     }
 
     @Override
@@ -162,7 +150,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                                         @Override
                                         public void done(BmobException e) {
                                             if (e == null) {
-                                                Log.i("TGA", "修改头像成功");
                                                 File file = new File(imgUrl);
                                                 final Bitmap cackeBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
                                                 headImg.setImageBitmap(cackeBitmap);

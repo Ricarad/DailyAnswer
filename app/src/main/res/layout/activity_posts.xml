@@ -56,8 +56,9 @@
         android:id="@+id/posts_footer_ll"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:orientation="horizontal">
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp">
         <LinearLayout
             android:id="@+id/posts_collect_ll"
             android:layout_width="0dp"
@@ -74,7 +75,7 @@
                 android:id="@+id/posts_collect_tv"
                 android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:text="收藏"
                 android:textSize="22sp"/>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.ricarad.app.dailyanswer.R;
 import com.ricarad.app.dailyanswer.model.PComment;
 
@@ -59,6 +61,10 @@ public class CommentAdapter extends BaseAdapter {
         TextView content_tv = view.findViewById(R.id.comment_item_content_tv);
 
         //设置头像
+        if (commentList.get(position).getAuthor().getUserImg() != null){
+            Glide.with(mContext).load(Uri.parse(commentList.get(position).getAuthor().getUserImg().
+                    getFileUrl())).placeholder(R.drawable.logo).into(potrait_iv);
+        }
 //        if (commentList.get(position).getAuthor().LOCALPATH.equals("")){
 //            if (commentList.get(position).getAuthor().getUserImg() != null){
 //                commentList  .get(position).getAuthor().getUserImg().download(new DownloadFileListener() {

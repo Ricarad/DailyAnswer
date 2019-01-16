@@ -18,8 +18,7 @@
             android:id="@+id/comment_item_potrait_iv"
             android:layout_width="41dp"
             android:layout_height="41dp"
-            android:src="@drawable/logo"
-            android:visibility="gone"/>
+            android:src="@drawable/logo"/>
         <TextView
             android:id="@+id/comment_item_nickname_tv"
             android:layout_width="wrap_content"

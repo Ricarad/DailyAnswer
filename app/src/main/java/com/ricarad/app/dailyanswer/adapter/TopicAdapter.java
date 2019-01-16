@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.ricarad.app.dailyanswer.R;
 import com.ricarad.app.dailyanswer.activity.PostsActivity;
 import com.ricarad.app.dailyanswer.common.ViewUtil;
@@ -66,29 +68,31 @@ public class TopicAdapter extends BaseAdapter {
         TextView count_tv = view.findViewById(R.id.discuss_item_count_tv);
 
         //设置头像
-        if (topicList.get(position).getAuthor().LOCALPATH.equals("")){
-            if (topicList.get(position).getAuthor().getUserImg() != null){
-                topicList.get(position).getAuthor().getUserImg().download(new DownloadFileListener() {
-                    @Override
-                    public void done(String s, BmobException e) {
-                        if (e != null){
-                            Toast.makeText(mContext, "加载头像失败"+e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }else{
-                            Bitmap bmp = BitmapFactory.decodeFile(s);
-                            potrait_iv.setImageBitmap(bmp);
-                        }
-                    }
-
-                    @Override
-                    public void onProgress(Integer integer, long l) {
-
-                    }
-                });
-            }
-        }else{
-            Bitmap bmp = BitmapFactory.decodeFile(topicList.get(position).getAuthor().LOCALPATH);
-            potrait_iv.setImageBitmap(bmp);
+        if (topicList.get(position).getAuthor().getUserImg() != null){
+            Glide.with(mContext).load(Uri.parse(topicList.get(position).getAuthor().getUserImg().getFileUrl())).into(potrait_iv);
         }
+//        if (topicList.get(position).getAuthor().LOCALPATH.equals("")){
+//            if (topicList.get(position).getAuthor().getUserImg() != null){
+//                topicList.get(position).getAuthor().getUserImg().download(new DownloadFileListener() {
+//                    @Override
+//                    public void done(String s, BmobException e) {
+//                        if (e != null){
+//                            Toast.makeText(mContext, "加载头像失败"+e.getMessage(), Toast.LENGTH_SHORT).show();
+//                        }else{
+//                            Bitmap bmp = BitmapFactory.decodeFile(s);
+//                            potrait_iv.setImageBitmap(bmp);
+//                        }
+//                    }
+//                    @Override
+//                    public void onProgress(Integer integer, long l) {
+//
+//                    }
+//                });
+//            }
+//        }else{
+//            Bitmap bmp = BitmapFactory.decodeFile(topicList.get(position).getAuthor().LOCALPATH);
+//            potrait_iv.setImageBitmap(bmp);
+//        }
         //加载昵称
         if (topicList.get(position).getAuthor().getNickName() != null){
             nickname_tv.setText(topicList.get(position).getAuthor().getNickName());

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    android:layout_margin="10dp">
     <LinearLayout
         android:id="@+id/comment_item_header_ll"
         android:layout_width="match_parent"
@@ -12,8 +13,8 @@
         android:gravity="center_vertical">
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/comment_item_potrait_iv"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="41dp"
+            android:layout_height="41dp"
             android:src="@drawable/logo"/>
         <TextView
             android:id="@+id/comment_item_nickname_tv"
@@ -22,13 +23,18 @@
             android:layout_marginLeft="8dp"
             android:text="获取中"
             android:textSize="20sp"
-            android:textColor="@color/colorMarkPostText"/>
+            android:textColor="@color/colorFaintPostText"/>
     </LinearLayout>
     <TextView
         android:id="@+id/comment_item_content_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/comment_item_header_ll"/>
+        android:layout_below="@id/comment_item_header_ll"
+        android:layout_margin="8dp"
+        android:background="@drawable/comment_chat_smooth_shape"
+        android:padding="5dp"
+        android:textSize="22sp"
+        android:textColor="@color/colorMarkPostText"/>
         <TextView
             android:id="@+id/comment_item_time_tv"
             android:layout_below="@+id/comment_item_content_tv"

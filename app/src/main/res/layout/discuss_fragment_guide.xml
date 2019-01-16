@@ -19,6 +19,7 @@
             android:gravity="center_vertical"
             android:background="@drawable/discuss_fragment_smooth_shape">
             <ImageView
+                android:id="@+id/discuss_search_iv"
                 android:layout_weight="2"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
@@ -27,6 +28,7 @@
                 android:layout_marginRight="5dp"
                 />
             <EditText
+                android:id="@+id/discuss_input_et"
                 android:layout_width="wrap_content"
                 android:layout_height="44dp"
                 android:layout_weight="9"

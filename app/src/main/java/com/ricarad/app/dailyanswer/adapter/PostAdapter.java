@@ -41,6 +41,8 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
+import static android.webkit.WebSettings.LOAD_CACHE_ELSE_NETWORK;
+
 /**
  * Created by root on 2019-1-15.
  */
@@ -81,23 +83,29 @@ public class PostAdapter extends BaseAdapter {
         WebView webView = view.findViewById(R.id.post_item_content_wv);
 
         //设置头像
-        if (postList.get(position).getAuthor().getUserImg() != null){
-            postList.get(position).getAuthor().getUserImg().download(new DownloadFileListener() {
-                @Override
-                public void done(String s, BmobException e) {
-                    if (e != null){
-                        Toast.makeText(mContext, "加载头像失败"+e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }else{
-                        Bitmap bmp = BitmapFactory.decodeFile(s);
-                        potrait_iv.setImageBitmap(bmp);
+        if (postList.get(position).getAuthor().LOCALPATH.equals("")){
+            if (postList.get(position).getAuthor().getUserImg() != null){
+                postList.get(position).getAuthor().getUserImg().download(new DownloadFileListener() {
+                    @Override
+                    public void done(String s, BmobException e) {
+                        if (e != null){
+                            Toast.makeText(mContext, "加载头像失败"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }else{
+                            Bitmap bmp = BitmapFactory.decodeFile(s);
+                            potrait_iv.setImageBitmap(bmp);
+                            postList.get(position).getAuthor().LOCALPATH = s;
+                        }
                     }
-                }
 
-                @Override
-                public void onProgress(Integer integer, long l) {
+                    @Override
+                    public void onProgress(Integer integer, long l) {
 
-                }
-            });
+                    }
+                });
+            }
+        }else{
+            Bitmap bmp = BitmapFactory.decodeFile(postList.get(position).getAuthor().LOCALPATH);
+            potrait_iv.setImageBitmap(bmp);
         }
         //加载昵称
         if (postList.get(position).getAuthor().getNickName() != null){
@@ -113,6 +121,7 @@ public class PostAdapter extends BaseAdapter {
         WebSettings webSettings = webView.getSettings();
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         webSettings.setDefaultFontSize(23);
+        webSettings.setCacheMode(LOAD_CACHE_ELSE_NETWORK);
         webView.setBackgroundColor(0);
         webView.loadData(postList.get(position).getContent(), "text/html; charset=UTF-8","utf-8");
 
@@ -204,5 +213,4 @@ public class PostAdapter extends BaseAdapter {
 
         return view;
     }
-
 }

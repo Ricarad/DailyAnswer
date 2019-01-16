@@ -66,23 +66,28 @@ public class TopicAdapter extends BaseAdapter {
         TextView count_tv = view.findViewById(R.id.discuss_item_count_tv);
 
         //设置头像
-        if (topicList.get(position).getAuthor().getUserImg() != null){
-            topicList.get(position).getAuthor().getUserImg().download(new DownloadFileListener() {
-                @Override
-                public void done(String s, BmobException e) {
-                    if (e != null){
-                        Toast.makeText(mContext, "加载头像失败"+e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }else{
-                        Bitmap bmp = BitmapFactory.decodeFile(s);
-                        potrait_iv.setImageBitmap(bmp);
+        if (topicList.get(position).getAuthor().LOCALPATH.equals("")){
+            if (topicList.get(position).getAuthor().getUserImg() != null){
+                topicList.get(position).getAuthor().getUserImg().download(new DownloadFileListener() {
+                    @Override
+                    public void done(String s, BmobException e) {
+                        if (e != null){
+                            Toast.makeText(mContext, "加载头像失败"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }else{
+                            Bitmap bmp = BitmapFactory.decodeFile(s);
+                            potrait_iv.setImageBitmap(bmp);
+                        }
                     }
-                }
 
-                @Override
-                public void onProgress(Integer integer, long l) {
+                    @Override
+                    public void onProgress(Integer integer, long l) {
 
-                }
-            });
+                    }
+                });
+            }
+        }else{
+            Bitmap bmp = BitmapFactory.decodeFile(topicList.get(position).getAuthor().LOCALPATH);
+            potrait_iv.setImageBitmap(bmp);
         }
         //加载昵称
         if (topicList.get(position).getAuthor().getNickName() != null){

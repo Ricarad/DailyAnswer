@@ -20,6 +20,7 @@ import com.ricarad.app.dailyanswer.model.Topic;
 import com.ricarad.app.dailyanswer.model.User;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
@@ -75,6 +76,13 @@ public class SettingMyPostActivity extends AppCompatActivity implements View.OnC
                         posts_lv.setVisibility(View.VISIBLE);
                         msg_tv.setVisibility(View.GONE);
                         postList.clear();
+                        Iterator<Post> it = list.iterator();
+                        while (it.hasNext()){
+                            String postContent = it.next().getContent();
+                            if (postContent == null || postContent.isEmpty()){
+                                it.remove();
+                            }
+                        }
                         postList.addAll(list);
                         postAdapter.notifyDataSetChanged();
                     }

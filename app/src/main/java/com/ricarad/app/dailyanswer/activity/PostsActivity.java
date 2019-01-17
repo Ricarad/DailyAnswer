@@ -4,7 +4,9 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,9 +18,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leon.lfilepickerlibrary.LFilePicker;
+import com.leon.lfilepickerlibrary.utils.Constant;
 import com.qingmei2.rximagepicker.core.RxImagePicker;
 import com.qingmei2.rximagepicker.entity.Result;
 import com.qingmei2.rximagepicker.ui.SystemImagePicker;
@@ -31,6 +37,7 @@ import com.ricarad.app.dailyanswer.model.Topic;
 import com.ricarad.app.dailyanswer.model.User;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
@@ -43,6 +50,8 @@ import cn.bmob.v3.listener.UpdateListener;
 import jp.wasabeef.richeditor.RichEditor;
 
 import static com.ricarad.app.dailyanswer.activity.AddTopicActivity.POST_TAG;
+import static com.ricarad.app.dailyanswer.common.Constant.LFILEPICKER_PATH;
+import static com.ricarad.app.dailyanswer.common.Constant.LFILEPICKER_REQUEST_CODE;
 
 public class PostsActivity extends AppCompatActivity implements  View.OnTouchListener,View.OnClickListener {
     private TextView title_tv, collect_tv;
@@ -54,6 +63,8 @@ public class PostsActivity extends AppCompatActivity implements  View.OnTouchLis
     RichEditor content_re;
     ImageView bold_iv, italic_iv, underline_iv, img_iv, undo_iv, redo_iv, exit_iv;
     SystemImagePicker imagePicker;
+    Dialog pickDialog;
+    String imgUrl;
 
     boolean isBold = false, isItalic = false, isUnderline = false;
     Dialog contentDlg;
@@ -283,6 +294,13 @@ public class PostsActivity extends AppCompatActivity implements  View.OnTouchLis
                     if (list.isEmpty()) {
                     } else {
                         postList.clear();
+                        Iterator<Post> it = list.iterator();
+                        while (it.hasNext()){
+                            String postContent = it.next().getContent();
+                            if (postContent == null || postContent.isEmpty()){
+                                it.remove();
+                            }
+                        }
                         postList.addAll(list);
                         postAdapter.notifyDataSetChanged();
                     }
@@ -369,15 +387,75 @@ public class PostsActivity extends AppCompatActivity implements  View.OnTouchLis
     private void insertOneImg() {
         if (!content_re.isFocused())
             content_re.focusEditor();
-        try {
-            imagePicker.openGallery(this).subscribe(new io.reactivex.functions.Consumer<Result>() {
+        try{
+            //start
+            pickDialog = new Dialog(this);
+            pickDialog.setTitle("请选择获取图片的方式");
+            View pv = LayoutInflater.from(this).inflate(R.layout.pick_img_ways_dialog, null);
+            pickDialog.setContentView(pv);
+            final RadioGroup pickRg = pv.findViewById(R.id.pick_img_ways_rg);
+            final RadioButton pickLocalPathRb = pv.findViewById(R.id.pick_img_from_localpath_rb);
+            final RadioButton pickGalleryRb = pv.findViewById(R.id.pick_img_from_gallery_rb);
+            pickRg.check(pickLocalPathRb.getId());
+            TextView okTv = pv.findViewById(R.id.pick_img_ok_tv);
+            TextView cancelTv = pv.findViewById(R.id.pick_img_cancel_tv);
+            pickDialog.show();
+            okTv.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void accept(Result result) throws Exception {
-                    content_re.insertImage("file://" + result.getUri().getPath(), "加载中");
+                public void onClick(View v) {
+                    int selectItemId = pickRg.getCheckedRadioButtonId();
+                    if (selectItemId == pickLocalPathRb.getId()) {
+                        new LFilePicker().withActivity(PostsActivity.this).withRequestCode(LFILEPICKER_REQUEST_CODE)
+                                .withTitle("选择本地图片").withMutilyMode(false)
+                                .withFileFilter(new String[]{".png", ".jpg", ".jpeg", ".ico", ".PNG", ".JPG", ".JPEG", ".ICO"})
+                                .withIconStyle(Constant.ICON_STYLE_BLUE).start();
+                        pickDialog.dismiss();
+                    } else if (selectItemId == pickGalleryRb.getId()) {
+                        imagePicker.openGallery(PostsActivity.this).subscribe(new io.reactivex.functions.Consumer<Result>() {
+                            @Override
+                            public void accept(Result result) throws Exception {
+                                if (result == null){
+                                    return;
+                                }
+                                content_re.insertImage("file://" + result.getUri().getPath(), "加载中");
+                                pickDialog.dismiss();
+                            }
+                        });
+                    } else {
+                        pickDialog.dismiss();
+                    }
                 }
             });
-        } catch (Exception e) {
+            cancelTv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pickDialog.dismiss();
+                }
+            });
+            //end
+        }catch (Exception e){
             e.printStackTrace();
+        }
+    }
+
+    //获得图片
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case LFILEPICKER_REQUEST_CODE: {
+                if (data == null)
+                    return;
+                List<String> list = data.getStringArrayListExtra(LFILEPICKER_PATH);
+                if (list == null)
+                    return;
+                if (list.size() > 0) {
+                    imgUrl = list.get(0);
+                    if (imgUrl == null)
+                        return;
+                    content_re.insertImage("file://" + imgUrl, "加载中");
+                }
+            }
         }
     }
 

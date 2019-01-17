@@ -6,7 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -39,7 +41,7 @@ import cn.bmob.v3.listener.FindListener;
 
 import static com.ricarad.app.dailyanswer.common.Constant.BMOBAPPKEY;
 
-public class SettingMyCollectionActivity extends AppCompatActivity implements View.OnClickListener {
+public class SettingMyCollectionActivity extends AppCompatActivity implements View.OnTouchListener, View.OnClickListener {
 
     private ListView topics_lv;
     private TextView msg_tv;
@@ -49,6 +51,8 @@ public class SettingMyCollectionActivity extends AppCompatActivity implements Vi
 
     private ImageView exit_iv;
 
+    private static final int SCROLL_MIN_DISTANCE = 80;// 移动最小距离
+    private GestureDetector mygesture;//手势探测器
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +82,7 @@ public class SettingMyCollectionActivity extends AppCompatActivity implements Vi
                 startActivity(intent);
             }
         });
+        mygesture = new GestureDetector(this,myGestureListener);
     }
 
     private void fetchAllTopics() {
@@ -123,96 +128,51 @@ public class SettingMyCollectionActivity extends AppCompatActivity implements Vi
         }
     }
 
-//    private ListView setting_my_collection_lv;
-//    private ImageView setting_my_collection_back_iv;
-//    private User user;
-//
-//
-//    private ArrayList<Topic> collectedTopicList = new ArrayList<>();
-//    private CollectionAdapter collectionAdapter;
-//    //onCreate方法
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        setContentView(R.layout.activity_setting_my_collection);
-//        Bmob.initialize(this, BMOBAPPKEY);
-//        user = (User) getIntent().getSerializableExtra("user");
-//        setting_my_collection_back_iv = findViewById(R.id.setting_my_collection_back);
-//        setting_my_collection_lv = findViewById(R.id.setting_my_collection_lv);
-//        //ListView 匿名内部类
-//        setting_my_collection_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//
-//                Intent intent = new Intent(SettingMyCollectionActivity.this, PostsActivity.class);
-//                intent.putExtra("topic", collectedTopicList.get(i));
-//                intent.putExtra("user", user);
-//                startActivity(intent);
-//            }
-//        });
-//        setting_my_collection_back_iv.setOnClickListener(this);
-//        initCollectionList();
-//    }
-//
-//    //监听事件
-//    @Override
-//    public void onClick(View view) {
-//        switch(view.getId()) {
-//            case R.id.setting_my_collection_back: {
-//                finish();
-//            }break;
-//        }
-//    }
-//
-//
-//    //下载Bomb文件
-//    private void downloadFile(BmobFile file){
-//        //允许设置下载文件的存储路径，默认下载文件的目录为：context.getApplicationContext().getCacheDir()+"/bmob/"
-//        File saveFile = new File(Environment.getExternalStorageDirectory(), file.getFilename());
-//        file.download(saveFile, new DownloadFileListener() {
-//            @Override
-//            public void onProgress(Integer integer, long l) {
-//
-//            }
-//
-//            @Override
-//            public void done(String savePath,BmobException e) {
-//                if(e==null){
-//                    Toast.makeText(SettingMyCollectionActivity.this,"下载成功,保存路径:"+SettingMyCollectionActivity.this.getApplicationContext().getCacheDir()+"/bmob/",Toast.LENGTH_LONG).show();
-//
-//                }else{
-//                   Toast.makeText(SettingMyCollectionActivity.this,"下载失败："+e.getErrorCode()+","+e.getMessage(),Toast.LENGTH_LONG);
-//                }
-//            }
-//
-//
-//
-//        });
-//    }
-//    //查询user收藏的主题信息
-//    public void initCollectionList() {
-//        BmobQuery<Topic> query = new BmobQuery<Topic>();
-//        query.addWhereRelatedTo("collectedTopics",new BmobPointer(user));
-//        query.findObjects(new FindListener<Topic>() {
-//            @Override
-//            public void done(List<Topic> list, BmobException e) {
-//                if (e == null){
-//                    if (list.size() != 0){
-//                        for (Topic topic : list){
-//                            collectedTopicList.add(topic);
-//                        }
-//
-//                        collectionAdapter = new CollectionAdapter(SettingMyCollectionActivity.this,collectedTopicList);
-//                        setting_my_collection_lv.setAdapter(collectionAdapter);
-//
-//                    }
-//                }else {
-//                    Toast.makeText(SettingMyCollectionActivity.this,
-//                            "初始化收藏列表失败！失败原因"+e.getErrorCode()+":"+e.getMessage(),Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-//    }
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        return mygesture.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if(mygesture.onTouchEvent(ev)){
+            return mygesture.onTouchEvent(ev);
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+    private GestureDetector.OnGestureListener myGestureListener = new GestureDetector.OnGestureListener() {
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return false;
+        }
+
+        @Override
+        public void onShowPress(MotionEvent e) {
+
+        }
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+            return false;
+        }
+
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            return false;
+        }
+
+        @Override
+        public void onLongPress(MotionEvent e) {
+
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            if (e2.getX() - e1.getX() > SCROLL_MIN_DISTANCE) {
+                finish();
+            }
+            return false;
+        }
+    };
 
 }

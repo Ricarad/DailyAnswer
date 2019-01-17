@@ -59,6 +59,7 @@ public class GuideActivity extends AppCompatActivity {
         discussFragment.setArguments(bundle);
         settingFragment = new SettingFragment();
         settingFragment.setArguments(bundle);
+
         fragments = new Fragment[]{answerFragment, discussFragment, settingFragment};
         lastfragment = 0;
         getSupportFragmentManager().beginTransaction().replace(R.id.guide_mainview, answerFragment)

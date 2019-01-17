@@ -154,17 +154,17 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                                                 startActivityForResult(intent, GUIDE_CODE);
                                             } else {
                                                 pd.dismiss();
-                                                Snackbar.make(view, "更新登录信息失败：" + e.getMessage(), Snackbar.LENGTH_SHORT).show();
+                                                Snackbar.make(view, "更新登录信息失败：" + e.getMessage(), Snackbar.LENGTH_LONG).show();
                                             }
                                         }
                                     });
                                 } catch (Exception exp) {
                                     pd.dismiss();
-                                    Snackbar.make(view, "登录日期出现异常：" + e.getMessage(), Snackbar.LENGTH_SHORT).show();
+                                    Snackbar.make(view, "登录日期出现异常：" + e.getMessage(), Snackbar.LENGTH_LONG).show();
                                 }
                             } else {
                                 pd.dismiss();
-                                Snackbar.make(view, "登录失败：" +e.getErrorCode()+ e.getMessage(), Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(view, "登录失败：" +e.getErrorCode()+ e.getMessage(), Snackbar.LENGTH_LONG).show();
                             }
                         }
                     });

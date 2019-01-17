@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -209,6 +210,7 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
         previous.setOnClickListener(this);
         back.setOnClickListener(this);
         menu.setOnClickListener(this);
+        radioSelectRg.setOnCheckedChangeListener(this);
         if (answerType == PRACTICE_CODE) {
             titleTv.setText("练习");
         } else if (answerType == EXAM_CODE) {
@@ -260,34 +262,37 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
             }
             break;
             case R.id.answer_back_iv: {
+                //在练习模式下，如果直接点返回键，会保存做过的题目，没做过的题目则不会保存
                 if (answerType == PRACTICE_CODE) {
-                    for (int i = 0; i < questionList.size(); i++) {
+                    int count = 0;//应该被保存的题目数量
+                    BmobRelation relation = new BmobRelation();
+                    for (int i = 0; i < answerList.size(); i++) {
                         if (answerList.get(i) != -1) {
                             Question question = questionList.get(i);
-                            BmobRelation relation = new BmobRelation();
                             relation.add(question);
-                            User tempUser = new User();
-                            tempUser.setObjectId(user.getObjectId());
-                            tempUser.setAnswerQuestion(relation);
-                            tempUser.setNumber(user.getNumber() + answerList.size());
-                            tempUser.update(new UpdateListener() {
-                                @Override
-                                public void done(BmobException e) {
-                                    if (e == null) {
-                                        finish();
-                                        Toast.makeText(AnswerQuestionActivity.this, "已将做过的题目保存至最近练习记录", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        finish();
-                                        Toast.makeText(AnswerQuestionActivity.this, "保存做题日志失败：" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-                        } else {
-                            finish();
+                            count++;
                         }
                     }
+                    if (count != 0) {
+                        User tempUser = new User();
+                        tempUser.setObjectId(user.getObjectId());
+                        tempUser.setAnswerQuestion(relation);
+                        tempUser.setNumber(user.getNumber() + count);
+                        tempUser.update(new UpdateListener() {
+                            @Override
+                            public void done(BmobException e) {
+                                if (e == null) {
+                                    finish();
+                                    Toast.makeText(AnswerQuestionActivity.this, "已将做过的题目保存至最近练习记录", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    finish();
+                                    Toast.makeText(AnswerQuestionActivity.this, "保存做题日志失败：" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
 
-                } else if (answerType == EXAM_CODE) {
+                } else if (answerType == EXAM_CODE) {//如果是考试模式，则不会保存任何题目
                     AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                     dialog.setIcon(android.R.drawable.stat_sys_warning);
                     dialog.setTitle("注意");
@@ -326,6 +331,7 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         int selectItemId = radioSelectRg.getCheckedRadioButtonId();
         answerList.set(currentIndex, selectItemId);
+        Log.i("TGA", "第" + (currentIndex + 1) + "题选择了" + selectItemId);
     }
 
     @Override

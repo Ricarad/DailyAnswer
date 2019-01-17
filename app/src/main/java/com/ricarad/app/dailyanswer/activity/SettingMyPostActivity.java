@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -28,7 +30,7 @@ import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 
-public class SettingMyPostActivity extends AppCompatActivity implements View.OnClickListener {
+public class SettingMyPostActivity extends AppCompatActivity implements View.OnTouchListener,View.OnClickListener {
     private ListView posts_lv;
     private TextView msg_tv;
     private List<Post> postList;
@@ -36,7 +38,8 @@ public class SettingMyPostActivity extends AppCompatActivity implements View.OnC
     private User mUser;
 
     private ImageView exit_iv;
-
+    private static final int SCROLL_MIN_DISTANCE = 80;// 移动最小距离
+    private GestureDetector mygesture;//手势探测器
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +59,8 @@ public class SettingMyPostActivity extends AppCompatActivity implements View.OnC
 
         //设置监听
         exit_iv.setOnClickListener(this);
+
+        mygesture = new GestureDetector(this,myGestureListener);
     }
 
     private void fetchAllPosts() {
@@ -109,4 +114,50 @@ public class SettingMyPostActivity extends AppCompatActivity implements View.OnC
     }
 
 
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        return mygesture.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if(mygesture.onTouchEvent(ev)){
+            return mygesture.onTouchEvent(ev);
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+    private GestureDetector.OnGestureListener myGestureListener = new GestureDetector.OnGestureListener() {
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return false;
+        }
+
+        @Override
+        public void onShowPress(MotionEvent e) {
+
+        }
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+            return false;
+        }
+
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            return false;
+        }
+
+        @Override
+        public void onLongPress(MotionEvent e) {
+
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            if (e2.getX() - e1.getX() > SCROLL_MIN_DISTANCE) {
+                finish();
+            }
+            return false;
+        }
+    };
 }

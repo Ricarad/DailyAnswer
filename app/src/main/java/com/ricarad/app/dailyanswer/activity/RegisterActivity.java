@@ -86,7 +86,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private static final int MIN_LENGTH = 6;
     private static final int MAX_LENGTH = 8;
     private String imgUrl = ""; //头像图片的url地址
-    private Dialog pickDialog ;
+    private Dialog pickDialog;
     //设置计时器，验证码点击
     private CountDownTimer timer = new CountDownTimer(60 * 1000, 1000) {
         @Override
@@ -101,7 +101,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             sendMsgBtn.setText("验证码");
         }
     };
-
 
 
     @Override
@@ -321,8 +320,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         final Bitmap cackeBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
                         headImg.setImageBitmap(cackeBitmap);
                     }
-                }catch (Exception e){
-
+                } catch (Exception e) {
+                    //Toast.makeText(RegisterActivity.this, "头像选择失败，请重新选择" , Toast.LENGTH_LONG).show();
+                    Log.i("TGA","头像选择失败"+e.getMessage());
                 }
 
             }

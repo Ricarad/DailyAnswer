@@ -18,11 +18,15 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.leon.lfilepickerlibrary.LFilePicker;
+import com.leon.lfilepickerlibrary.utils.Constant;
 import com.qingmei2.rximagepicker.core.RxImagePicker;
 import com.qingmei2.rximagepicker.entity.Result;
 import com.qingmei2.rximagepicker.ui.SystemImagePicker;
@@ -36,7 +40,9 @@ import com.ricarad.app.dailyanswer.activity.SettingShowVersionActivity;
 import com.ricarad.app.dailyanswer.model.User;
 
 import java.io.File;
+import java.io.Serializable;
 import java.net.URL;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,8 +55,11 @@ import cn.bmob.v3.listener.UploadFileListener;
 import io.reactivex.functions.Consumer;
 
 import static com.ricarad.app.dailyanswer.common.Constant.BMOBAPPKEY;
+import static com.ricarad.app.dailyanswer.common.Constant.LFILEPICKER_PATH;
+import static com.ricarad.app.dailyanswer.common.Constant.LFILEPICKER_REQUEST_CODE;
+import static com.ricarad.app.dailyanswer.common.Constant.USER;
 
-public class SettingFragment extends Fragment implements View.OnClickListener {
+public class SettingFragment extends Fragment implements Serializable, View.OnClickListener {
     private RelativeLayout collection;//收藏的梯子
     private RelativeLayout myPosts;//发布的帖子
     private RelativeLayout about;//关于我们
@@ -61,6 +70,9 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     private RelativeLayout changeNickName;//修改昵称
     private User user;
 
+    private String imgUrl = "";
+    private Dialog pickDialog;
+    private SettingFragment mFragment;
 
     @Nullable
     @Override
@@ -87,8 +99,9 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         headImg.setOnClickListener(this);
         quit.setOnClickListener(this);
         changeNickName.setOnClickListener(this);
+        mFragment = new SettingFragment();
         if (isAdded()) {  //判断Fragment已经依附Activity
-            user = (User) getArguments().getSerializable("user");
+            user = (User) getArguments().getSerializable(USER);
         }
         initView();
     }
@@ -131,40 +144,70 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             }
             break;
             case R.id.setting_fragment_guide_headimg: {
-                //点击头像可以从本地获取头像并更换
-                SystemImagePicker systemImagePicker = RxImagePicker.INSTANCE.create();
-                systemImagePicker.openGallery(getActivity()).subscribe(new Consumer<Result>() {
+                pickDialog = new Dialog(getActivity());
+                pickDialog.setTitle("请选择获取头像的方式");
+                View pv = LayoutInflater.from(getActivity()).inflate(R.layout.pick_img_ways_dialog, null);
+                pickDialog.setContentView(pv);
+                final RadioGroup pickRg = pv.findViewById(R.id.pick_img_ways_rg);
+                final RadioButton pickLocalPathRb = pv.findViewById(R.id.pick_img_from_localpath_rb);
+                final RadioButton pickGalleryRb = pv.findViewById(R.id.pick_img_from_gallery_rb);
+                pickRg.check(pickLocalPathRb.getId());
+                TextView okTv = pv.findViewById(R.id.pick_img_ok_tv);
+                TextView cancelTv = pv.findViewById(R.id.pick_img_cancel_tv);
+                pickDialog.show();
+                okTv.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void accept(Result result) {
-                        final String imgUrl = result.getUri().getPath();
-                        BmobFile bmobFile = new BmobFile(new File(imgUrl));
-                        final User tempUser = new User();
-                        tempUser.setObjectId(user.getObjectId());
-                        tempUser.setUserImg(bmobFile);
-                        tempUser.getUserImg().uploadblock(new UploadFileListener() {
-                            @Override
-                            public void done(BmobException e) {
-                                if (e == null) {
-                                    tempUser.update(new UpdateListener() {
+                    public void onClick(View v) {
+                        int selectItemId = pickRg.getCheckedRadioButtonId();
+                        if (selectItemId == pickLocalPathRb.getId()) { //通过本地文件夹获取头像
+                            new LFilePicker().withSupportFragment(SettingFragment.this).withRequestCode(LFILEPICKER_REQUEST_CODE)
+                                    .withTitle("选择头像").withMutilyMode(false)
+                                    .withFileFilter(new String[]{".png", ".jpg", ".jpeg", ".ico", ".PNG", ".JPG", ".JPEG", ".ICO"})
+                                    .withIconStyle(Constant.ICON_STYLE_BLUE).start();
+                        } else if (selectItemId == pickGalleryRb.getId()) {//通过相册获取头像
+                            SystemImagePicker systemImagePicker = RxImagePicker.INSTANCE.create();
+                            systemImagePicker.openGallery(getActivity()).subscribe(new Consumer<Result>() {
+                                @Override
+                                public void accept(Result result) throws Exception {
+                                    imgUrl = result.getUri().getPath();
+                                    BmobFile bmobFile = new BmobFile(new File(imgUrl));
+                                    final User tempUser = new User();
+                                    tempUser.setObjectId(user.getObjectId());
+                                    tempUser.setUserImg(bmobFile);
+                                    tempUser.getUserImg().uploadblock(new UploadFileListener() {
                                         @Override
                                         public void done(BmobException e) {
                                             if (e == null) {
-                                                File file = new File(imgUrl);
-                                                final Bitmap cackeBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                                                headImg.setImageBitmap(cackeBitmap);
-                                                Toast.makeText(getActivity(), "头像修改成功", Toast.LENGTH_LONG).show();
+                                                tempUser.update(new UpdateListener() {
+                                                    @Override
+                                                    public void done(BmobException e) {
+                                                        if (e == null) {
+                                                            Glide.with(SettingFragment.this).load(imgUrl).into(headImg);
+                                                            pickDialog.dismiss();
+                                                            Toast.makeText(getActivity(), "更新头像成功" , Toast.LENGTH_SHORT).show();
+                                                        }else {
+                                                            Toast.makeText(getActivity(), "更新头像失败：" +
+                                                                    e.getErrorCode() + e.getMessage(), Toast.LENGTH_LONG).show();
+                                                            pickDialog.dismiss();
+                                                        }
+                                                    }
+                                                });
                                             } else {
-                                                Toast.makeText(getActivity(), "修改头像失败：" + e.getErrorCode() +
-                                                        ":" + e.getMessage(), Toast.LENGTH_LONG).show();
+                                                Toast.makeText(getActivity(), "修改头像失败：" +
+                                                        e.getErrorCode() + e.getMessage(), Toast.LENGTH_LONG).show();
+                                                pickDialog.dismiss();
                                             }
                                         }
                                     });
-                                } else {
-                                    Toast.makeText(getActivity(), "修改头像失败：" + e.getErrorCode() +
-                                            ":" + e.getMessage(), Toast.LENGTH_LONG).show();
                                 }
-                            }
-                        });
+                            });
+                        }
+                    }
+                });
+                cancelTv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        pickDialog.dismiss();
                     }
                 });
             }
@@ -224,6 +267,51 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case LFILEPICKER_REQUEST_CODE: {
+                try {
+                    List<String> list = data.getStringArrayListExtra(LFILEPICKER_PATH);
+                    pickDialog.dismiss();
+                    if (list != null || list.size() > 0) {
+                        imgUrl = list.get(0);
+                        BmobFile bmobFile = new BmobFile(new File(imgUrl));
+                        final User tempUser = new User();
+                        tempUser.setObjectId(user.getObjectId());
+                        tempUser.setUserImg(bmobFile);
+                        tempUser.getUserImg().uploadblock(new UploadFileListener() {
+                            @Override
+                            public void done(BmobException e) {
+                                if (e == null) {
+                                    tempUser.update(new UpdateListener() {
+                                        @Override
+                                        public void done(BmobException e) {
+                                            if (e == null) {
+                                                Toast.makeText(getActivity(), "更新头像成功" , Toast.LENGTH_SHORT).show();
+                                                Glide.with(SettingFragment.this).load(imgUrl).into(headImg);
+                                            }else {
+                                                Toast.makeText(getActivity(), "更新头像失败：" +
+                                                        e.getErrorCode() + e.getMessage(), Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    Toast.makeText(getActivity(), "修改头像失败：" +
+                                            e.getErrorCode() + e.getMessage(), Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(getActivity(), "头像选择失败，请重新选择"
+                            , Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }
+    }
 
     /**
      * 禁止EditText输入空格和换行符

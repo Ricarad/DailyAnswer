@@ -54,6 +54,5 @@ public class Constant {
         * 算法
         */
        public final static String ALGORITHM = "algorithm";
-
    }
 }

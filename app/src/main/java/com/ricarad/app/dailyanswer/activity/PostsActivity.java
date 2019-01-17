@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ import com.qingmei2.rximagepicker.ui.SystemImagePicker;
 import com.ricarad.app.dailyanswer.R;
 import com.ricarad.app.dailyanswer.adapter.PostAdapter;
 import com.ricarad.app.dailyanswer.common.PostUtil;
+import com.ricarad.app.dailyanswer.common.ViewUtil;
 import com.ricarad.app.dailyanswer.model.PComment;
 import com.ricarad.app.dailyanswer.model.Post;
 import com.ricarad.app.dailyanswer.model.Topic;
@@ -50,6 +52,8 @@ import cn.bmob.v3.listener.UpdateListener;
 import jp.wasabeef.richeditor.RichEditor;
 
 import static com.ricarad.app.dailyanswer.activity.AddTopicActivity.POST_TAG;
+import static com.ricarad.app.dailyanswer.activity.AddTopicActivity.REQUEST_SYSTEM_PIC;
+import static com.ricarad.app.dailyanswer.common.Constant.GALLERY_REQUEST_CODE;
 import static com.ricarad.app.dailyanswer.common.Constant.LFILEPICKER_PATH;
 import static com.ricarad.app.dailyanswer.common.Constant.LFILEPICKER_REQUEST_CODE;
 
@@ -76,7 +80,7 @@ public class PostsActivity extends AppCompatActivity implements  View.OnTouchLis
     private List<Post> postList;
     private PostAdapter postAdapter;
 
-    private static final int SCROLL_MIN_DISTANCE = 80;// 移动最小距离
+    private static final int SCROLL_MIN_DISTANCE = 100;// 移动最小距离
     private GestureDetector mygesture;//手势探测器
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -413,16 +417,10 @@ public class PostsActivity extends AppCompatActivity implements  View.OnTouchLis
                                 .withIconStyle(Constant.ICON_STYLE_BLUE).start();
                         pickDialog.dismiss();
                     } else if (selectItemId == pickGalleryRb.getId()) {
-                        imagePicker.openGallery(PostsActivity.this).subscribe(new io.reactivex.functions.Consumer<Result>() {
-                            @Override
-                            public void accept(Result result) throws Exception {
-                                if (result == null){
-                                    return;
-                                }
-                                content_re.insertImage("file://" + result.getUri().getPath(), "加载中");
-                                pickDialog.dismiss();
-                            }
-                        });
+                        Intent intent = new Intent("android.intent.action.GET_CONTENT");
+                        intent.setType("image/*");
+                        startActivityForResult(intent, GALLERY_REQUEST_CODE);//打开系统相册
+                        pickDialog.dismiss();
                     } else {
                         pickDialog.dismiss();
                     }
@@ -455,8 +453,25 @@ public class PostsActivity extends AppCompatActivity implements  View.OnTouchLis
                     imgUrl = list.get(0);
                     if (imgUrl == null)
                         return;
+                    if (ViewUtil.isImgTooBig(imgUrl)){
+                        Toast.makeText(PostsActivity.this, "图片大小不能超过1M", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     content_re.insertImage("file://" + imgUrl, "加载中");
                 }
+            }
+            case GALLERY_REQUEST_CODE: {
+                if (resultCode == RESULT_OK && data != null) {
+                    Uri uri = data.getData();
+                    String apath = ViewUtil.getRealPathFromUri(PostsActivity.this, uri);
+                    if (ViewUtil.isImgTooBig(apath)){
+                        Toast.makeText(PostsActivity.this, "图片大小不能超过1M", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    content_re.insertImage("file://" + apath, "加载中");
+                } else
+                    return;
+                break;
             }
         }
     }

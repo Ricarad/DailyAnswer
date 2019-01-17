@@ -8,6 +8,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.DrawableRes;
@@ -35,6 +36,7 @@ import com.qingmei2.rximagepicker.entity.Result;
 import com.qingmei2.rximagepicker.ui.SystemImagePicker;
 import com.ricarad.app.dailyanswer.R;
 
+import com.ricarad.app.dailyanswer.common.ViewUtil;
 import com.ricarad.app.dailyanswer.model.User;
 
 import org.xutils.view.annotation.ViewInject;
@@ -60,6 +62,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.functions.Consumer;
 
 import static com.ricarad.app.dailyanswer.common.Constant.FILE_MAX_LENGTH;
+import static com.ricarad.app.dailyanswer.common.Constant.GALLERY_REQUEST_CODE;
 import static com.ricarad.app.dailyanswer.common.Constant.LFILEPICKER_PATH;
 import static com.ricarad.app.dailyanswer.common.Constant.LFILEPICKER_REQUEST_CODE;
 
@@ -278,21 +281,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                     .withFileFilter(new String[]{".png", ".jpg", ".jpeg", ".ico", ".PNG", ".JPG", ".JPEG", ".ICO"})
                                     .withIconStyle(Constant.ICON_STYLE_BLUE).start();
                         } else if (selectItemId == pickGalleryRb.getId()) {
-                            SystemImagePicker systemImagePicker = RxImagePicker.INSTANCE.create();
-                            systemImagePicker.openGallery(RegisterActivity.this).subscribe(new Consumer<Result>() {
-                                @Override
-                                public void accept(Result result) throws Exception {
-                                    imgUrl = result.getUri().getPath();
-                                    File file = new File(imgUrl);
-                                    if (file.length() >= FILE_MAX_LENGTH){
-                                        Toast.makeText(RegisterActivity.this, "图片大小不能超过1M" , Toast.LENGTH_LONG).show();
-                                        return;
-                                    }
-                                    final Bitmap cackeBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                                    headImg.setImageBitmap(cackeBitmap);
-                                    pickDialog.dismiss();
-                                }
-                            });
+                            Intent intent = new Intent("android.intent.action.GET_CONTENT");
+                            intent.setType("image/*");
+                            startActivityForResult(intent, GALLERY_REQUEST_CODE);//打开系统相册
                         } else {
                             pickDialog.dismiss();
                         }
@@ -333,7 +324,23 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     //Toast.makeText(RegisterActivity.this, "头像选择失败，请重新选择" , Toast.LENGTH_LONG).show();
                     Log.i("TGA","头像选择失败"+e.getMessage());
                 }
-
+            break;
+            }
+            case GALLERY_REQUEST_CODE: {
+                pickDialog.dismiss();
+                if (resultCode == RESULT_OK && data != null) {
+                    Uri uri = data.getData();
+                    String apath = ViewUtil.getRealPathFromUri(RegisterActivity.this, uri);
+                    if (ViewUtil.isImgTooBig(apath)){
+                        Toast.makeText(RegisterActivity.this, "图片大小不能超过1M", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    imgUrl = apath;
+                    final Bitmap cackeBitmap = BitmapFactory.decodeFile(apath);
+                    headImg.setImageBitmap(cackeBitmap);
+                } else
+                    return;
+                break;
             }
         }
     }

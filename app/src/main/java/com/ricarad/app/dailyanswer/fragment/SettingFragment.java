@@ -37,6 +37,7 @@ import com.ricarad.app.dailyanswer.activity.SettingMyCollectionActivity;
 import com.ricarad.app.dailyanswer.activity.SettingMyPostActivity;
 import com.ricarad.app.dailyanswer.activity.SettingAboutUsActivity;
 import com.ricarad.app.dailyanswer.activity.SettingShowVersionActivity;
+import com.ricarad.app.dailyanswer.common.ViewUtil;
 import com.ricarad.app.dailyanswer.model.User;
 
 import java.io.File;
@@ -56,6 +57,7 @@ import io.reactivex.functions.Consumer;
 
 import static com.ricarad.app.dailyanswer.common.Constant.BMOBAPPKEY;
 import static com.ricarad.app.dailyanswer.common.Constant.FILE_MAX_LENGTH;
+import static com.ricarad.app.dailyanswer.common.Constant.GALLERY_REQUEST_CODE;
 import static com.ricarad.app.dailyanswer.common.Constant.LFILEPICKER_PATH;
 import static com.ricarad.app.dailyanswer.common.Constant.LFILEPICKER_REQUEST_CODE;
 import static com.ricarad.app.dailyanswer.common.Constant.USER;
@@ -166,47 +168,9 @@ public class SettingFragment extends Fragment implements Serializable, View.OnCl
                                     .withFileFilter(new String[]{".png", ".jpg", ".jpeg", ".ico", ".PNG", ".JPG", ".JPEG", ".ICO"})
                                     .withIconStyle(Constant.ICON_STYLE_BLUE).start();
                         } else if (selectItemId == pickGalleryRb.getId()) {//通过相册获取头像
-                            SystemImagePicker systemImagePicker = RxImagePicker.INSTANCE.create();
-                            systemImagePicker.openGallery(getActivity()).subscribe(new Consumer<Result>() {
-                                @Override
-                                public void accept(Result result) throws Exception {
-                                    imgUrl = result.getUri().getPath();
-                                    File file = new File(imgUrl);
-                                    if (file.length() >= FILE_MAX_LENGTH){
-                                        Toast.makeText(getActivity(), "图片大小不能超过1M" , Toast.LENGTH_LONG).show();
-                                        return;
-                                    }
-                                    BmobFile bmobFile = new BmobFile(new File(imgUrl));
-                                    final User tempUser = new User();
-                                    tempUser.setObjectId(user.getObjectId());
-                                    tempUser.setUserImg(bmobFile);
-                                    tempUser.getUserImg().uploadblock(new UploadFileListener() {
-                                        @Override
-                                        public void done(BmobException e) {
-                                            if (e == null) {
-                                                tempUser.update(new UpdateListener() {
-                                                    @Override
-                                                    public void done(BmobException e) {
-                                                        if (e == null) {
-                                                            Glide.with(SettingFragment.this).load(imgUrl).into(headImg);
-                                                            pickDialog.dismiss();
-                                                            Toast.makeText(getActivity(), "更新头像成功" , Toast.LENGTH_SHORT).show();
-                                                        }else {
-                                                            Toast.makeText(getActivity(), "更新头像失败：" +
-                                                                    e.getErrorCode() + e.getMessage(), Toast.LENGTH_LONG).show();
-                                                            pickDialog.dismiss();
-                                                        }
-                                                    }
-                                                });
-                                            } else {
-                                                Toast.makeText(getActivity(), "修改头像失败：" +
-                                                        e.getErrorCode() + e.getMessage(), Toast.LENGTH_LONG).show();
-                                                pickDialog.dismiss();
-                                            }
-                                        }
-                                    });
-                                }
-                            });
+                            Intent intent = new Intent("android.intent.action.GET_CONTENT");
+                            intent.setType("image/*");
+                            startActivityForResult(intent, GALLERY_REQUEST_CODE);//打开系统相册
                         }
                     }
                 });
@@ -320,7 +284,46 @@ public class SettingFragment extends Fragment implements Serializable, View.OnCl
                             , Toast.LENGTH_LONG).show();
                 }
 
-            }
+            }break;
+            case GALLERY_REQUEST_CODE:{
+                pickDialog.dismiss();
+                if (data == null)
+                    return;
+                imgUrl = ViewUtil.getRealPathFromUri(getActivity(), data.getData());
+                File file = new File(imgUrl);
+                if (file.length() >= FILE_MAX_LENGTH){
+                    Toast.makeText(getActivity(), "图片大小不能超过1M" , Toast.LENGTH_LONG).show();
+                    return;
+                }
+                BmobFile bmobFile = new BmobFile(new File(imgUrl));
+                final User tempUser = new User();
+                tempUser.setObjectId(user.getObjectId());
+                tempUser.setUserImg(bmobFile);
+                tempUser.getUserImg().uploadblock(new UploadFileListener() {
+                    @Override
+                    public void done(BmobException e) {
+                        if (e == null) {
+                            tempUser.update(new UpdateListener() {
+                                @Override
+                                public void done(BmobException e) {
+                                    if (e == null) {
+                                        Glide.with(SettingFragment.this).load(imgUrl).into(headImg);
+                                        Toast.makeText(getActivity(), "更新头像成功" , Toast.LENGTH_SHORT).show();
+                                    }else {
+                                        Toast.makeText(getActivity(), "更新头像失败：" +
+                                                e.getErrorCode() + e.getMessage(), Toast.LENGTH_LONG).show();
+                                        pickDialog.dismiss();
+                                    }
+                                }
+                            });
+                        } else {
+                            Toast.makeText(getActivity(), "修改头像失败：" +
+                                    e.getErrorCode() + e.getMessage(), Toast.LENGTH_LONG).show();
+                            pickDialog.dismiss();
+                        }
+                    }
+                });
+            }break;
         }
     }
 

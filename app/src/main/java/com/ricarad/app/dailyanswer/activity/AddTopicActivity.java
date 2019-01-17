@@ -5,9 +5,12 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,6 +33,7 @@ import com.qingmei2.rximagepicker.entity.Result;
 import com.qingmei2.rximagepicker.ui.SystemImagePicker;
 import com.ricarad.app.dailyanswer.R;
 import com.ricarad.app.dailyanswer.common.PostUtil;
+import com.ricarad.app.dailyanswer.common.ViewUtil;
 import com.ricarad.app.dailyanswer.model.Post;
 import com.ricarad.app.dailyanswer.model.Topic;
 import com.ricarad.app.dailyanswer.model.User;
@@ -45,8 +49,10 @@ import cn.bmob.v3.listener.UpdateListener;
 import io.reactivex.functions.Consumer;
 import jp.wasabeef.richeditor.RichEditor;
 
+import static com.ricarad.app.dailyanswer.common.Constant.GALLERY_REQUEST_CODE;
 import static com.ricarad.app.dailyanswer.common.Constant.LFILEPICKER_PATH;
 import static com.ricarad.app.dailyanswer.common.Constant.LFILEPICKER_REQUEST_CODE;
+import static com.ricarad.app.dailyanswer.common.Constant.USER;
 
 public class AddTopicActivity extends AppCompatActivity implements View.OnTouchListener, View.OnClickListener{
     Button commit_btn;
@@ -66,6 +72,7 @@ public class AddTopicActivity extends AppCompatActivity implements View.OnTouchL
     boolean hasFailed;
 
     public static String POST_TAG = "Add Topic ========>";
+    public static final int REQUEST_SYSTEM_PIC = 17;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +80,7 @@ public class AddTopicActivity extends AppCompatActivity implements View.OnTouchL
         setContentView(R.layout.activity_add_topic);
         //获得当前登录的用户
         Intent intent = getIntent();
-        mUser = (User)intent.getSerializableExtra("user");
+        mUser = (User)intent.getSerializableExtra(USER);
         //初始化样式
         fetchViews();
         setRichEditorStyles();
@@ -263,16 +270,10 @@ public class AddTopicActivity extends AppCompatActivity implements View.OnTouchL
                                 .withIconStyle(Constant.ICON_STYLE_BLUE).start();
                         pickDialog.dismiss();
                     } else if (selectItemId == pickGalleryRb.getId()) {
-                        imagePicker.openGallery(AddTopicActivity.this).subscribe(new io.reactivex.functions.Consumer<Result>() {
-                            @Override
-                            public void accept(Result result) throws Exception {
-                                if (result == null){
-                                    return;
-                                }
-                                content_re.insertImage("file://" + result.getUri().getPath(), "加载中");
-                                pickDialog.dismiss();
-                            }
-                        });
+                        Intent intent = new Intent("android.intent.action.GET_CONTENT");
+                        intent.setType("image/*");
+                        startActivityForResult(intent, GALLERY_REQUEST_CODE);//打开系统相册
+                        pickDialog.dismiss();
                     } else {
                         pickDialog.dismiss();
                     }
@@ -304,9 +305,26 @@ public class AddTopicActivity extends AppCompatActivity implements View.OnTouchL
                     imgUrl = list.get(0);
                     if (imgUrl == null)
                         return;
+                    if (ViewUtil.isImgTooBig(imgUrl)){
+                        Toast.makeText(AddTopicActivity.this, "图片大小不能超过1M", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     content_re.insertImage("file://" + imgUrl, "加载中");
                 }
-
+                break;
+            }
+            case GALLERY_REQUEST_CODE: {
+                if (resultCode == RESULT_OK && data != null) {
+                    Uri uri = data.getData();
+                    String apath = ViewUtil.getRealPathFromUri(AddTopicActivity.this, uri);
+                    if (ViewUtil.isImgTooBig(apath)){
+                        Toast.makeText(AddTopicActivity.this, "图片大小不能超过1M", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    content_re.insertImage("file://" + apath, "加载中");
+                } else
+                    return;
+                break;
             }
         }
     }

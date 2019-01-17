@@ -396,6 +396,8 @@ public class PostsActivity extends AppCompatActivity implements  View.OnTouchLis
             final RadioGroup pickRg = pv.findViewById(R.id.pick_img_ways_rg);
             final RadioButton pickLocalPathRb = pv.findViewById(R.id.pick_img_from_localpath_rb);
             final RadioButton pickGalleryRb = pv.findViewById(R.id.pick_img_from_gallery_rb);
+            pickLocalPathRb.setText("从本地存储选择图片");
+            pickGalleryRb.setText("直接从相册选择图片");
             pickRg.check(pickLocalPathRb.getId());
             TextView okTv = pv.findViewById(R.id.pick_img_ok_tv);
             TextView cancelTv = pv.findViewById(R.id.pick_img_cancel_tv);

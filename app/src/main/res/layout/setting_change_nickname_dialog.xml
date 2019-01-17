@@ -14,6 +14,7 @@
         android:layout_marginLeft="20dp"
         android:hint="请输入您的新昵称"
         android:textSize="20sp"
+        android:singleLine="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <LinearLayout

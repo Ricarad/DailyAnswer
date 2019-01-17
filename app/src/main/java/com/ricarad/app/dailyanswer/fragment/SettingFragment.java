@@ -48,6 +48,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.DownloadFileListener;
@@ -184,6 +185,7 @@ public class SettingFragment extends Fragment implements Serializable, View.OnCl
             break;
             case R.id.setting_fragment_guide_quit: {
                 //TODO 点击退出回到登录界面
+                BmobUser.logOut();
                 getActivity().finish();
             }
             break;

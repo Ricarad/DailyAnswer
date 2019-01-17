@@ -56,6 +56,7 @@ import static com.ricarad.app.dailyanswer.activity.AddTopicActivity.REQUEST_SYST
 import static com.ricarad.app.dailyanswer.common.Constant.GALLERY_REQUEST_CODE;
 import static com.ricarad.app.dailyanswer.common.Constant.LFILEPICKER_PATH;
 import static com.ricarad.app.dailyanswer.common.Constant.LFILEPICKER_REQUEST_CODE;
+import static com.ricarad.app.dailyanswer.common.Constant.USER;
 
 public class PostsActivity extends AppCompatActivity implements  View.OnTouchListener,View.OnClickListener {
     private TextView title_tv, collect_tv;
@@ -80,14 +81,14 @@ public class PostsActivity extends AppCompatActivity implements  View.OnTouchLis
     private List<Post> postList;
     private PostAdapter postAdapter;
 
-    private static final int SCROLL_MIN_DISTANCE = 100;// 移动最小距离
+    private static final int SCROLL_MIN_DISTANCE = 350;// 移动最小距离
     private GestureDetector mygesture;//手势探测器
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_posts);
         topic = (Topic) getIntent().getSerializableExtra("topic");
-        mUser = (User) getIntent().getSerializableExtra("user");
+        mUser = (User) getIntent().getSerializableExtra(USER);
         fetchViews();
         //实例化图片选择器
         imagePicker = RxImagePicker.INSTANCE.create();
@@ -459,7 +460,7 @@ public class PostsActivity extends AppCompatActivity implements  View.OnTouchLis
                     }
                     content_re.insertImage("file://" + imgUrl, "加载中");
                 }
-            }
+            }break;
             case GALLERY_REQUEST_CODE: {
                 if (resultCode == RESULT_OK && data != null) {
                     Uri uri = data.getData();

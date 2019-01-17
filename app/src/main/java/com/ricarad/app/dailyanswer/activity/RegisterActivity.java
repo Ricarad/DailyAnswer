@@ -59,6 +59,7 @@ import cn.bmob.v3.listener.UploadFileListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.functions.Consumer;
 
+import static com.ricarad.app.dailyanswer.common.Constant.FILE_MAX_LENGTH;
 import static com.ricarad.app.dailyanswer.common.Constant.LFILEPICKER_PATH;
 import static com.ricarad.app.dailyanswer.common.Constant.LFILEPICKER_REQUEST_CODE;
 
@@ -283,6 +284,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                 public void accept(Result result) throws Exception {
                                     imgUrl = result.getUri().getPath();
                                     File file = new File(imgUrl);
+                                    if (file.length() >= FILE_MAX_LENGTH){
+                                        Toast.makeText(RegisterActivity.this, "图片大小不能超过1M" , Toast.LENGTH_LONG).show();
+                                        return;
+                                    }
                                     final Bitmap cackeBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
                                     headImg.setImageBitmap(cackeBitmap);
                                     pickDialog.dismiss();
@@ -317,6 +322,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     if (list != null || list.size() > 0) {
                         imgUrl = list.get(0);
                         File file = new File(imgUrl);
+                      if (file.length() >= FILE_MAX_LENGTH){
+                          Toast.makeText(RegisterActivity.this, "图片大小不能超过1M" , Toast.LENGTH_LONG).show();
+                          return;
+                      }
                         final Bitmap cackeBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
                         headImg.setImageBitmap(cackeBitmap);
                     }

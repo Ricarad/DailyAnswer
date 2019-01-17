@@ -15,7 +15,9 @@ public class Constant {
     public final static String USER = "user";
     public final static String USERID = "userId";
     public final static int LFILEPICKER_REQUEST_CODE = 0;
+    public final static int GALLERY_REQUEST_CODE = 1;
     public final static String LFILEPICKER_PATH = "paths";
+    public final static long FILE_MAX_LENGTH = 1048576;//文件字节大小，为1MB
     public static class ResultCode{
         public final static int REGISTER_CODE = 1;
         public final static int GUIDE_CODE = 2;

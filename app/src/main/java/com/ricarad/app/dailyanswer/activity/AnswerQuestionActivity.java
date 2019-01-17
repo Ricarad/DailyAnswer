@@ -290,6 +290,8 @@ public class AnswerQuestionActivity extends Activity implements View.OnClickList
                                 }
                             }
                         });
+                    }else {
+                        finish();
                     }
 
                 } else if (answerType == EXAM_CODE) {//如果是考试模式，则不会保存任何题目

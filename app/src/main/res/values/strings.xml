@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DailyAnswer</string>
+    <string name="app_name">微客问答</string>
     <string name="title_activity_guide">GuideActivity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>

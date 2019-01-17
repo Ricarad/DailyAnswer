@@ -55,6 +55,7 @@ import cn.bmob.v3.listener.UploadFileListener;
 import io.reactivex.functions.Consumer;
 
 import static com.ricarad.app.dailyanswer.common.Constant.BMOBAPPKEY;
+import static com.ricarad.app.dailyanswer.common.Constant.FILE_MAX_LENGTH;
 import static com.ricarad.app.dailyanswer.common.Constant.LFILEPICKER_PATH;
 import static com.ricarad.app.dailyanswer.common.Constant.LFILEPICKER_REQUEST_CODE;
 import static com.ricarad.app.dailyanswer.common.Constant.USER;
@@ -170,6 +171,11 @@ public class SettingFragment extends Fragment implements Serializable, View.OnCl
                                 @Override
                                 public void accept(Result result) throws Exception {
                                     imgUrl = result.getUri().getPath();
+                                    File file = new File(imgUrl);
+                                    if (file.length() >= FILE_MAX_LENGTH){
+                                        Toast.makeText(getActivity(), "图片大小不能超过1M" , Toast.LENGTH_LONG).show();
+                                        return;
+                                    }
                                     BmobFile bmobFile = new BmobFile(new File(imgUrl));
                                     final User tempUser = new User();
                                     tempUser.setObjectId(user.getObjectId());
@@ -277,6 +283,11 @@ public class SettingFragment extends Fragment implements Serializable, View.OnCl
                     pickDialog.dismiss();
                     if (list != null || list.size() > 0) {
                         imgUrl = list.get(0);
+                        File file = new File(imgUrl);
+                        if (file.length() >= FILE_MAX_LENGTH){
+                            Toast.makeText(getActivity(), "图片大小不能超过1M" , Toast.LENGTH_LONG).show();
+                            return;
+                        }
                         BmobFile bmobFile = new BmobFile(new File(imgUrl));
                         final User tempUser = new User();
                         tempUser.setObjectId(user.getObjectId());

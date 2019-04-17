@@ -42,11 +42,7 @@ public class AnswerFragment extends Fragment implements AdapterView.OnItemClickL
     private GridView toolBarGv;
 
     private User user;
-    private String[] titleArr = new String[]{
-            "随机练习", "认真考试", "练习记录", "错题回顾", "收藏夹"
-    };
-    private int[] imgArr = new int[]{R.drawable.answer_fragment_practice, R.drawable.answer_fragment_exam,
-            R.drawable.answer_fragment_record, R.drawable.answer_fragment_mistakes, R.drawable.answer_fragment_collect};
+
     private boolean isFirstOpenThisApp = true;//判断这个fragment是不是第一次被打开，关系到是否需要请求后端最新的User
 
     @Override

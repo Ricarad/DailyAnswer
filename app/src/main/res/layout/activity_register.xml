@@ -134,7 +134,7 @@
         android:layout_weight="0.9"
         android:textColor="@color/colorWhite"
         android:background="@drawable/register_button_selector"
-        android:text="注册"
+        android:text="添加员工"
         android:textSize="30dp"
         />
 </RelativeLayout>

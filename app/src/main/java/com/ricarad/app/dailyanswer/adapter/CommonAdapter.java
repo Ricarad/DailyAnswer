@@ -48,7 +48,6 @@ public class CommonAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
-        view = LayoutInflater.from(mContext).inflate(resourceId,null);
         TextView titleTv = view.findViewById(R.id.common_list_item_tv);
         final CheckBox checkBox = view.findViewById(R.id.common_list_item_check);
         titleTv.setText((position+1)+"."+questionList.get(position).getTitle());
